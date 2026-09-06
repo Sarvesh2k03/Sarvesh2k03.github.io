@@ -144,7 +144,12 @@ a { color: inherit; }
 .hero__title { color: var(--fg); }
 .hero__title em { font-style: normal; color: var(--mute); }
 
-.hero__portrait { margin: 0; }
+.hero__portrait {
+  margin: 0;
+  padding: 0.6rem;
+  border: 1px solid var(--rule);
+  background: var(--fill);
+}
 .hero__portrait > div { aspect-ratio: 4 / 5; overflow: hidden; }
 .hero__portrait figcaption {
   font-family: var(--mono);
@@ -187,6 +192,23 @@ a { color: inherit; }
   border-top: 1px solid var(--rule);
 }
 .cv__row:last-child { border-bottom: 1px solid var(--rule); }
+.cv__row--minor { padding: 0.7rem 0; }
+.cv__row--minor .cv__role { font-size: 0.88rem; font-weight: 500; color: var(--mute); }
+.cv__row--minor .cv__note { font-size: 0.82rem; }
+.cv-heading {
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.cv-heading::before { content: ""; flex: none; width: 2.25rem; height: 1px; background: currentColor; opacity: 0.55; }
+.cv-heading + .cv { margin-top: 1rem; }
 .cv__what { display: grid; gap: 0.15rem; }
 .cv__role { font-size: 1rem; font-weight: 600; line-height: 1.3; }
 .cv__note { font-size: 0.88rem; line-height: 1.4; color: var(--mute); }
@@ -697,7 +719,7 @@ a { color: inherit; }
         <h2 class="display display--lg">Where<br>I've been</h2>
       </div>
       <div class="prose">
-        <p>Six internships across AI/ML systems, generative AI, applied machine learning, deep learning research, design and web development, in Los Angeles, Singapore and Chennai. Two publications, on real time pose estimation and on statistical analysis of character portrayal in video games.</p>
+        <p>Six internships across AI/ML systems, generative AI, applied machine learning, deep learning research, design and web development, in Los Angeles, Singapore and Chennai. Two publications along the way, on real time pose estimation and on character portrayal in video games.</p>
       </div>
     </div>
 
@@ -744,25 +766,33 @@ a { color: inherit; }
         </div>
         <span class="cv__when">Aug 2022 - Sep 2022</span>
       </div>
+    </div>
+
+    <p class="cv-heading">Education</p>
+
+    <div class="cv">
       <div class="cv__row">
         <div class="cv__what">
           <span class="cv__role">MS Computer Science, Data Science · University of Southern California</span>
           <span class="cv__note">Los Angeles, California.</span>
         </div>
-        <span class="cv__when">Education</span>
+        <span class="cv__when">In progress</span>
       </div>
       <div class="cv__row">
         <div class="cv__what">
           <span class="cv__role">BTech Computer Science · SRM Institute of Science and Technology</span>
           <span class="cv__note">Chennai, India.</span>
         </div>
-        <span class="cv__when">Education</span>
+        <span class="cv__when">2021 - 2025</span>
       </div>
-      <div class="cv__row">
+      <div class="cv__row cv__row--minor">
         <div class="cv__what">
-          <span class="cv__role">Semester Abroad, Computer Science · University of California, Davis</span>
+          <span class="cv__role">Semester abroad · University of California, Davis</span>
           <span class="cv__note">Multivariate data analysis, statistical data science, discrete mathematics.</span>
         </div>
+        <span class="cv__when">Fall 2023</span>
+      </div>
+    </div>
         <span class="cv__when">Sep 2023 - Dec 2023</span>
       </div>
     </div>
@@ -882,6 +912,16 @@ a { color: inherit; }
       <p class="slug">Working with AI</p>
       <div class="prose">
         <p>Building <em>with</em> LLMs is part of the skill set, and I treat it the same way I treat building <em>on</em> them. I use models to move fast (scaffolding, refactors, a second opinion on a schema) then make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> I made the design calls, ran the pipelines and produced every number here; AI helped the way it does in these projects, with a check on the output and a person accountable for what ships.</p>
+      </div>
+    </div>
+
+    <div class="head" style="margin-top:clamp(3rem,6vw,4.5rem);">
+      <div>
+        <p class="slug">Contact</p>
+        <h2 class="display display--lg">Say<br>hello</h2>
+      </div>
+      <div class="prose">
+        <p>If any of this is close to what your team is working on, I would like to hear about it. Email is the fastest way to reach me, and the repositories are open if you would rather read the code first.</p>
       </div>
     </div>
 
