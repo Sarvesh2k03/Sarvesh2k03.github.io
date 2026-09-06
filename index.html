@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sarvesh Kumar</title>
-<meta name="description" content="Three shipped AI systems — a RAG that refuses to guess, a support desk that keeps working when the model times out, and a 134k-row pipeline measured with the LLM switched off.">
+<meta name="description" content="Sarvesh Kumar — MS Computer Science at USC. Three shipped AI systems with live demos, public source, and measured results: retrieval that cites and refuses, a support desk with a tested fallback, and a 134,000-row Airflow + dbt pipeline.">
 <meta property="og:title" content="Sarvesh Kumar">
 <meta property="og:description" content="Three shipped AI systems, with live demos, source, and the numbers behind each.">
 <meta property="og:type" content="website">
@@ -227,15 +227,65 @@ a { color: inherit; }
   background: var(--b-panel);
   padding: clamp(1.25rem, 2.5vw, 2rem);
 }
-.creed { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
-.creed li { display: grid; grid-template-columns: 1.6rem 1fr; gap: 0.65rem; align-items: baseline; }
-.creed b {
+.record { margin: 0; }
+.record__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.8rem 0;
+  border-top: 1px solid var(--rule);
+}
+.record__row:first-child { border-top: 0; padding-top: 0; }
+.record dt { display: grid; gap: 0.15rem; }
+.record dt b { font-size: 0.95rem; font-weight: 600; line-height: 1.3; }
+.record dt span { font-size: 0.82rem; line-height: 1.35; }
+.record dd {
+  margin: 0;
   font-family: var(--mono);
   font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--mute);
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────
+   HOW I BUILD
+   ───────────────────────────────────────────── */
+.principles { margin-top: clamp(2rem, 4vw, 3rem); }
+.principle {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 3rem);
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+  border-top: 1px solid var(--rule);
+}
+.principle:last-child { border-bottom: 1px solid var(--rule); }
+.principle__n {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 118, "wght" 900;
+  font-size: 2.2rem;
+  line-height: 0.8;
   color: var(--disp);
 }
+.principle h3 {
+  font-family: var(--body);
+  font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 0.5rem;
+}
+.principle__proof {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--mute);
+  margin: 0.85rem 0 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--disp);
+}
+.principle__proof b { color: var(--ink); font-weight: 500; }
 
 /* ─────────────────────────────────────────────
    CHAPTERS
@@ -405,6 +455,8 @@ a { color: inherit; }
   .chapter__rail { flex-direction: row; align-items: baseline; gap: 1rem; }
   .chapter__num { font-size: 2rem; }
   .method { grid-template-columns: minmax(0, 1fr); }
+  .principle { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  .principle__n { font-size: 1.9rem; }
 }
 @media (max-width: 560px) {
   .lede { max-width: none; }
@@ -425,13 +477,13 @@ a { color: inherit; }
         <p class="eyebrow">Los Angeles</p>
       </div>
 
-      <h1 class="display display--xl">AI that<br>fails<br>well</h1>
+      <h1 class="display display--xl">AI that<br>holds<br>up</h1>
 
       <div class="hero__lede-row">
-        <p class="lede">Three shipped systems built on one rule: the model is an optimization, never a dependency.</p>
+        <p class="lede">I build AI systems that survive contact with real data, real users, and a bad day on someone else's API.</p>
         <div class="prose">
-          <p>A retrieval system that refuses to answer rather than guess. A support desk that keeps triaging when Gemini times out. A 134,000-row pipeline whose reference run was measured with the LLM switched <em>off</em>.</p>
-          <p>Every one has a live demo, public source, and numbers you can reproduce from the repo.</p>
+          <p>Retrieval that cites its sources and refuses when it can't. A support desk that keeps triaging through a model timeout. A pipeline that mapped 133,993 rows of live NYC data with zero columns mis-mapped.</p>
+          <p>Three of them are below, each with a live demo, public source, and numbers you can reproduce from the repo in one command.</p>
         </div>
       </div>
 
@@ -440,6 +492,7 @@ a { color: inherit; }
         <a class="jump" href="#grounded">01 — Grounded</a>
         <a class="jump" href="#triage">02 — Triage Desk</a>
         <a class="jump" href="#nyc311">03 — NYC 311</a>
+        <a class="jump" href="#how">How I build</a>
         <a class="jump" href="#skills">Skills</a>
         <a class="jump" href="#contact">Contact</a>
       </nav>
@@ -458,19 +511,51 @@ a { color: inherit; }
 
     <div class="who__grid">
       <div class="prose">
-        <p>I'm a master's student in Computer Science at USC. Before that I replaced a pile of brittle regex with a Llama-based extractor that turned WhatsApp conversations into structured JSON at a Mumbai startup, built demand-forecasting models for a steel manufacturer, and trained a pose-estimation model at NUS that reached 87% accuracy.</p>
-        <p>What I kept running into was the same failure: a demo that works beautifully until the model is slow, rate-limited, or confidently wrong — and then takes the whole product down with it. The three projects here are my answer to that. Each one still does its job when the LLM is unavailable, and each one measures exactly what is lost when it is.</p>
-        <p>That's the thing I'd actually want to be asked about in an interview.</p>
+        <p>I'm Sarvesh Kumar — a Computer Science master's student at USC, and before that a B.Tech at SRM in Chennai. I've spent the last two years building models that had to leave the notebook and work in front of someone.</p>
+        <p>At a Mumbai startup I replaced a wall of brittle regex with a Llama 4 Scout extractor that turned messy WhatsApp threads into structured JSON, and shipped it on AWS with the per-call cost accounted for. At NUS I trained a custom YOLO pose model to 87% accuracy — the highest recorded for that architecture on the task — and deployed it for production use. For a steel manufacturer I built demand forecasting and a custom optimiser for transport logistics.</p>
+        <p>Across all of it I kept hitting the same wall. A model demos beautifully, then takes the product down with it the first time it's slow, rate-limited, or confidently wrong. Getting good output from an LLM turned out to be the easy half; the engineering is everything around it — what the system does when the model is wrong, and how you'd know.</p>
+        <p>The three projects below are what I do about that, and the method is written out after them.</p>
       </div>
 
       <div class="who__panel">
-        <p class="eyebrow" style="margin-bottom:1.1rem;">How I build</p>
-        <ul class="creed">
-          <li><b>01</b><span>Measured, not asserted. Every number on this page comes from a run you can reproduce.</span></li>
-          <li><b>02</b><span>Fallbacks are tested code paths, not comments promising a future one.</span></li>
-          <li><b>03</b><span>When the AI degrades, the interface says so. A silent fallback is a bug that looks like a feature.</span></li>
-          <li><b>04</b><span>Declining to answer is a correct answer, and worth engineering for.</span></li>
-        </ul>
+        <p class="eyebrow" style="margin-bottom:1.1rem;">Track record</p>
+        <dl class="record">
+          <div class="record__row">
+            <dt>
+              <b>MS Computer Science</b>
+              <span class="muted">University of Southern California · Los Angeles</span>
+            </dt>
+            <dd>2025 —</dd>
+          </div>
+          <div class="record__row">
+            <dt>
+              <b>GenAI Intern · Mayaa</b>
+              <span class="muted">Llama 4 Scout extraction pipeline on AWS, replacing legacy regex</span>
+            </dt>
+            <dd>2025</dd>
+          </div>
+          <div class="record__row">
+            <dt>
+              <b>ML Intern · TAIIN Steel</b>
+              <span class="muted">Demand forecasting and custom logistics optimisation</span>
+            </dt>
+            <dd>2024–25</dd>
+          </div>
+          <div class="record__row">
+            <dt>
+              <b>Deep Learning Research Intern · NUS</b>
+              <span class="muted">Custom YOLO pose recognition at 87% accuracy, deployed on AWS</span>
+            </dt>
+            <dd>2024</dd>
+          </div>
+          <div class="record__row">
+            <dt>
+              <b>B.Tech Computer Science</b>
+              <span class="muted">SRM Institute of Science and Technology · Chennai</span>
+            </dt>
+            <dd>2021–25</dd>
+          </div>
+        </dl>
       </div>
     </div>
   </div>
@@ -618,8 +703,77 @@ a { color: inherit; }
   </div>
 </main>
 
+<!-- ══════════════ HOW I BUILD ══════════════ -->
+<section class="band band--a" id="how">
+  <div class="inner">
+    <div class="chapters__head">
+      <h2 class="display display--lg">How I<br>build</h2>
+      <div class="prose">
+        <p>The same five decisions turn up in all three projects, in the same order. This is the part I'd defend in a design review — and the reason the numbers above exist at all.</p>
+      </div>
+    </div>
+
+    <div class="principles">
+      <article class="principle">
+        <span class="principle__n">01</span>
+        <div>
+          <h3>Decide what happens without the model, first.</h3>
+          <div class="prose">
+            <p>Before I write a prompt I write the version that has no model in it. In Triage Desk the ticket workflow is complete on its own and Gemini only improves it. In the 311 pipeline a fuzzy tier will always answer, so an LLM outage is a quality dip, not an outage. Deciding this first is what makes the AI safe to add — and it means I can tell you exactly what the model is worth, because I've run the system both ways.</p>
+          </div>
+          <p class="principle__proof"><b>Proof:</b> the 311 reference run — 133,993 rows, 44 dbt tests — was produced with no API key configured. Every LLM call failed to authenticate, fell through to the fallback, and the pipeline completed.</p>
+        </div>
+      </article>
+
+      <article class="principle">
+        <span class="principle__n">02</span>
+        <div>
+          <h3>Make the model commit to a shape, then check it.</h3>
+          <div class="prose">
+            <p>Free text is not an interface. Every model call returns structured JSON against a declared schema, validated on the server before anything touches a database — and validation means checking the <em>meaning</em>, not just the syntax. The 311 mapper rejects a proposal naming a canonical field that doesn't exist, so a hallucination becomes a caught error instead of a corrupted column. Timeouts, refusals, empty responses and malformed JSON each have their own path, and each path has a test.</p>
+          </div>
+          <p class="principle__proof"><b>Proof:</b> six distinct AI-failure paths asserted in Triage Desk's suite — API error, rejected key, schema failure, empty response, exceeded deadline, no key at all. All six return a usable classification.</p>
+        </div>
+      </article>
+
+      <article class="principle">
+        <span class="principle__n">03</span>
+        <div>
+          <h3>Measure against ground truth, not vibes.</h3>
+          <div class="prose">
+            <p>"Seems accurate" is not a result. For the 311 mapper I wrote down the true column mapping so accuracy became arithmetic — which is how I know the cheap fuzzy tier hits 100% precision on what it commits to, declines all seven operational columns correctly, and leaves exactly 13 semantic near-misses that only the LLM can resolve. That number is the argument for the LLM tier, and it's why the tier is scoped to those 13 columns instead of the whole file.</p>
+          </div>
+          <p class="principle__proof"><b>Proof:</b> Grounded's eval harness reports precision@k, evidence recall@k, MRR, abstention accuracy and hallucination rate — with a paired bootstrap p-value on every retrieval-mode comparison.</p>
+        </div>
+      </article>
+
+      <article class="principle">
+        <span class="principle__n">04</span>
+        <div>
+          <h3>Put the degradation where someone can see it.</h3>
+          <div class="prose">
+            <p>A silent fallback is a bug wearing a feature's clothes — the page loads, the answer looks fine, and a broken model configuration survives to production. So every ticket records which engine triaged it and the panel changes colour when it wasn't the model. Grounded marks which retrieved passages the answer actually used versus which it merely had available. And when the documents don't contain the answer, it says so instead of paraphrasing something adjacent.</p>
+          </div>
+          <p class="principle__proof"><b>Proof:</b> deselect one document in the Grounded demo and ask the same question again — the answer becomes "I don't know based on the provided documents".</p>
+        </div>
+      </article>
+
+      <article class="principle">
+        <span class="principle__n">05</span>
+        <div>
+          <h3>Leave it reproducible, including the bad news.</h3>
+          <div class="prose">
+            <p>Every figure on this page comes from a command in a README — <code>make backfill</code>, <code>npm run test:coverage</code>, <code>python -m grounded.evaluate</code>. That includes the findings I'd rather not advertise: a dbt test caught 17 real requests stamped closed 72 hours before they were created, and the fix is documented alongside the failure. Work that can't be re-run is a claim, not a result.</p>
+          </div>
+          <p class="principle__proof"><b>Proof:</b> full 14-batch backfill in 127 s. Each of the three repos runs from a clean clone, and two of the three run with no API key at all.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════════ SKILLS ══════════════ -->
-<section class="band band--a" id="skills">
+<section class="band band--b" id="skills">
   <div class="inner">
     <h2 class="display display--lg">What I<br>bring</h2>
 
@@ -632,6 +786,7 @@ a { color: inherit; }
           <li>Grounding, citation, abstention</li>
           <li>Tiered fallback design</li>
           <li>Hallucination and refusal measurement</li>
+          <li>Judging when a model shouldn't be in the loop</li>
         </ul>
       </div>
       <div class="skills__col">
@@ -674,9 +829,10 @@ a { color: inherit; }
     </div>
 
     <div class="method">
-      <p class="eyebrow">On the AI in this portfolio</p>
+      <p class="eyebrow">Working with AI</p>
       <div class="prose">
-        <p>I used LLMs here the same way the projects use them: as an accelerant with a check on it. I wrote the architecture decisions, ran the pipelines, and produced the numbers; AI was pointed at the drafts to argue with them — what's weak, what a hiring manager would skip, which claim isn't backed by anything. Nothing on this page is a number I can't reproduce from a repo.</p>
+        <p>Building <em>with</em> LLMs is part of the skill set, and I treat it with the same discipline as building <em>on</em> them. I use models to move fast — scaffolding, refactors, a second opinion on a schema at midnight — and then I make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> That loop is fast and genuinely useful, and it is not a substitute for knowing why the architecture is shaped the way it is.</p>
+        <p>So: I made the design calls, ran the pipelines, and produced every number here. Where AI helped, it helped the way it does in these projects — with a check on the output and a human accountable for what ships. That's the working relationship I'd bring to a team, and the reason each figure on this page traces back to a command you can run yourself.</p>
       </div>
     </div>
   </div>
