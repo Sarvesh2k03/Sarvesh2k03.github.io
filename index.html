@@ -220,6 +220,15 @@ a { color: inherit; }
 }
 .row__when { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
 .row--minor { padding: 0.65rem 0; }
+.row--flat { padding: 0.7rem 0; }
+.row--flat .row__org {
+  font-family: var(--body);
+  font-variation-settings: normal;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: none;
+  line-height: 1.35;
+}
 .row--minor .row__org {
   font-family: var(--body);
   font-variation-settings: normal;
@@ -776,36 +785,95 @@ a { color: inherit; }
 <section class="band" id="toolkit">
   <div class="inner">
     <div class="head">
-      <p class="slug">Toolkit</p>
+      <p class="slug">Skills</p>
       <h2 class="display display--lg">What I reach for</h2>
     </div>
 
     <div class="list">
       <div class="kit">
         <h3>Languages</h3>
-        <ul class="chips"><li>Python</li><li>TypeScript</li><li>SQL</li><li>C++</li></ul>
+        <ul class="chips"><li>Python</li><li>TypeScript</li><li>SQL</li><li>C++</li><li>HTML/CSS</li></ul>
       </div>
       <div class="kit">
-        <h3>AI and ML</h3>
-        <ul class="chips"><li>PyTorch</li><li>LLM pipelines</li><li>RAG and retrieval</li><li>Structured output</li><li>Grounding and abstention</li><li>Evaluation harnesses</li><li>Prompt engineering</li></ul>
+        <h3>Machine learning</h3>
+        <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>TensorFlow</li><li>YOLOv8</li><li>Demand forecasting</li><li>Clustering and optimisation</li><li>Feature engineering</li><li>Data augmentation</li><li>Model evaluation</li><li>Real-time inference</li></ul>
+      </div>
+      <div class="kit">
+        <h3>LLMs and generative AI</h3>
+        <ul class="chips"><li>Llama 4 Scout</li><li>Claude API</li><li>Gemini</li><li>Vertex AI</li><li>Prompt engineering</li><li>Structured output and schema enforcement</li><li>RAG and retrieval</li><li>Embeddings</li><li>BM25</li><li>Cross-encoder reranking</li><li>Grounding and abstention</li><li>Evaluation harnesses</li></ul>
       </div>
       <div class="kit">
         <h3>Data engineering</h3>
-        <ul class="chips"><li>Airflow</li><li>dbt</li><li>PostgreSQL</li><li>DuckDB</li><li>BigQuery</li><li>ETL design</li><li>Data quality testing</li></ul>
+        <ul class="chips"><li>Airflow</li><li>dbt</li><li>PostgreSQL</li><li>DuckDB</li><li>BigQuery</li><li>ELT and ETL design</li><li>Incremental models</li><li>Data contracts</li><li>Data quality testing</li></ul>
+      </div>
+      <div class="kit">
+        <h3>Cloud and deployment</h3>
+        <ul class="chips"><li>AWS Lambda</li><li>API Gateway</li><li>SageMaker</li><li>Step Functions</li><li>Google Cloud</li><li>Vertex AI</li><li>Docker</li><li>Render</li><li>Neon</li><li>Streamlit Cloud</li></ul>
       </div>
       <div class="kit">
         <h3>Web and product</h3>
-        <ul class="chips"><li>React</li><li>Express</li><li>REST design</li><li>Streamlit</li><li>Zod</li></ul>
-      </div>
-      <div class="kit">
-        <h3>Cloud and tooling</h3>
-        <ul class="chips"><li>AWS</li><li>Vertex AI</li><li>Google Cloud</li><li>Git</li><li>GitHub Actions</li><li>Jest</li><li>pytest</li></ul>
+        <ul class="chips"><li>React</li><li>Express</li><li>Node.js</li><li>REST API design</li><li>Zod</li><li>Streamlit</li><li>Bootstrap</li></ul>
       </div>
       <div class="kit">
         <h3>Analytics and BI</h3>
-        <ul class="chips"><li>Power BI</li><li>Tableau</li><li>Forecasting</li><li>Optimisation</li></ul>
+        <ul class="chips"><li>Power BI</li><li>Tableau</li><li>pandas</li><li>NumPy</li><li>Multivariate data analysis</li><li>Statistical data science</li><li>KPI dashboards</li></ul>
+      </div>
+      <div class="kit">
+        <h3>Testing and tooling</h3>
+        <ul class="chips"><li>Jest</li><li>pytest</li><li>pg-mem</li><li>Git</li><li>GitHub Actions</li><li>CI pipelines</li></ul>
+      </div>
+      <div class="kit">
+        <h3>Design</h3>
+        <ul class="chips"><li>Figma</li><li>Whimsical</li><li>Wireframing and prototyping</li></ul>
       </div>
     </div>
+
+    <p class="subhead">Certifications</p>
+
+    <div class="list">
+      <div class="row row--flat">
+        <span class="row__org">Machine Learning Foundation</span>
+        <span class="row__where"></span>
+        <span class="row__when"></span>
+        <span class="row__role">Certification</span>
+      </div>
+      <div class="row row--flat">
+        <span class="row__org">CS50</span>
+        <span class="row__where"></span>
+        <span class="row__when"></span>
+        <span class="row__role">Harvard University</span>
+      </div>
+      <div class="row row--flat">
+        <span class="row__org">Certified Application Developer</span>
+        <span class="row__where"></span>
+        <span class="row__when"></span>
+        <span class="row__role">ServiceNow</span>
+      </div>
+      <div class="row row--flat">
+        <span class="row__org">Agile Methodology</span>
+        <span class="row__where"></span>
+        <span class="row__when"></span>
+        <span class="row__role">Cognizant</span>
+      </div>
+    </div>
+
+    <p class="subhead">Publications</p>
+
+    <div class="list">
+      <div class="row row--flat">
+        <span class="row__org">Precision-Driven Real-Time Pose Estimation for Therapeutic Interventions</span>
+        <span class="row__where"></span>
+        <span class="row__when"></span>
+        <span class="row__role">Advanced heatmap regression, reference video alignment and real-time corrective feedback</span>
+      </div>
+      <div class="row row--flat">
+        <span class="row__org">Gender Representation in Video Games</span>
+        <span class="row__where"></span>
+        <span class="row__when"></span>
+        <span class="row__role">A statistical analysis of character portrayal from 2012 to 2022</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
