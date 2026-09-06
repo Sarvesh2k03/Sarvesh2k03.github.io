@@ -197,9 +197,16 @@ a { color: inherit; }
   color: var(--fg);
   padding: clamp(1.5rem, 3.2vw, 2.75rem);
   display: grid;
-  grid-template-columns: 2.25rem minmax(0, 1.08fr) minmax(0, 1fr);
-  gap: clamp(1.25rem, 2.8vw, 2.75rem);
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: clamp(1.1rem, 2.2vw, 1.9rem);
 }
+.tile__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 2.8vw, 2.75rem) clamp(1.5rem, 3.2vw, 3.25rem);
+  align-items: start;
+}
+.tile__body > .drop { grid-column: 1 / -1; }
 /* Each project owns a colour. The ground never changes; these do. */
 .tile--trust {
   --bg: #EFE9D0; --fg: #2A3420; --mute: #626E4E;
@@ -258,21 +265,24 @@ a { color: inherit; }
 
 /* the drop test — the signature block */
 .drop {
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--fg);
-  padding: clamp(0.9rem, 2vw, 1.2rem);
+  border-top: 1px solid var(--rule);
+  padding-top: clamp(1rem, 2.2vw, 1.4rem);
   display: grid;
-  gap: 0.65rem;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 0.75rem clamp(1.5rem, 3.2vw, 3.25rem);
+  align-items: start;
 }
+.drop > .drop__label { grid-row: span 2; }
 .drop__label {
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  font-family: var(--display);
+  font-variation-settings: "wdth" 116, "wght" 900;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  line-height: 0.9;
   text-transform: uppercase;
+  letter-spacing: -0.01em;
   margin: 0;
 }
-.drop__row { display: grid; grid-template-columns: 4.75rem minmax(0, 1fr); gap: 0.85rem; align-items: baseline; }
+.drop__row { display: grid; grid-template-columns: 4.25rem minmax(0, 1fr); gap: 0.9rem; align-items: baseline; margin: 0; }
 .drop__row dt {
   font-family: var(--mono);
   font-size: 0.65rem;
@@ -520,22 +530,12 @@ a { color: inherit; }
         <span class="tile__mark" aria-hidden="true">01</span>
         <p class="tile__spine">Retrieval</p>
 
+        <div class="tile__body">
         <div class="tile__lead">
           <h3 class="display display--sm tile__title">Grounded</h3>
           <p class="tile__thesis">Answers that cite their sources — and an "I don't know" when the sources don't cover the question.</p>
           <div class="prose">
             <p>Every retrieval demo I tried answered confidently even when the answer wasn't in the documents. This one is built for the opposite failure. Chunking, embeddings, BM25 and reranking run locally; generation resolves to whichever backend has credentials, down to a fully offline extractive fallback. Each answer carries citations to document and page, and the interface separates the passages it actually used from the ones it merely retrieved.</p>
-          </div>
-          <div class="drop">
-            <p class="drop__label">↓ Drop test</p>
-            <dl class="drop__row">
-              <dt>Broke</dt>
-              <dd>Deselected the one document that contained the answer, then asked the same question again.</dd>
-            </dl>
-            <dl class="drop__row">
-              <dt>Held</dt>
-              <dd>Returned <em>"I don't know based on the provided documents"</em> rather than assembling something plausible from the other six. You can run this yourself in the demo, in about fifteen seconds.</dd>
-            </dl>
           </div>
         </div>
 
@@ -559,6 +559,19 @@ a { color: inherit; }
             <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
+
+          <div class="drop">
+            <p class="drop__label">↓ Drop test</p>
+            <dl class="drop__row">
+              <dt>Broke</dt>
+              <dd>Deselected the one document that contained the answer, then asked the same question again.</dd>
+            </dl>
+            <dl class="drop__row">
+              <dt>Held</dt>
+              <dd>Returned <em>"I don't know based on the provided documents"</em> rather than assembling something plausible from the other six. You can run this yourself in the demo, in about fifteen seconds.</dd>
+            </dl>
+          </div>
+        </div>
       </article>
 
       <!-- 02 -->
@@ -566,22 +579,12 @@ a { color: inherit; }
         <span class="tile__mark" aria-hidden="true">02</span>
         <p class="tile__spine">Product</p>
 
+        <div class="tile__body">
         <div class="tile__lead">
           <h3 class="display display--sm tile__title">Triage Desk</h3>
           <p class="tile__thesis">A support queue where the AI is an upgrade, never a dependency.</p>
           <div class="prose">
             <p>A support queue is a bad place for a model to be load-bearing. So the ticket workflow is complete on its own — create, filter, update, resolve — and Gemini only adds a category, a priority and a one-line summary for the agent. The model call lives behind a single module with a schema, a cache, a rate limit and a hard deadline. React and Express in TypeScript over Postgres, shipped as one service so there's one origin and nothing to negotiate.</p>
-          </div>
-          <div class="drop">
-            <p class="drop__label">↓ Drop test</p>
-            <dl class="drop__row">
-              <dt>Broke</dt>
-              <dd>Pulled the API key, rejected it, emptied the response, malformed the JSON, and let the model blow past its deadline.</dd>
-            </dl>
-            <dl class="drop__row">
-              <dt>Held</dt>
-              <dd>All six paths return a usable classification from a deterministic local classifier. The ticket records which engine answered and the panel turns amber, so a broken model config can't hide behind a page that loads fine.</dd>
-            </dl>
           </div>
         </div>
 
@@ -606,6 +609,19 @@ a { color: inherit; }
             <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
+
+          <div class="drop">
+            <p class="drop__label">↓ Drop test</p>
+            <dl class="drop__row">
+              <dt>Broke</dt>
+              <dd>Pulled the API key, rejected it, emptied the response, malformed the JSON, and let the model blow past its deadline.</dd>
+            </dl>
+            <dl class="drop__row">
+              <dt>Held</dt>
+              <dd>All six paths return a usable classification from a deterministic local classifier. The ticket records which engine answered and the panel turns amber, so a broken model config can't hide behind a page that loads fine.</dd>
+            </dl>
+          </div>
+        </div>
       </article>
 
       <!-- 03 -->
@@ -613,22 +629,12 @@ a { color: inherit; }
         <span class="tile__mark" aria-hidden="true">03</span>
         <p class="tile__spine">Pipeline</p>
 
+        <div class="tile__body">
         <div class="tile__lead">
           <h3 class="display display--sm tile__title">NYC 311 <span class="nowrap">AI ETL</span></h3>
           <p class="tile__thesis">An LLM inside a nightly pipeline, scoped to the thirteen columns nothing cheaper can resolve.</p>
           <div class="prose">
             <p>The same 311 payload arrives from four systems that each name their columns differently. Fuzzy matching handles the easy ones and quietly gets meaning wrong on the rest — <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, which is the wrong field, and no threshold separates them because the difference is meaning, not spelling. So each column goes to the cheapest tier that will commit to it: a human override, an exact match, one Claude call for the remainder, then fuzzy. Every decision is logged with the tier that made it.</p>
-          </div>
-          <div class="drop">
-            <p class="drop__label">↓ Drop test</p>
-            <dl class="drop__row">
-              <dt>Broke</dt>
-              <dd>Ran the entire fourteen-day backfill with no API key configured at all.</dd>
-            </dl>
-            <dl class="drop__row">
-              <dt>Held</dt>
-              <dd>Every LLM call failed to authenticate and fell through to the fuzzy tier. 133,993 rows landed, 43 of 44 dbt tests passed, zero columns were mis-mapped — and the auth failure is recorded in the run's own quality report rather than swallowed.</dd>
-            </dl>
           </div>
         </div>
 
@@ -652,6 +658,19 @@ a { color: inherit; }
           <div class="actions">
             <a class="btn btn--solid" href="https://nyc311-ai-etl.streamlit.app/" target="_blank" rel="noopener">Run the demo →</a>
             <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">Read the source</a>
+          </div>
+        </div>
+
+          <div class="drop">
+            <p class="drop__label">↓ Drop test</p>
+            <dl class="drop__row">
+              <dt>Broke</dt>
+              <dd>Ran the entire fourteen-day backfill with no API key configured at all.</dd>
+            </dl>
+            <dl class="drop__row">
+              <dt>Held</dt>
+              <dd>Every LLM call failed to authenticate and fell through to the fuzzy tier. 133,993 rows landed, 43 of 44 dbt tests passed, zero columns were mis-mapped — and the auth failure is recorded in the run's own quality report rather than swallowed.</dd>
+            </dl>
           </div>
         </div>
       </article>
