@@ -60,6 +60,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; height: auto; display: block; }
+
+/* text must always be selectable and copyable */
+body, .band, .inner, .prose, .points, .points li, .list, .row, .cols, .kit,
+.tile, .tile__body, .lede, .tile__thesis, .tile__sub, .ledger, .aside, .contact {
+  -webkit-user-select: text;
+  user-select: text;
+}
 a { color: inherit; }
 ::selection { background: var(--paper); color: var(--ground); }
 :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
@@ -370,6 +377,7 @@ a { color: inherit; }
   color: currentColor;
   opacity: 0.07;
   pointer-events: none;
+  -webkit-user-select: none;
   user-select: none;
 }
 
