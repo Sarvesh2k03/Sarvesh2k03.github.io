@@ -203,54 +203,31 @@ a { color: inherit; }
 .list { display: grid; }
 .row {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) auto;
-  gap: 0.3rem 1.5rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.15rem 1.5rem;
   align-items: baseline;
-  padding: 0.85rem 0;
+  padding: 0.62rem 0;
   border-top: 1px solid var(--rule);
 }
 .row:last-child { border-bottom: 1px solid var(--rule); }
+.row__what { display: block; line-height: 1.4; }
 .row__org {
   font-family: var(--display);
   font-variation-settings: "wdth" 112, "wght" 700;
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   text-transform: uppercase;
-  line-height: 1.2;
 }
-.row__org a {
-  text-decoration: none;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 1px;
-  transition: border-color .15s ease;
-}
+.row__org a { text-decoration: none; border-bottom: 1px solid var(--rule); }
 .row__org a:hover { border-bottom-color: currentColor; }
-.row__role { font-size: 0.89rem; line-height: 1.35; color: var(--mute); }
-.row__where, .row__when {
+.row__role { font-size: 0.88rem; color: var(--mute); }
+.row__when {
   font-family: var(--mono);
-  font-size: 0.69rem;
-  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
   color: var(--mute);
-}
-.row__when { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
-.row--minor { padding: 0.65rem 0; }
-.row--flat { padding: 0.7rem 0; }
-.row--flat .row__org a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
-.row--flat .row__org a:hover { border-bottom-color: currentColor; }
-.row--flat .row__org {
-  font-family: var(--body);
-  font-variation-settings: normal;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-transform: none;
-  line-height: 1.35;
-}
-.row--minor .row__org {
-  font-family: var(--body);
-  font-variation-settings: normal;
-  font-weight: 500;
-  font-size: 0.88rem;
-  text-transform: none;
-  color: var(--mute);
+  white-space: nowrap;
+  text-align: right;
 }
 .subhead {
   margin: clamp(2rem, 4vw, 2.75rem) 0 0.9rem;
@@ -534,8 +511,7 @@ a { color: inherit; }
     letter-spacing: 0.22em;
   }
   .tile__mark { font-size: 7rem; }
-  .row { grid-template-columns: minmax(0, 1fr) auto; }
-  .row__role { grid-column: 1 / -1; }
+
 }
 </style>
 </head>
@@ -583,7 +559,7 @@ a { color: inherit; }
       </div>
       <div class="prose">
         <p>I got here sideways. I started with web development, spent a while in design, and then a semester of statistics at UC Davis rearranged how I thought about problems. The answer stopped being the code I wrote and started being whatever the data would support.</p>
-        <p>Research at NUS pulled me properly into models, and industry pulled me straight back out. A forecasting model is only worth the decision it changes. Somewhere in there I stopped finding models interesting on their own and got interested in the seam instead: the place where something probabilistic meets a system that has to be right.</p>
+        <p>Research at NUS pulled me into models, and industry pulled me back out. A forecasting model is only worth the decision it changes. I stopped finding models interesting on their own and got interested in the seam: where something probabilistic meets a system that has to be right.</p>
       </div>
     </div>
 
@@ -617,13 +593,12 @@ a { color: inherit; }
 
         <div class="tile__body">
           <h3 class="display display--sm tile__title">Grounded</h3>
-          <p class="tile__thesis">Retrieval-augmented QA over your own documents, with a citation on every answer and an explicit refusal when the documents don't cover the question.</p>
+          <p class="tile__thesis">Retrieval-augmented QA over your own documents. Cites every answer, and refuses when the documents don't cover the question.</p>
 
           <ul class="points">
-            <li>Retrieved the supporting passage for <b>100%</b> of <b>78</b> labelled questions with reranking, up from <b>95.7%</b> on dense search alone</li>
-            <li>Refused correctly on all <b>8</b> unanswerable questions, where the offline baseline answered <b>6 of the 8</b> anyway</li>
-            <li>Scored <b>0.882 MRR</b> and <b>28.2% precision@4</b> against a deliberately hard eight document corpus</li>
-            <li>Ran embeddings, BM25 and cross-encoder reranking locally across <b>4</b> generation backends, one needing no API key</li>
+            <li><b>100% hit@4</b> across <b>78</b> labelled questions with cross-encoder reranking</li>
+            <li>Refused all <b>8</b> unanswerable questions; the offline baseline answered <b>6</b></li>
+            <li>Local embeddings, BM25 and reranking across <b>4</b> generation backends</li>
           </ul>
 
           <div>
@@ -671,13 +646,12 @@ a { color: inherit; }
 
         <div class="tile__body">
           <h3 class="display display--sm tile__title">Triage Desk</h3>
-          <p class="tile__thesis">A full-stack support queue where Gemini classifies and summarises tickets, and a deterministic fallback keeps it working when the model can't.</p>
+          <p class="tile__thesis">A support queue where Gemini classifies and summarises tickets, and a deterministic fallback keeps it working when the model can't.</p>
 
           <ul class="points">
-            <li>Shipped a React and Express app over PostgreSQL as a <b>single service</b>, one origin and no CORS</li>
-            <li>Covered <b>6</b> distinct AI failure paths with tests, each returning a usable classification</li>
-            <li>Reached <b>200 tests</b> at <b>98.1%</b> statement and <b>95.3%</b> branch coverage against a real in-memory Postgres</li>
-            <li>Recorded the triage source on every ticket, so a fallback shows in the interface instead of passing silently</li>
+            <li><b>200 tests</b> at <b>98.1%</b> statement and <b>95.3%</b> branch coverage</li>
+            <li><b>6</b> AI failure paths tested, each returning a usable classification</li>
+            <li>React, Express and Postgres shipped as a <b>single service</b>, one origin</li>
           </ul>
 
           <div>
@@ -728,10 +702,9 @@ a { color: inherit; }
           <p class="tile__thesis">An Airflow and dbt pipeline over live NYC 311 data, with an LLM scoped to the column mappings nothing cheaper can resolve.</p>
 
           <ul class="points">
-            <li>Loaded <b>133,993</b> rows across <b>14</b> daily Airflow batches in <b>127 seconds</b></li>
-            <li>Mapped <b>83</b> column headers per run through four tiers, <b>63 of 63</b> mapped columns correct and <b>0</b> mis-mapped</li>
-            <li>Ran <b>44 dbt tests</b> on every batch, with a quality report that fails the run on any failure</li>
-            <li>Completed the reference backfill with <b>no API key</b>, every model call falling through to the fuzzy tier</li>
+            <li><b>133,993</b> rows across <b>14</b> daily Airflow batches in <b>127 seconds</b></li>
+            <li><b>83</b> headers mapped per run, <b>63 of 63</b> correct, <b>0</b> mis-mapped</li>
+            <li><b>44 dbt tests</b> per batch; the reference run completed with <b>no API key</b></li>
           </ul>
 
           <div>
@@ -786,40 +759,28 @@ a { color: inherit; }
 
     <div class="list">
       <div class="row">
-        <span class="row__org"><a href="https://www.opkey.com/" target="_blank" rel="noopener">Opkey</a></span>
-        <span class="row__where">Pittsburgh, PA</span>
-        <span class="row__when">Jun 2026 - Aug 2026</span>
-        <span class="row__role">Software Engineer Intern, AI/ML Systems</span>
+        <span class="row__what"><span class="row__org"><a href="https://www.opkey.com/" target="_blank" rel="noopener">Opkey</a></span> <span class="row__role">Software Engineer Intern, AI/ML Systems</span></span>
+        <span class="row__when">Pittsburgh, PA · Jun 2026 - Aug 2026</span>
       </div>
       <div class="row">
-        <span class="row__org"><a href="https://mayaa.app/" target="_blank" rel="noopener">mayaa</a></span>
-        <span class="row__where">Mumbai, India</span>
-        <span class="row__when">May 2025 - Aug 2025</span>
-        <span class="row__role">GenAI Intern</span>
+        <span class="row__what"><span class="row__org"><a href="https://mayaa.app/" target="_blank" rel="noopener">mayaa</a></span> <span class="row__role">GenAI Intern</span></span>
+        <span class="row__when">Mumbai, India · May 2025 - Aug 2025</span>
       </div>
       <div class="row">
-        <span class="row__org"><a href="https://www.taiin.net/about-us/" target="_blank" rel="noopener">TAIIN Steel Fab and Infra</a></span>
-        <span class="row__where">Remote, India</span>
-        <span class="row__when">Sep 2024 - Mar 2025</span>
-        <span class="row__role">Machine Learning Intern</span>
+        <span class="row__what"><span class="row__org"><a href="https://www.taiin.net/about-us/" target="_blank" rel="noopener">TAIIN Steel Fab and Infra</a></span> <span class="row__role">Machine Learning Intern</span></span>
+        <span class="row__when">Remote, India · Sep 2024 - Mar 2025</span>
       </div>
       <div class="row">
-        <span class="row__org"><a href="https://nus.edu.sg/" target="_blank" rel="noopener">National University of Singapore</a></span>
-        <span class="row__where">Singapore</span>
-        <span class="row__when">Jun 2024 - Jul 2024</span>
-        <span class="row__role">Big Data Analytics and ML Development Intern</span>
+        <span class="row__what"><span class="row__org"><a href="https://nus.edu.sg/" target="_blank" rel="noopener">National University of Singapore</a></span> <span class="row__role">Big Data Analytics and ML Intern</span></span>
+        <span class="row__when">Singapore · Jun 2024 - Jul 2024</span>
       </div>
       <div class="row">
-        <span class="row__org"><a href="https://www.linkedin.com/company/creatief-ai-innovations" target="_blank" rel="noopener">Creatief AI Innovations</a></span>
-        <span class="row__where">Chennai, India</span>
-        <span class="row__when">Aug 2023 - Sep 2023</span>
-        <span class="row__role">UI/UX Design Intern</span>
+        <span class="row__what"><span class="row__org"><a href="https://www.linkedin.com/company/creatief-ai-innovations" target="_blank" rel="noopener">Creatief AI Innovations</a></span> <span class="row__role">UI/UX Design Intern</span></span>
+        <span class="row__when">Chennai, India · Aug 2023 - Sep 2023</span>
       </div>
       <div class="row">
-        <span class="row__org"><a href="https://www.ashokleyland.com/" target="_blank" rel="noopener">Ashok Leyland</a></span>
-        <span class="row__where">Chennai, India</span>
-        <span class="row__when">Aug 2022 - Sep 2022</span>
-        <span class="row__role">Web Development Intern</span>
+        <span class="row__what"><span class="row__org"><a href="https://www.ashokleyland.com/" target="_blank" rel="noopener">Ashok Leyland</a></span> <span class="row__role">Web Development Intern</span></span>
+        <span class="row__when">Chennai, India · Aug 2022 - Sep 2022</span>
       </div>
     </div>
 
@@ -827,22 +788,16 @@ a { color: inherit; }
 
     <div class="list">
       <div class="row">
-        <span class="row__org">University of Southern California</span>
-        <span class="row__where">Los Angeles, CA</span>
-        <span class="row__when">Expected 2027</span>
-        <span class="row__role">Master of Science in Computer Science (Data Science)</span>
+        <span class="row__what"><span class="row__org">University of Southern California</span> <span class="row__role">MS Computer Science (Data Science)</span></span>
+        <span class="row__when">Los Angeles, CA · Expected 2027</span>
       </div>
       <div class="row">
-        <span class="row__org">SRM Institute of Science and Technology</span>
-        <span class="row__where">Chennai, India</span>
-        <span class="row__when">2021 - 2025</span>
-        <span class="row__role">Bachelor of Technology in Computer Science</span>
+        <span class="row__what"><span class="row__org">SRM Institute of Science and Technology</span> <span class="row__role">BTech Computer Science</span></span>
+        <span class="row__when">Chennai, India · 2021 - 2025</span>
       </div>
       <div class="row">
-        <span class="row__org">University of California, Davis</span>
-        <span class="row__where">Davis, CA</span>
-        <span class="row__when">Fall 2023</span>
-        <span class="row__role">Semester abroad, Computer Science</span>
+        <span class="row__what"><span class="row__org">University of California, Davis</span> <span class="row__role">Semester abroad, Computer Science</span></span>
+        <span class="row__when">Davis, CA · Fall 2023</span>
       </div>
     </div>
   </div>
@@ -862,49 +817,37 @@ a { color: inherit; }
         <ul class="chips"><li>Python</li><li>TypeScript</li><li>SQL</li><li>C++</li></ul>
       </div>
       <div class="kit">
-        <h3>Machine learning</h3>
-        <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>YOLOv8</li><li>Forecasting</li><li>Feature engineering</li><li>Model evaluation</li></ul>
+        <h3>ML and AI</h3>
+        <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>YOLOv8</li><li>RAG and retrieval</li><li>Prompt engineering</li><li>Structured output</li><li>Evaluation harnesses</li></ul>
       </div>
       <div class="kit">
-        <h3>LLMs and generative AI</h3>
-        <ul class="chips"><li>Llama 4 Scout</li><li>Claude API</li><li>Gemini</li><li>Vertex AI</li><li>Prompt engineering</li><li>Structured output and schema enforcement</li><li>RAG and retrieval</li><li>Embeddings</li><li>Reranking</li><li>Grounding and abstention</li><li>Evaluation harnesses</li></ul>
+        <h3>LLM platforms</h3>
+        <ul class="chips"><li>Claude API</li><li>Gemini</li><li>Llama 4 Scout</li><li>Vertex AI</li></ul>
       </div>
       <div class="kit">
-        <h3>Data engineering</h3>
-        <ul class="chips"><li>Airflow</li><li>dbt</li><li>PostgreSQL</li><li>DuckDB</li><li>BigQuery</li><li>ELT design</li><li>Data quality testing</li></ul>
+        <h3>Data</h3>
+        <ul class="chips"><li>Airflow</li><li>dbt</li><li>PostgreSQL</li><li>DuckDB</li><li>BigQuery</li></ul>
       </div>
       <div class="kit">
-        <h3>Cloud and deployment</h3>
-        <ul class="chips"><li>AWS Lambda</li><li>API Gateway</li><li>SageMaker</li><li>Step Functions</li><li>Google Cloud</li><li>Docker</li></ul>
+        <h3>Cloud</h3>
+        <ul class="chips"><li>AWS Lambda</li><li>API Gateway</li><li>SageMaker</li><li>Google Cloud</li><li>Docker</li></ul>
       </div>
       <div class="kit">
-        <h3>Web and product</h3>
-        <ul class="chips"><li>React</li><li>Express</li><li>REST API design</li><li>Streamlit</li></ul>
-      </div>
-      <div class="kit">
-        <h3>Analytics and BI</h3>
-        <ul class="chips"><li>pandas</li><li>NumPy</li><li>Power BI</li><li>Tableau</li></ul>
-      </div>
-      <div class="kit">
-        <h3>Testing</h3>
-        <ul class="chips"><li>pytest</li><li>Jest</li><li>GitHub Actions</li></ul>
+        <h3>Web and BI</h3>
+        <ul class="chips"><li>React</li><li>Express</li><li>Streamlit</li><li>pandas</li><li>Power BI</li><li>Tableau</li></ul>
       </div>
     </div>
 
     <p class="subhead">Publications</p>
 
     <div class="list">
-      <div class="row row--flat">
-        <span class="row__org"><a href="https://doi.org/10.52783/jisem.v10i34s.5802" target="_blank" rel="noopener">Precision-Driven Real-Time Pose Estimation for Therapeutic Interventions</a></span>
-        <span class="row__where">Journal of Information Systems Engineering and Management</span>
+      <div class="row">
+        <span class="row__what"><span class="row__org"><a href="https://doi.org/10.52783/jisem.v10i34s.5802" target="_blank" rel="noopener">Precision-Driven Real-Time Pose Estimation for Therapeutic Interventions</a></span> <span class="row__role">J. Information Systems Engineering and Management</span></span>
         <span class="row__when">Apr 2025</span>
-        <span class="row__role">Advanced heatmap regression, reference video alignment and real-time corrective feedback. Modified YOLOv8 reaching 91.61% detection accuracy at 27.94 FPS.</span>
       </div>
-      <div class="row row--flat">
-        <span class="row__org"><a href="https://ijirt.org/article?manuscript=175503" target="_blank" rel="noopener">Gender Representation in Video Games</a></span>
-        <span class="row__where">Int. Journal of Innovative Research in Technology</span>
+      <div class="row">
+        <span class="row__what"><span class="row__org"><a href="https://ijirt.org/article?manuscript=175503" target="_blank" rel="noopener">Gender Representation in Video Games</a></span> <span class="row__role">Int. Journal of Innovative Research in Technology</span></span>
         <span class="row__when">Apr 2025</span>
-        <span class="row__role">A statistical analysis of character portrayal from 2012 to 2022, across 637 characters in 64 titles.</span>
       </div>
     </div>
 
