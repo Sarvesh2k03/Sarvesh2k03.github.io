@@ -107,6 +107,29 @@ a { color: inherit; }
   border: 1px solid var(--rule);
 }
 .muted { color: var(--mute); }
+.nowrap { white-space: nowrap; }
+
+/* section slug — a rule, then the label */
+.slug {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin: 0 0 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.slug::before {
+  content: "";
+  flex: none;
+  width: 2.25rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
 
 /* ─── hero ─── */
 .hero__inner {
@@ -119,12 +142,17 @@ a { color: inherit; }
 .hero__title { color: var(--fg); }
 .hero__title em { font-style: normal; color: var(--mute); }
 
-.hero__portrait {
-  margin: 0;
-  aspect-ratio: 4 / 5;
-  border: 1px solid var(--rule);
-  padding: 0.55rem;
-  background: var(--fill);
+.hero__portrait { margin: 0; }
+.hero__portrait > div { aspect-ratio: 4 / 5; overflow: hidden; }
+.hero__portrait figcaption {
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-top: 0.7rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--rule);
 }
 .hero__portrait img {
   width: 100%;
@@ -156,77 +184,143 @@ a { color: inherit; }
 }
 .head > .prose { padding-bottom: 0.4rem; }
 
-/* ─── project cards ─── */
-.projects { display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); margin-top: clamp(2.25rem, 5vw, 3.5rem); }
+/* ─── project tiles ─────────────────────────────
+   Not cards. Each is a run record: a spine label,
+   a watermark index, a drop test, and a ledger.
+   ─────────────────────────────────────────────── */
+.tiles { display: grid; gap: clamp(1rem, 2vw, 1.75rem); margin-top: clamp(2.25rem, 5vw, 3.5rem); }
 
-.card {
+.tile {
+  position: relative;
+  overflow: hidden;
   background: var(--bg);
   color: var(--fg);
-  padding: clamp(1.5rem, 3.4vw, 3rem);
+  padding: clamp(1.5rem, 3.2vw, 2.75rem);
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(1.25rem, 3vw, 3rem);
+  grid-template-columns: 2.25rem minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 2.8vw, 2.75rem);
 }
 /* Each project owns a colour. The ground never changes; these do. */
-.card--trust {
+.tile--trust {
   --bg: #EFE9D0; --fg: #2A3420; --mute: #626E4E;
-  --rule: rgba(42, 52, 32, .24); --solid-bg: #2A3420; --solid-fg: #EFE9D0;
+  --rule: rgba(42, 52, 32, .26); --solid-bg: #2A3420; --solid-fg: #EFE9D0;
 }
-.card--resilience {
+.tile--product {
   --bg: #B2C091; --fg: #232D18; --mute: #4B5737;
-  --rule: rgba(35, 45, 24, .30); --solid-bg: #232D18; --solid-fg: #B2C091;
+  --rule: rgba(35, 45, 24, .32); --solid-bg: #232D18; --solid-fg: #B2C091;
 }
-.card--scale {
+.tile--pipeline {
   --bg: #DFBE87; --fg: #33290F; --mute: #6E5A2F;
-  --rule: rgba(51, 41, 15, .30); --solid-bg: #33290F; --solid-fg: #DFBE87;
+  --rule: rgba(51, 41, 15, .32); --solid-bg: #33290F; --solid-fg: #DFBE87;
 }
-.card__lead { display: flex; flex-direction: column; gap: 0.9rem; }
-.card__side { display: flex; flex-direction: column; gap: 1.35rem; }
 
-.card__kicker { display: flex; align-items: baseline; gap: 0.7rem; }
-.card__num {
+/* index digit, cropped by the tile edge */
+.tile__mark {
+  position: absolute;
+  top: -0.3em;
+  right: -0.05em;
   font-family: var(--display);
   font-variation-settings: "wdth" 116, "wght" 900;
-  font-size: 1.6rem;
-  line-height: 1;
-}
-.card__title { color: var(--fg); }
-.card__sub {
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mute);
-  margin: -0.25rem 0 0;
+  font-size: clamp(8rem, 17vw, 16rem);
+  line-height: 0.75;
+  color: currentColor;
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
 }
 
-.points { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
-.points li {
-  display: grid;
-  grid-template-columns: 0.85rem minmax(0, 1fr);
-  gap: 0.6rem;
-  font-size: 0.93rem;
-  line-height: 1.45;
+/* vertical spine label */
+.tile__spine {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  align-self: start;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--mute);
+  border-right: 1px solid var(--rule);
+  padding-right: 0.7rem;
 }
-.points li::before { content: "—"; color: var(--mute); font-family: var(--mono); font-size: 0.8rem; line-height: 1.6; }
-.points b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.tile__lead { display: flex; flex-direction: column; gap: 1rem; position: relative; }
+.tile__side { display: flex; flex-direction: column; gap: 1.5rem; position: relative; }
+.tile__title { color: var(--fg); }
+.tile__thesis {
+  font-size: clamp(1.05rem, 0.98rem + 0.45vw, 1.28rem);
+  line-height: 1.4;
+  font-weight: 600;
+  margin: 0;
+  max-width: 34ch;
+}
+
+/* the drop test — the signature block */
+.drop {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--fg);
+  padding: clamp(0.9rem, 2vw, 1.2rem);
+  display: grid;
+  gap: 0.65rem;
+}
+.drop__label {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.drop__row { display: grid; grid-template-columns: 4.75rem minmax(0, 1fr); gap: 0.85rem; align-items: baseline; }
+.drop__row dt {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.drop__row dd { margin: 0; font-size: 0.9rem; line-height: 1.45; }
+
+/* ledger with leader dots */
+.ledger { margin: 0; display: grid; gap: 0.1rem; }
+.ledger__row { display: flex; align-items: baseline; gap: 0.55rem; padding: 0.32rem 0; }
+.ledger__k {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--mute);
+  white-space: nowrap;
+}
+.ledger__lead {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  border-bottom: 1px dotted currentColor;
+  opacity: 0.32;
+  transform: translateY(-0.25em);
+}
+.ledger__v {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 
 .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; list-style: none; margin: 0; padding: 0; }
 .chips li {
   font-family: var(--mono);
-  font-size: 0.67rem;
+  font-size: 0.66rem;
   letter-spacing: 0.04em;
-  padding: 0.3rem 0.55rem;
-  border: 1px solid var(--rule);
   color: var(--mute);
 }
+.chips li + li::before { content: "/"; margin-right: 0.35rem; opacity: 0.5; }
 
 .aside {
-  font-size: 0.87rem;
+  font-size: 0.85rem;
   line-height: 1.5;
   color: var(--mute);
-  padding-left: 0.9rem;
-  border-left: 2px solid var(--rule);
   margin: 0;
 }
 .aside b { color: var(--fg); font-weight: 600; }
@@ -337,7 +431,17 @@ a { color: inherit; }
 @media (max-width: 900px) {
   .hero__inner { grid-template-columns: minmax(0, 1fr); }
   .hero__portrait { max-width: 300px; order: -1; }
-  .head, .card, .closing { grid-template-columns: minmax(0, 1fr); }
+  .head, .closing { grid-template-columns: minmax(0, 1fr); }
+  .tile { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .tile__spine {
+    writing-mode: horizontal-tb;
+    transform: none;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 0 0.6rem;
+    letter-spacing: 0.22em;
+  }
+  .tile__mark { font-size: 7rem; }
   .rule-item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
 }
 </style>
@@ -349,7 +453,7 @@ a { color: inherit; }
   <div class="inner">
     <div class="hero__inner">
       <div class="hero__type">
-        <p class="eyebrow">| Sarvesh Kumar · MS Computer Science, USC |</p>
+        <p class="slug">Sarvesh Kumar · MS Computer Science, USC</p>
 
         <h1 class="display display--xl hero__title">AI that<br>holds&nbsp;<em>up</em></h1>
 
@@ -369,7 +473,8 @@ a { color: inherit; }
       </div>
 
       <figure class="hero__portrait">
-        <img src="assets/sarvesh.jpg" alt="Portrait of Sarvesh Kumar" width="720" height="900">
+        <div><img src="assets/sarvesh.jpg" alt="Portrait of Sarvesh Kumar" width="720" height="900"></div>
+        <figcaption>Sarvesh Kumar · Los Angeles</figcaption>
       </figure>
     </div>
 
@@ -399,111 +504,154 @@ a { color: inherit; }
   <div class="inner">
     <div class="head">
       <div>
-        <p class="eyebrow" style="margin-bottom:1rem;">| Selected projects |</p>
-        <h2 class="display display--lg">From trust<br>to scale</h2>
+        <p class="slug">The work</p>
+        <h2 class="display display--lg">Built,<br>then broken</h2>
       </div>
       <div class="prose">
-        <p>Three projects, and each one starts where the last one stopped. First: can I trust what an AI tells me? Then: what happens to the product when it stops answering? Finally: can it run on a schedule, over real data, without becoming the thing that breaks?</p>
-        <p>All three are live. All three are open source. Every number below comes from a command in the repo.</p>
+        <p>Anyone can show you a demo on a good day. So each of these three carries a <b>drop test</b>: the failure I induced on purpose, and what the system did about it. Removing the source document. Pulling the API key mid-session. Running a fourteen-day backfill with no credentials at all.</p>
+        <p>The demo is the easy half. What follows is the half I'd want to be asked about.</p>
       </div>
     </div>
 
-    <div class="projects">
+    <div class="tiles">
 
       <!-- 01 -->
-      <article class="card card--trust" id="grounded">
-        <div class="card__lead">
-          <div class="card__kicker">
-            <span class="card__num">01</span>
-            <p class="eyebrow">Trust</p>
-          </div>
-          <h3 class="display display--sm card__title">Grounded</h3>
-          <p class="card__sub">Retrieval-augmented QA with citations</p>
+      <article class="tile tile--trust" id="grounded">
+        <span class="tile__mark" aria-hidden="true">01</span>
+        <p class="tile__spine">Retrieval</p>
+
+        <div class="tile__lead">
+          <h3 class="display display--sm tile__title">Grounded</h3>
+          <p class="tile__thesis">Answers that cite their sources — and an "I don't know" when the sources don't cover the question.</p>
           <div class="prose">
-            <p>It started with a question I couldn't get a straight answer to: how do you know a RAG system isn't making it up? Every demo I tried answered confidently even when the answer wasn't in the documents. So I built one designed for the opposite failure — refuse, and show the passages behind every answer it does give.</p>
+            <p>Every retrieval demo I tried answered confidently even when the answer wasn't in the documents. This one is built for the opposite failure. Chunking, embeddings, BM25 and reranking run locally; generation resolves to whichever backend has credentials, down to a fully offline extractive fallback. Each answer carries citations to document and page, and the interface separates the passages it actually used from the ones it merely retrieved.</p>
           </div>
-          <p class="aside"><b>Try this:</b> ask who first walked on the Moon, then deselect the <code>Apollo Missions</code> document and ask again. The same question comes back <em>"I don't know based on the provided documents"</em> instead of a plausible answer assembled from the other six.</p>
+          <div class="drop">
+            <p class="drop__label">↓ Drop test</p>
+            <dl class="drop__row">
+              <dt>Broke</dt>
+              <dd>Deselected the one document that contained the answer, then asked the same question again.</dd>
+            </dl>
+            <dl class="drop__row">
+              <dt>Held</dt>
+              <dd>Returned <em>"I don't know based on the provided documents"</em> rather than assembling something plausible from the other six. You can run this yourself in the demo, in about fifteen seconds.</dd>
+            </dl>
+          </div>
         </div>
 
-        <div class="card__side">
-          <ul class="points">
-            <li><span>Ingests PDF, Markdown and text with <b>page numbers preserved</b>, so every citation points somewhere real</span></li>
-            <li><span><b>Three retrieval strategies</b> — dense vector search, hybrid BM25 fusion, and cross-encoder reranking — switchable at runtime</span></li>
-            <li><span><b>Four generation backends</b> resolved from whatever credentials exist, including one that runs fully offline</span></li>
-            <li><span>Evaluated on <b>precision@k, MRR, abstention accuracy and hallucination rate</b>, with paired bootstrap p-values on every comparison</span></li>
-          </ul>
+        <div class="tile__side">
+          <div class="ledger">
+            <div class="ledger__row"><span class="ledger__k">Retrieval strategies</span><span class="ledger__lead"></span><span class="ledger__v">3</span></div>
+            <div class="ledger__row"><span class="ledger__k">Generation backends</span><span class="ledger__lead"></span><span class="ledger__v">4 · one offline</span></div>
+            <div class="ledger__row"><span class="ledger__k">Citation depth</span><span class="ledger__lead"></span><span class="ledger__v">doc + page</span></div>
+            <div class="ledger__row"><span class="ledger__k">Scored on</span><span class="ledger__lead"></span><span class="ledger__v">precision@k · MRR</span></div>
+            <div class="ledger__row"><span class="ledger__k">Abstention</span><span class="ledger__lead"></span><span class="ledger__v">measured, not assumed</span></div>
+            <div class="ledger__row"><span class="ledger__k">Significance</span><span class="ledger__lead"></span><span class="ledger__v">paired bootstrap</span></div>
+            <div class="ledger__row"><span class="ledger__k">Re-index on filter</span><span class="ledger__lead"></span><span class="ledger__v">none · query-time</span></div>
+          </div>
+
           <ul class="chips">
             <li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li>
           </ul>
+
           <div class="actions">
-            <a class="btn btn--solid" href="https://grounded-rag-nr9dmpzrh79njaamznujzv.streamlit.app/" target="_blank" rel="noopener">▶ Live demo</a>
-            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">GitHub repo ↗</a>
+            <a class="btn btn--solid" href="https://grounded-rag-nr9dmpzrh79njaamznujzv.streamlit.app/" target="_blank" rel="noopener">Run the demo →</a>
+            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
       </article>
 
       <!-- 02 -->
-      <article class="card card--resilience" id="triage">
-        <div class="card__lead">
-          <div class="card__kicker">
-            <span class="card__num">02</span>
-            <p class="eyebrow">Resilience</p>
-          </div>
-          <h3 class="display display--sm card__title">Triage Desk</h3>
-          <p class="card__sub">Support queue with a tested fallback</p>
+      <article class="tile tile--product" id="triage">
+        <span class="tile__mark" aria-hidden="true">02</span>
+        <p class="tile__spine">Product</p>
+
+        <div class="tile__lead">
+          <h3 class="display display--sm tile__title">Triage Desk</h3>
+          <p class="tile__thesis">A support queue where the AI is an upgrade, never a dependency.</p>
           <div class="prose">
-            <p>Once I could trust the output, the next question was what happens when there isn't any. A support queue is a bad place for an AI feature to be load-bearing — so the ticket workflow is complete on its own, and Gemini only improves it with a category, a priority and a one-line summary for the agent.</p>
+            <p>A support queue is a bad place for a model to be load-bearing. So the ticket workflow is complete on its own — create, filter, update, resolve — and Gemini only adds a category, a priority and a one-line summary for the agent. The model call lives behind a single module with a schema, a cache, a rate limit and a hard deadline. React and Express in TypeScript over Postgres, shipped as one service so there's one origin and nothing to negotiate.</p>
           </div>
-          <p class="aside"><b>Before you click:</b> the demo runs on Render's free tier, which sleeps after 15 minutes idle — the first request can take 30–60 seconds to wake it. Once it's up, <code>/api/health</code> reports whether AI triage is actually enabled.</p>
+          <div class="drop">
+            <p class="drop__label">↓ Drop test</p>
+            <dl class="drop__row">
+              <dt>Broke</dt>
+              <dd>Pulled the API key, rejected it, emptied the response, malformed the JSON, and let the model blow past its deadline.</dd>
+            </dl>
+            <dl class="drop__row">
+              <dt>Held</dt>
+              <dd>All six paths return a usable classification from a deterministic local classifier. The ticket records which engine answered and the panel turns amber, so a broken model config can't hide behind a page that loads fine.</dd>
+            </dl>
+          </div>
         </div>
 
-        <div class="card__side">
-          <ul class="points">
-            <li><span>Full-stack ticket workflow that works with the AI switched off — <b>React 19, Express 5, PostgreSQL</b>, one service, one origin</span></li>
-            <li><span>The model call is isolated behind a single module: <b>schema-validated JSON</b>, content-keyed cache, rate limit and hard deadline</span></li>
-            <li><span><b>200 tests at 98.1% statement and 95.3% branch coverage</b>, run against a real in-memory Postgres so a bad column name fails the test</span></li>
-            <li><span><b>Six AI-failure paths asserted</b> — timeout, refusal, rejected key, invalid schema, empty response, no key at all — each returning a usable answer</span></li>
-            <li><span>Every ticket records <b>which engine triaged it</b>, and the panel changes colour when it wasn't the model</span></li>
-          </ul>
+        <div class="tile__side">
+          <div class="ledger">
+            <div class="ledger__row"><span class="ledger__k">Tests</span><span class="ledger__lead"></span><span class="ledger__v">200</span></div>
+            <div class="ledger__row"><span class="ledger__k">Statement coverage</span><span class="ledger__lead"></span><span class="ledger__v">98.1%</span></div>
+            <div class="ledger__row"><span class="ledger__k">Branch coverage</span><span class="ledger__lead"></span><span class="ledger__v">95.3%</span></div>
+            <div class="ledger__row"><span class="ledger__k">AI failure paths</span><span class="ledger__lead"></span><span class="ledger__v">6 · all tested</span></div>
+            <div class="ledger__row"><span class="ledger__k">Test database</span><span class="ledger__lead"></span><span class="ledger__v">pg-mem · real SQL</span></div>
+            <div class="ledger__row"><span class="ledger__k">Services deployed</span><span class="ledger__lead"></span><span class="ledger__v">1 · no CORS</span></div>
+          </div>
+
           <ul class="chips">
             <li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li>
           </ul>
+
+          <p class="aside"><b>Fair warning:</b> Render's free tier sleeps after fifteen minutes, so the first request takes 30–60 seconds to wake it. <code>/api/health</code> tells you whether AI triage is live or you're looking at the fallback.</p>
+
           <div class="actions">
-            <a class="btn btn--solid" href="https://triage-desk-te0v.onrender.com/" target="_blank" rel="noopener">▶ Live demo</a>
-            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">GitHub repo ↗</a>
+            <a class="btn btn--solid" href="https://triage-desk-te0v.onrender.com/" target="_blank" rel="noopener">Run the demo →</a>
+            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
       </article>
 
       <!-- 03 -->
-      <article class="card card--scale" id="nyc311">
-        <div class="card__lead">
-          <div class="card__kicker">
-            <span class="card__num">03</span>
-            <p class="eyebrow">Scale</p>
-          </div>
-          <h3 class="display display--sm card__title">NYC 311<br>AI ETL</h3>
-          <p class="card__sub">AI-assisted schema mapping in production</p>
+      <article class="tile tile--pipeline" id="nyc311">
+        <span class="tile__mark" aria-hidden="true">03</span>
+        <p class="tile__spine">Pipeline</p>
+
+        <div class="tile__lead">
+          <h3 class="display display--sm tile__title">NYC 311 <span class="nowrap">AI ETL</span></h3>
+          <p class="tile__thesis">An LLM inside a nightly pipeline, scoped to the thirteen columns nothing cheaper can resolve.</p>
           <div class="prose">
-            <p>Then I wanted to know whether an LLM could sit inside something that runs on a schedule without becoming the thing that breaks it. The same 311 payload arrives from four systems that each name their columns differently — and fuzzy matching quietly gets meaning wrong: <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, which is the wrong field. No threshold separates those, because the difference is meaning, not spelling.</p>
+            <p>The same 311 payload arrives from four systems that each name their columns differently. Fuzzy matching handles the easy ones and quietly gets meaning wrong on the rest — <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, which is the wrong field, and no threshold separates them because the difference is meaning, not spelling. So each column goes to the cheapest tier that will commit to it: a human override, an exact match, one Claude call for the remainder, then fuzzy. Every decision is logged with the tier that made it.</p>
           </div>
-          <p class="aside"><b>One real finding:</b> a dbt test failed on the first full run — 17 requests stamped closed exactly 72 hours <em>before</em> they were created, upstream backdating in the live feed. They're flagged and their resolution time nulled rather than dropped, with a warning test keeping the rate visible on every run.</p>
+          <div class="drop">
+            <p class="drop__label">↓ Drop test</p>
+            <dl class="drop__row">
+              <dt>Broke</dt>
+              <dd>Ran the entire fourteen-day backfill with no API key configured at all.</dd>
+            </dl>
+            <dl class="drop__row">
+              <dt>Held</dt>
+              <dd>Every LLM call failed to authenticate and fell through to the fuzzy tier. 133,993 rows landed, 43 of 44 dbt tests passed, zero columns were mis-mapped — and the auth failure is recorded in the run's own quality report rather than swallowed.</dd>
+            </dl>
+          </div>
         </div>
 
-        <div class="card__side">
-          <ul class="points">
-            <li><span><b>133,993 rows</b> of live NYC 311 data loaded across <b>14 daily Airflow batches</b> in 127 seconds</span></li>
-            <li><span><b>83 column headers resolved per run</b> through four tiers — human override, exact match, one Claude call, fuzzy fallback — each decision logged with the tier that made it</span></li>
-            <li><span><b>100% mapping precision (63/63) and 0 columns mis-mapped</b>, measured against a written-down ground truth rather than asserted</span></li>
-            <li><span><b>44 dbt tests</b> across staging, intermediate and mart layers; a quality report fails the run on any failure</span></li>
-            <li><span>The reference run was produced <b>with no API key</b> — every LLM call failed to authenticate, fell through to the fallback, and the pipeline completed normally</span></li>
-          </ul>
+        <div class="tile__side">
+          <div class="ledger">
+            <div class="ledger__row"><span class="ledger__k">Rows loaded</span><span class="ledger__lead"></span><span class="ledger__v">133,993</span></div>
+            <div class="ledger__row"><span class="ledger__k">Daily batches</span><span class="ledger__lead"></span><span class="ledger__v">14</span></div>
+            <div class="ledger__row"><span class="ledger__k">Backfill wall time</span><span class="ledger__lead"></span><span class="ledger__v">127 s</span></div>
+            <div class="ledger__row"><span class="ledger__k">Header decisions / run</span><span class="ledger__lead"></span><span class="ledger__v">83</span></div>
+            <div class="ledger__row"><span class="ledger__k">dbt tests</span><span class="ledger__lead"></span><span class="ledger__v">44 · 43 pass · 0 fail</span></div>
+            <div class="ledger__row"><span class="ledger__k">Mapping precision</span><span class="ledger__lead"></span><span class="ledger__v">100% · 63/63</span></div>
+            <div class="ledger__row"><span class="ledger__k">Columns mis-mapped</span><span class="ledger__lead"></span><span class="ledger__v">0</span></div>
+          </div>
+
           <ul class="chips">
             <li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li>
           </ul>
+
+          <p class="aside"><b>What the tests caught:</b> 17 requests stamped closed exactly 72 hours <em>before</em> they were created — upstream backdating in the live feed. Flagged and their resolution time nulled rather than dropped, with a warning test keeping the rate visible on every run.</p>
+
           <div class="actions">
-            <a class="btn btn--solid" href="https://nyc311-ai-etl.streamlit.app/" target="_blank" rel="noopener">▶ Live demo</a>
-            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">GitHub repo ↗</a>
+            <a class="btn btn--solid" href="https://nyc311-ai-etl.streamlit.app/" target="_blank" rel="noopener">Run the demo →</a>
+            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
       </article>
@@ -517,8 +665,8 @@ a { color: inherit; }
   <div class="inner">
     <div class="head">
       <div>
-        <p class="eyebrow" style="margin-bottom:1rem;">| Method |</p>
-        <h2 class="display display--lg">How I<br>build</h2>
+        <p class="slug">Method</p>
+        <h2 class="display display--lg">House<br>rules</h2>
       </div>
       <div class="prose">
         <p>The same five decisions turn up in all three projects, in the same order. This is the part I'd defend in a design review — and the reason the numbers above exist at all.</p>
@@ -579,8 +727,8 @@ a { color: inherit; }
   <div class="inner">
     <div class="head">
       <div>
-        <p class="eyebrow" style="margin-bottom:1rem;">| Toolkit |</p>
-        <h2 class="display display--lg">What I<br>bring</h2>
+        <p class="slug">Toolkit</p>
+        <h2 class="display display--lg">What I<br>reach for</h2>
       </div>
     </div>
 
@@ -635,7 +783,7 @@ a { color: inherit; }
     </div>
 
     <div class="closing">
-      <p class="eyebrow">| Working with AI |</p>
+      <p class="slug">Working with AI</p>
       <div class="prose">
         <p>Building <em>with</em> LLMs is part of the skill set, and I treat it with the same discipline as building <em>on</em> them. I use models to move fast — scaffolding, refactors, a second opinion on a schema at midnight — and then make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> That loop is genuinely fast, and it is not a substitute for knowing why the architecture is shaped the way it is.</p>
         <p>I made the design calls, ran the pipelines, and produced every number here. Where AI helped, it helped the way it does in these projects — with a check on the output and a human accountable for what ships.</p>
