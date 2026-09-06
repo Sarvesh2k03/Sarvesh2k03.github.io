@@ -39,7 +39,7 @@
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   --pad-x: clamp(1.25rem, 5vw, 5.5rem);
-  --pad-y: clamp(3.25rem, 8vw, 7rem);
+  --pad-y: clamp(2.75rem, 6vw, 5rem);
   --maxw: 1280px;
 }
 
@@ -75,14 +75,14 @@ a { color: inherit; }
   font-variation-settings: "wdth" 116, "wght" 900;
   font-weight: 900;
   text-transform: uppercase;
-  line-height: 0.84;
-  letter-spacing: -0.028em;
+  line-height: 0.88;
+  letter-spacing: -0.024em;
   margin: 0;
   text-wrap: balance;
 }
-.display--xl { font-size: clamp(2.9rem, 8.4vw, 7.2rem); }
-.display--lg { font-size: clamp(2.4rem, 7vw, 5.4rem); }
-.display--sm { font-size: clamp(1.7rem, 4vw, 2.9rem); letter-spacing: -0.02em; }
+.display--xl { font-size: clamp(2.5rem, 6.6vw, 4.9rem); line-height: 0.86; }
+.display--lg { font-size: clamp(1.75rem, 3.6vw, 2.6rem); }
+.display--sm { font-size: clamp(1.4rem, 2.7vw, 1.95rem); letter-spacing: -0.02em; }
 
 .eyebrow {
   font-family: var(--mono);
@@ -181,25 +181,57 @@ a { color: inherit; }
 .fact dt { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); }
 .fact dd { margin: 0.3rem 0 0; font-size: 0.92rem; font-weight: 500; line-height: 1.35; }
 
-/* ─── experience / education ─── */
-.cv { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); }
-.cv__row {
+/* ─── rules of thumb ─── */
+.rules { list-style: none; margin: clamp(1.5rem, 3vw, 2.25rem) 0 0; padding: 0; display: grid; gap: 0.55rem; }
+.rules li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.5rem 1.5rem;
+  grid-template-columns: 1.9rem minmax(0, 1fr);
+  gap: 0.6rem;
   align-items: baseline;
-  padding: 0.9rem 0;
+  font-size: 0.93rem;
+  line-height: 1.45;
+}
+.rules b { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--mute); }
+
+/* ─── roles and education ─── */
+.list { display: grid; }
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) auto;
+  gap: 0.3rem 1.5rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
   border-top: 1px solid var(--rule);
 }
-.cv__row:last-child { border-bottom: 1px solid var(--rule); }
-.cv__row--minor { padding: 0.7rem 0; }
-.cv__row--minor .cv__role { font-size: 0.88rem; font-weight: 500; color: var(--mute); }
-.cv__row--minor .cv__note { font-size: 0.82rem; }
-.cv-heading {
-  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+.row:last-child { border-bottom: 1px solid var(--rule); }
+.row__org {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 112, "wght" 700;
+  font-size: 1.02rem;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.row__role { font-size: 0.89rem; line-height: 1.35; color: var(--mute); }
+.row__where, .row__when {
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.69rem;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.row__when { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.row--minor { padding: 0.65rem 0; }
+.row--minor .row__org {
+  font-family: var(--body);
+  font-variation-settings: normal;
   font-weight: 500;
+  font-size: 0.88rem;
+  text-transform: none;
+  color: var(--mute);
+}
+.subhead {
+  margin: clamp(2rem, 4vw, 2.75rem) 0 0.9rem;
+  font-family: var(--mono);
+  font-size: 0.67rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--mute);
@@ -207,28 +239,64 @@ a { color: inherit; }
   align-items: center;
   gap: 0.7rem;
 }
-.cv-heading::before { content: ""; flex: none; width: 2.25rem; height: 1px; background: currentColor; opacity: 0.55; }
-.cv-heading + .cv { margin-top: 1rem; }
-.cv__what { display: grid; gap: 0.15rem; }
-.cv__role { font-size: 1rem; font-weight: 600; line-height: 1.3; }
-.cv__note { font-size: 0.88rem; line-height: 1.4; color: var(--mute); }
-.cv__when {
+.subhead::before { content: ""; flex: none; width: 2rem; height: 1px; background: currentColor; opacity: 0.55; }
+
+/* ─── toolkit ─── */
+.kit {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 0.4rem 1.5rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--rule);
+}
+.kit:last-child { border-bottom: 1px solid var(--rule); }
+.kit h3 {
+  margin: 0;
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  font-variant-numeric: tabular-nums;
+  font-size: 0.67rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: var(--mute);
-  white-space: nowrap;
+}
+.kit .chips li { font-size: 0.88rem; font-family: var(--body); color: var(--fg); }
+.kit .chips li + li::before { content: "·"; margin-right: 0.45rem; opacity: 0.45; color: var(--mute); }
+.kit .chips { gap: 0.45rem; }
+
+/* ─── contact ─── */
+.contact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+}
+.contact dt {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.contact dd { margin: 0.3rem 0 0; font-size: 0.95rem; }
+.contact a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+.contact a:hover { border-bottom-color: currentColor; }
+.colophon {
+  margin: clamp(2rem, 4vw, 2.75rem) 0 0;
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
 }
 
 /* ─── section heads ─── */
-.head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
+.head { display: grid; gap: 0.75rem; margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+.head--split {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(1.25rem, 3.5vw, 3.5rem);
   align-items: end;
 }
-.head > .prose { padding-bottom: 0.4rem; }
 
 /* ─── project tiles ─────────────────────────────
    Not cards. Each is a run record: a spine label,
@@ -408,92 +476,11 @@ a { color: inherit; }
 .btn--ghost:hover { background: var(--solid-bg); color: var(--solid-fg); border-color: var(--solid-bg); transform: translateY(-2px); }
 @media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; } }
 
-/* ─── method ─── */
-.method { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
-.rule-item {
-  display: grid;
-  grid-template-columns: 4.5rem minmax(0, 1fr);
-  gap: clamp(1rem, 2.5vw, 2.5rem);
-  padding: clamp(1.25rem, 2.6vw, 1.85rem) 0;
-  border-top: 1px solid var(--rule);
-}
-.rule-item:last-child { border-bottom: 1px solid var(--rule); }
-.rule-item__n {
-  font-family: var(--display);
-  font-variation-settings: "wdth" 116, "wght" 900;
-  font-size: 1.7rem;
-  line-height: 1;
-  color: var(--mute);
-}
-.rule-item h3 {
-  font-family: var(--body);
-  font-size: clamp(1.02rem, 0.98rem + 0.35vw, 1.22rem);
-  font-weight: 600;
-  line-height: 1.35;
-  margin: 0 0 0.45rem;
-}
-.rule-item__proof {
-  font-family: var(--mono);
-  font-size: 0.71rem;
-  line-height: 1.55;
-  color: var(--mute);
-  margin: 0.7rem 0 0;
-}
-.rule-item__proof b { color: var(--fg); font-weight: 500; }
-
-/* ─── skills / contact ─── */
-.cols {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
-  gap: clamp(1.4rem, 3vw, 2.5rem);
-  margin-top: clamp(2rem, 4vw, 2.75rem);
-  padding-top: clamp(1.4rem, 3vw, 2rem);
-  border-top: 1px solid var(--rule);
-}
-.cols h3 {
-  font-family: var(--mono);
-  font-size: 0.69rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin: 0 0 0.7rem;
-}
-.cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
-.cols li { font-size: 0.89rem; line-height: 1.4; color: var(--mute); }
-
-.closing {
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  padding-top: clamp(1.5rem, 3vw, 2.25rem);
-  border-top: 1px solid var(--rule);
-  display: grid;
-  grid-template-columns: 12rem minmax(0, 1fr);
-  gap: clamp(1rem, 3vw, 3rem);
-}
-.contact {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-  gap: 1.4rem;
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  padding-top: 1.6rem;
-  border-top: 1px solid var(--rule);
-}
-.contact a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
-.contact a:hover { border-bottom-color: currentColor; }
-.contact p { margin: 0.3rem 0 0; }
-.colophon {
-  margin: clamp(2.25rem, 4vw, 3rem) 0 0;
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mute);
-}
-
 /* ─── responsive ─── */
 @media (max-width: 900px) {
   .hero__inner { grid-template-columns: minmax(0, 1fr); }
   .hero__portrait { max-width: 300px; order: -1; }
-  .head, .closing { grid-template-columns: minmax(0, 1fr); }
+  .head--split { grid-template-columns: minmax(0, 1fr); }
   .tile { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
   .tile__spine {
     writing-mode: horizontal-tb;
@@ -504,7 +491,8 @@ a { color: inherit; }
     letter-spacing: 0.22em;
   }
   .tile__mark { font-size: 7rem; }
-  .rule-item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
+  .row { grid-template-columns: minmax(0, 1fr) auto; }
+  .row__role { grid-column: 1 / -1; }
 }
 </style>
 </head>
@@ -517,21 +505,19 @@ a { color: inherit; }
       <div class="hero__type">
         <p class="slug">Sarvesh Kumar · AI/ML Engineer</p>
 
-        <h1 class="display display--xl hero__title">AI that<br>holds&nbsp;<em>up</em></h1>
+        <h1 class="display display--xl hero__title">AI that<br>holds up</h1>
 
         <p class="lede">I build AI systems that turn messy real world data into decisions people can rely on, then prove they still work when the model doesn't.</p>
 
         <div class="prose">
-          <p>I got here sideways. I started with web development, spent a while in design, and then a semester of statistics at UC Davis quietly rearranged how I thought about problems. The answer stopped being the code I wrote and started being whatever the data would actually support.</p>
-          <p>Research at NUS pulled me properly into models, and working in industry pulled me straight back out. A forecasting model is only worth the decision it changes. An extraction pipeline is only worth the manual work it removes. Somewhere in there I stopped finding models interesting on their own and got interested in the seam instead: the place where something probabilistic meets a system that has to be right. That is where I have stayed, and these days it looks like LLM pipelines, retrieval, and the data engineering underneath them.</p>
-          <p>The question I keep coming back to is the same one every time. What happens to this when the model is wrong, and would anyone notice? The three projects below are three answers to it.</p>
+          <p>Master of Science in Computer Science (Data Science) at the University of Southern California. I work across LLM pipelines, retrieval and the data engineering underneath them, where the interesting problem is rarely the model itself but what the system does when the model is wrong.</p>
         </div>
 
         <div class="hero__actions">
-          <a class="btn btn--solid" href="#work">View projects ↓</a>
-          <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03" target="_blank" rel="noopener">GitHub ↗</a>
-          <a class="btn btn--ghost" href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">LinkedIn ↗</a>
-          <a class="btn btn--ghost" href="mailto:sarvesh2k03@gmail.com">Email me</a>
+          <a class="btn btn--solid" href="#work">View projects</a>
+          <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn btn--ghost" href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn btn--ghost" href="mailto:sarvesh2k03@gmail.com">Email</a>
         </div>
       </div>
 
@@ -541,34 +527,39 @@ a { color: inherit; }
       </figure>
     </div>
 
-    <dl class="facts">
-      <div class="fact">
-        <dt>Studying</dt>
-        <dd>MS Computer Science, Data Science, at USC</dd>
-      </div>
-      <div class="fact">
-        <dt>Previously</dt>
-        <dd>Opkey · mayaa · TAIIN Steel · National University of Singapore</dd>
-      </div>
-      <div class="fact">
-        <dt>Working with</dt>
-        <dd>Python, PyTorch, TypeScript, SQL, AWS, Vertex AI</dd>
-      </div>
-      <div class="fact">
-        <dt>Based in</dt>
-        <dd>Los Angeles, California</dd>
-      </div>
-    </dl>
   </div>
 </header>
+
+<!-- ════════ ABOUT ════════ -->
+<section class="band" id="about">
+  <div class="inner">
+    <div class="head head--split">
+      <div>
+        <p class="slug">About</p>
+        <h2 class="display display--lg">How I got here</h2>
+      </div>
+      <div class="prose">
+        <p>I got here sideways. I started with web development, spent a while in design, and then a semester of statistics at UC Davis rearranged how I thought about problems. The answer stopped being the code I wrote and started being whatever the data would support.</p>
+        <p>Research at NUS pulled me properly into models, and industry pulled me straight back out. A forecasting model is only worth the decision it changes. Somewhere in there I stopped finding models interesting on their own and got interested in the seam instead: the place where something probabilistic meets a system that has to be right.</p>
+      </div>
+    </div>
+
+    <ul class="rules">
+      <li><b>01</b><span>Write the version with no model in it first, so the AI is an upgrade rather than a dependency.</span></li>
+      <li><b>02</b><span>Make the model return a declared schema, then validate the meaning and not just the syntax.</span></li>
+      <li><b>03</b><span>Measure against ground truth. "Seems accurate" is not a result.</span></li>
+      <li><b>04</b><span>Keep the degradation visible in the interface, and every number reproducible from a command.</span></li>
+    </ul>
+  </div>
+</section>
 
 <!-- ════════ PROJECTS ════════ -->
 <main class="band" id="work">
   <div class="inner">
-    <div class="head">
+    <div class="head head--split">
       <div>
         <p class="slug">The work</p>
-        <h2 class="display display--lg">Project<br>highlights</h2>
+        <h2 class="display display--lg">Project highlights</h2>
       </div>
       <div class="prose">
         <p>Three systems, each built so the model is an upgrade rather than a dependency, and each measured to prove it. Every demo is live and every repository is public. Metrics and implementation notes sit under a toggle on each project, for anyone who wants them.</p>
@@ -710,239 +701,140 @@ a { color: inherit; }
   </div>
 </main>
 
-<!-- ════════ BACKGROUND ════════ -->
-<section class="band" id="background">
+<!-- ════════ EXPERIENCE ════════ -->
+<section class="band" id="experience">
   <div class="inner">
     <div class="head">
-      <div>
-        <p class="slug">Background</p>
-        <h2 class="display display--lg">Where<br>I've been</h2>
+      <p class="slug">Experience</p>
+      <h2 class="display display--lg">Where I've been</h2>
+    </div>
+
+    <div class="list">
+      <div class="row">
+        <span class="row__org">Opkey</span>
+        <span class="row__where">Pittsburgh, PA</span>
+        <span class="row__when">Jun 2026 - Aug 2026</span>
+        <span class="row__role">Software Engineer Intern, AI/ML Systems</span>
       </div>
-      <div class="prose">
-        <p>Six internships across AI/ML systems, generative AI, applied machine learning, deep learning research, design and web development, in Los Angeles, Singapore and Chennai. Two publications along the way, on real time pose estimation and on character portrayal in video games.</p>
+      <div class="row">
+        <span class="row__org">mayaa</span>
+        <span class="row__where">Mumbai, India</span>
+        <span class="row__when">May 2025 - Aug 2025</span>
+        <span class="row__role">GenAI Intern</span>
+      </div>
+      <div class="row">
+        <span class="row__org">TAIIN Steel Fab and Infra</span>
+        <span class="row__where">Remote, India</span>
+        <span class="row__when">Sep 2024 - Mar 2025</span>
+        <span class="row__role">Machine Learning Intern</span>
+      </div>
+      <div class="row">
+        <span class="row__org">National University of Singapore</span>
+        <span class="row__where">Singapore</span>
+        <span class="row__when">Jun 2024 - Jul 2024</span>
+        <span class="row__role">Big Data Analytics and ML Development Intern</span>
+      </div>
+      <div class="row">
+        <span class="row__org">Creatief AI Innovations</span>
+        <span class="row__where">Chennai, India</span>
+        <span class="row__when">Aug 2023 - Sep 2023</span>
+        <span class="row__role">UI/UX Design Intern</span>
+      </div>
+      <div class="row">
+        <span class="row__org">Ashok Leyland</span>
+        <span class="row__where">Chennai, India</span>
+        <span class="row__when">Aug 2022 - Sep 2022</span>
+        <span class="row__role">Web Development Intern</span>
       </div>
     </div>
 
-    <div class="cv">
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">Software Engineer Intern, AI/ML Systems · Opkey</span>
-          <span class="cv__note">Validated structured payroll and HR data across enterprise compliance workflows, and evaluated AI interfaces and rule engine behaviour for statutory accuracy. Los Angeles, California.</span>
-        </div>
-        <span class="cv__when">Jun 2026 - Aug 2026</span>
-      </div>
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">GenAI Intern · mayaa</span>
-          <span class="cv__note">Built and deployed a production multilingual LLM pipeline on Llama 4 Scout and Vertex AI, cutting manual data processing by 80 to 85% at 94.5% accuracy. Lifted reliability from 78% to over 94%, reduced malformed responses by roughly 70% and inference cost by roughly 35%. Served on AWS Lambda and API Gateway at 2 to 5 second end to end latency.</span>
-        </div>
-        <span class="cv__when">May 2025 - Aug 2025</span>
-      </div>
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">Machine Learning Intern · TAIIN Steel Fab and Infra</span>
-          <span class="cv__note">Built forecasting models across 100,000+ records in Python and SQL, reducing MAPE from 22% to 19%. Designed clustering and optimisation based routing that cut delivery lead time by 8 to 12%, and Power BI dashboards that reduced manual reporting effort by 25%.</span>
-        </div>
-        <span class="cv__when">Sep 2024 - Mar 2025</span>
-      </div>
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">Big Data Analytics and ML Development Intern · National University of Singapore</span>
-          <span class="cv__note">Developed a PyTorch real time human pose estimation system on YOLOv8 with 17 keypoint tracking, reaching 91.6% accuracy at under 20ms latency and roughly 28 FPS. Deployed scalable ML pipelines on AWS SageMaker, Lambda and Step Functions, and expanded the training set by 380% through augmentation.</span>
-        </div>
-        <span class="cv__when">Jun 2024 - Jul 2024</span>
-      </div>
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">UI/UX Design Intern · Creatief AI Innovations</span>
-          <span class="cv__note">Wireframes and interactive prototypes in Whimsical and Figma, translated into a working portfolio site. Chennai, India.</span>
-        </div>
-        <span class="cv__when">Aug 2023 - Sep 2023</span>
-      </div>
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">Web Development Intern · Ashok Leyland</span>
-          <span class="cv__note">Analysed competitor automobile data and built a Bootstrap and Node.js web application with API integrations to present the findings. Chennai, India.</span>
-        </div>
-        <span class="cv__when">Aug 2022 - Sep 2022</span>
-      </div>
-    </div>
+    <p class="subhead">Education</p>
 
-    <p class="cv-heading">Education</p>
-
-    <div class="cv">
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">MS Computer Science, Data Science · University of Southern California</span>
-          <span class="cv__note">Los Angeles, California.</span>
-        </div>
-        <span class="cv__when">In progress</span>
+    <div class="list">
+      <div class="row">
+        <span class="row__org">University of Southern California</span>
+        <span class="row__where">Los Angeles, CA</span>
+        <span class="row__when">In progress</span>
+        <span class="row__role">Master of Science in Computer Science (Data Science)</span>
       </div>
-      <div class="cv__row">
-        <div class="cv__what">
-          <span class="cv__role">BTech Computer Science · SRM Institute of Science and Technology</span>
-          <span class="cv__note">Chennai, India.</span>
-        </div>
-        <span class="cv__when">2021 - 2025</span>
+      <div class="row">
+        <span class="row__org">SRM Institute of Science and Technology</span>
+        <span class="row__where">Chennai, India</span>
+        <span class="row__when">2021 - 2025</span>
+        <span class="row__role">Bachelor of Technology in Computer Science</span>
       </div>
-      <div class="cv__row cv__row--minor">
-        <div class="cv__what">
-          <span class="cv__role">Semester abroad · University of California, Davis</span>
-          <span class="cv__note">Multivariate data analysis, statistical data science, discrete mathematics.</span>
-        </div>
-        <span class="cv__when">Fall 2023</span>
-      </div>
-    </div>
-        <span class="cv__when">Sep 2023 - Dec 2023</span>
+      <div class="row row--minor">
+        <span class="row__org">Semester abroad · University of California, Davis</span>
+        <span class="row__where">Davis, CA</span>
+        <span class="row__when">Fall 2023</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ HOW I BUILD ════════ -->
-<section class="band" id="how">
+<!-- ════════ TOOLKIT ════════ -->
+<section class="band" id="toolkit">
   <div class="inner">
     <div class="head">
-      <div>
-        <p class="slug">Method</p>
-        <h2 class="display display--lg">How I<br>build</h2>
-      </div>
-      <div class="prose">
-        <p>Four decisions that turn up in all three projects, in the same order. They are the reason the numbers above exist.</p>
-      </div>
+      <p class="slug">Toolkit</p>
+      <h2 class="display display--lg">What I reach for</h2>
     </div>
 
-    <div class="method">
-      <article class="rule-item">
-        <span class="rule-item__n">01</span>
-        <div>
-          <h3>Decide what happens without the model, first.</h3>
-          <div class="prose"><p>I write the version with no model in it before I write a prompt. That's what makes the AI safe to add, and it's why I can say what the model is actually worth: I've run the system both ways.</p></div>
-        </div>
-      </article>
-
-      <article class="rule-item">
-        <span class="rule-item__n">02</span>
-        <div>
-          <h3>Make the model commit to a shape, then check the meaning.</h3>
-          <div class="prose"><p>Every call returns structured JSON against a declared schema, validated before it touches a database, and validated for sense rather than syntax alone. A proposal naming a field that doesn't exist becomes a caught error, not a corrupted column.</p></div>
-        </div>
-      </article>
-
-      <article class="rule-item">
-        <span class="rule-item__n">03</span>
-        <div>
-          <h3>Measure against ground truth.</h3>
-          <div class="prose"><p>"Seems accurate" isn't a result. Writing down the correct answer turns accuracy into arithmetic, which is how I know the cheap tier is 100% precise on what it commits to, and exactly which columns need a model at all.</p></div>
-        </div>
-      </article>
-
-      <article class="rule-item">
-        <span class="rule-item__n">04</span>
-        <div>
-          <h3>Make the degradation visible, and the run reproducible.</h3>
-          <div class="prose"><p>A silent fallback is a bug wearing a feature's clothes, so the interface always says which engine answered. And every figure on this page comes from a command in a README: <code>make backfill</code>, <code>npm run test:coverage</code>, <code>python -m grounded.evaluate</code>.</p></div>
-        </div>
-      </article>
+    <div class="list">
+      <div class="kit">
+        <h3>Languages</h3>
+        <ul class="chips"><li>Python</li><li>TypeScript</li><li>SQL</li><li>C++</li></ul>
+      </div>
+      <div class="kit">
+        <h3>AI and ML</h3>
+        <ul class="chips"><li>PyTorch</li><li>LLM pipelines</li><li>RAG and retrieval</li><li>Structured output</li><li>Grounding and abstention</li><li>Evaluation harnesses</li><li>Prompt engineering</li></ul>
+      </div>
+      <div class="kit">
+        <h3>Data engineering</h3>
+        <ul class="chips"><li>Airflow</li><li>dbt</li><li>PostgreSQL</li><li>DuckDB</li><li>BigQuery</li><li>ETL design</li><li>Data quality testing</li></ul>
+      </div>
+      <div class="kit">
+        <h3>Web and product</h3>
+        <ul class="chips"><li>React</li><li>Express</li><li>REST design</li><li>Streamlit</li><li>Zod</li></ul>
+      </div>
+      <div class="kit">
+        <h3>Cloud and tooling</h3>
+        <ul class="chips"><li>AWS</li><li>Vertex AI</li><li>Google Cloud</li><li>Git</li><li>GitHub Actions</li><li>Jest</li><li>pytest</li></ul>
+      </div>
+      <div class="kit">
+        <h3>Analytics and BI</h3>
+        <ul class="chips"><li>Power BI</li><li>Tableau</li><li>Forecasting</li><li>Optimisation</li></ul>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ SKILLS + CONTACT ════════ -->
+<!-- ════════ CONTACT ════════ -->
 <footer class="band" id="contact">
   <div class="inner">
     <div class="head">
-      <div>
-        <p class="slug">Toolkit</p>
-        <h2 class="display display--lg">What I<br>reach for</h2>
-      </div>
+      <p class="slug">Contact</p>
+      <h2 class="display display--lg">Say hello</h2>
     </div>
 
-    <div class="cols">
+    <dl class="contact">
       <div>
-        <h3>AI systems</h3>
-        <ul>
-          <li>Retrieval and RAG evaluation</li>
-          <li>Structured, schema-validated LLM output</li>
-          <li>Grounding, citation, abstention</li>
-          <li>Tiered fallback design</li>
-          <li>Judging when a model shouldn't be in the loop</li>
-        </ul>
+        <dt>Email</dt>
+        <dd><a href="mailto:sarvesh2k03@gmail.com">sarvesh2k03@gmail.com</a></dd>
       </div>
       <div>
-        <h3>Data engineering</h3>
-        <ul>
-          <li>Airflow orchestration and backfills</li>
-          <li>dbt models and incremental marts</li>
-          <li>Idempotent loads, data contracts</li>
-          <li>DuckDB · BigQuery · PostgreSQL</li>
-          <li>Data-quality testing and alerting</li>
-        </ul>
+        <dt>GitHub</dt>
+        <dd><a href="https://github.com/Sarvesh2k03" target="_blank" rel="noopener">Sarvesh2k03</a></dd>
       </div>
       <div>
-        <h3>Full-stack</h3>
-        <ul>
-          <li>TypeScript · React · Express</li>
-          <li>REST design, validation middleware</li>
-          <li>Single-service deploys</li>
-          <li>Render · Neon · Streamlit</li>
-        </ul>
+        <dt>LinkedIn</dt>
+        <dd><a href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">in/skumarag</a></dd>
       </div>
       <div>
-        <h3>Testing &amp; evaluation</h3>
-        <ul>
-          <li>Jest · pytest · pg-mem</li>
-          <li>Retrieval metrics, bootstrap significance</li>
-          <li>Coverage aimed at failure paths</li>
-          <li>Reproducible reference runs</li>
-        </ul>
+        <dt>Location</dt>
+        <dd>Los Angeles, California</dd>
       </div>
-      <div>
-        <h3>Languages &amp; platforms</h3>
-        <ul>
-          <li>Python · TypeScript · SQL · C++</li>
-          <li>AWS · Google Cloud</li>
-          <li>Git · GitHub Actions CI</li>
-          <li>Tableau · Power BI</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="closing">
-      <p class="slug">Working with AI</p>
-      <div class="prose">
-        <p>Building <em>with</em> LLMs is part of the skill set, and I treat it the same way I treat building <em>on</em> them. I use models to move fast (scaffolding, refactors, a second opinion on a schema) then make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> I made the design calls, ran the pipelines and produced every number here; AI helped the way it does in these projects, with a check on the output and a person accountable for what ships.</p>
-      </div>
-    </div>
-
-    <div class="head" style="margin-top:clamp(3rem,6vw,4.5rem);">
-      <div>
-        <p class="slug">Contact</p>
-        <h2 class="display display--lg">Say<br>hello</h2>
-      </div>
-      <div class="prose">
-        <p>If any of this is close to what your team is working on, I would like to hear about it. Email is the fastest way to reach me, and the repositories are open if you would rather read the code first.</p>
-      </div>
-    </div>
-
-    <div class="contact">
-      <div>
-        <p class="eyebrow">Email</p>
-        <p><a href="mailto:sarvesh2k03@gmail.com">sarvesh2k03@gmail.com</a></p>
-      </div>
-      <div>
-        <p class="eyebrow">GitHub</p>
-        <p><a href="https://github.com/Sarvesh2k03" target="_blank" rel="noopener">Sarvesh2k03</a></p>
-      </div>
-      <div>
-        <p class="eyebrow">LinkedIn</p>
-        <p><a href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">in/skumarag</a></p>
-      </div>
-      <div>
-        <p class="eyebrow">Location</p>
-        <p>Los Angeles, California</p>
-      </div>
-    </div>
+    </dl>
 
     <p class="colophon">Sarvesh Kumar · Archivo &amp; Instrument Sans · Hand-built, hosted on GitHub Pages</p>
   </div>
