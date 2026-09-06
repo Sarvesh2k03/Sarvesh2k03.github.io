@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sarvesh Kumar</title>
+<meta name="description" content="Three shipped AI systems — a RAG that refuses to guess, a support desk that keeps working when the model times out, and a 134k-row pipeline measured with the LLM switched off.">
+<meta property="og:title" content="Sarvesh Kumar">
+<meta property="og:description" content="Three shipped AI systems, with live demos, source, and the numbers behind each.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23F5F1D8'/><text y='.9em' x='50%25' text-anchor='middle' font-size='78' font-family='Archivo,sans-serif' font-weight='900' fill='%2354683E'>S</text></svg>">
+<style>
+/* ─────────────────────────────────────────────
+   TOKENS — light is the base, both themes defined
+   ───────────────────────────────────────────── */
+:root {
+  color-scheme: light dark;
+
+  /* band A — paper */
+  --a-bg:      #F5F1D8;
+  --a-ink:     #2A3320;
+  --a-mute:    #6E7659;
+  --a-display: #55693F;
+  --a-rule:    rgba(42, 51, 32, .20);
+
+  /* band B — sage */
+  --b-bg:      #AFBF8F;
+  --b-ink:     #262F1C;
+  --b-mute:    #4C5739;
+  --b-display: #48592F;
+  --b-rule:    rgba(38, 47, 28, .30);
+  --b-panel:   rgba(72, 89, 47, .16);
+
+  /* band C — olive, the chapters */
+  --c-bg:      #4E6139;
+  --c-ink:     #E9E6CB;
+  --c-mute:    #B5C098;
+  --c-display: #F5F1D8;
+  --c-accent:  #CBDCA4;
+  --c-rule:    rgba(245, 241, 216, .22);
+
+  /* footer */
+  --f-bg:      #1E2416;
+  --f-ink:     #E7E4C8;
+  --f-mute:    #96A07E;
+  --f-rule:    rgba(231, 228, 200, .18);
+
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --pad-x: clamp(1.25rem, 5vw, 6rem);
+  --pad-y: clamp(3.5rem, 9vw, 8rem);
+  --maxw: 1320px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --a-bg: #12160D;  --a-ink: #E0DDC3;  --a-mute: #8E9578;  --a-display: #A9BC85;  --a-rule: rgba(224, 221, 195, .18);
+    --b-bg: #1B2313;  --b-ink: #E3E0C6;  --b-mute: #98A17F;  --b-display: #B6C892;  --b-rule: rgba(227, 224, 198, .20); --b-panel: rgba(182, 200, 146, .10);
+    --c-bg: #26301B;  --c-ink: #E8E5CC;  --c-mute: #A3AF86;  --c-display: #C6D8A2;  --c-accent: #C6D8A2; --c-rule: rgba(232, 229, 204, .20);
+    --f-bg: #0B0E06;  --f-ink: #DCD9BF;  --f-mute: #7F8768;  --f-rule: rgba(220, 217, 191, .16);
+  }
+}
+:root[data-theme="dark"] {
+  --a-bg: #12160D;  --a-ink: #E0DDC3;  --a-mute: #8E9578;  --a-display: #A9BC85;  --a-rule: rgba(224, 221, 195, .18);
+  --b-bg: #1B2313;  --b-ink: #E3E0C6;  --b-mute: #98A17F;  --b-display: #B6C892;  --b-rule: rgba(227, 224, 198, .20); --b-panel: rgba(182, 200, 146, .10);
+  --c-bg: #26301B;  --c-ink: #E8E5CC;  --c-mute: #A3AF86;  --c-display: #C6D8A2;  --c-accent: #C6D8A2; --c-rule: rgba(232, 229, 204, .20);
+  --f-bg: #0B0E06;  --f-ink: #DCD9BF;  --f-mute: #7F8768;  --f-rule: rgba(220, 217, 191, .16);
+}
+
+/* ─────────────────────────────────────────────
+   BASE
+   ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--a-bg);
+  color: var(--a-ink);
+  font-family: var(--body);
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.0625rem);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+::selection { background: var(--c-bg); color: var(--c-display); }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────────
+   BANDS
+   ───────────────────────────────────────────── */
+.band {
+  padding: var(--pad-y) var(--pad-x);
+  background: var(--bg);
+  color: var(--ink);
+}
+.band > .inner { max-width: var(--maxw); margin-inline: auto; }
+
+.band--a { --bg: var(--a-bg); --ink: var(--a-ink); --mute: var(--a-mute); --disp: var(--a-display); --rule: var(--a-rule); }
+.band--b { --bg: var(--b-bg); --ink: var(--b-ink); --mute: var(--b-mute); --disp: var(--b-display); --rule: var(--b-rule); }
+.band--c { --bg: var(--c-bg); --ink: var(--c-ink); --mute: var(--c-mute); --disp: var(--c-display); --rule: var(--c-rule); }
+.band--f { --bg: var(--f-bg); --ink: var(--f-ink); --mute: var(--f-mute); --disp: var(--f-ink);    --rule: var(--f-rule); }
+
+/* ─────────────────────────────────────────────
+   TYPE
+   ───────────────────────────────────────────── */
+.display {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 118, "wght" 900;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.83;
+  letter-spacing: -0.028em;
+  color: var(--disp);
+  margin: 0;
+  text-wrap: balance;
+}
+.display--xl { font-size: clamp(3rem, 9.6vw, 8.5rem); }
+.display--lg { font-size: clamp(2.6rem, 9vw, 7rem); }
+.display--md { font-size: clamp(2.1rem, 6.6vw, 4.6rem); letter-spacing: -0.022em; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin: 0;
+}
+
+.lede {
+  font-size: clamp(1.05rem, 0.95rem + 0.55vw, 1.375rem);
+  line-height: 1.45;
+  max-width: 30ch;
+  margin: 0;
+  font-weight: 500;
+}
+
+.prose { max-width: 62ch; }
+.prose p { margin: 0 0 0.85em; }
+.prose p:last-child { margin-bottom: 0; }
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+.muted { color: var(--mute); }
+
+/* ─────────────────────────────────────────────
+   HERO
+   ───────────────────────────────────────────── */
+.hero { padding-bottom: 0; }
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.85fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: end;
+}
+.hero__type { display: flex; flex-direction: column; gap: clamp(1.4rem, 3vw, 2.5rem); padding-bottom: var(--pad-y); }
+.hero__meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.hero__lede-row { display: grid; gap: clamp(1rem, 2.5vw, 2rem); grid-template-columns: minmax(0, 1fr); }
+.hero__portrait { align-self: end; }
+.hero__portrait img {
+  width: 100%;
+  filter: grayscale(1) contrast(1.06);
+  mix-blend-mode: multiply;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero__portrait img {
+    mix-blend-mode: normal;
+    filter: grayscale(1) contrast(1.02) brightness(.9);
+  }
+}
+:root[data-theme="dark"] .hero__portrait img {
+  mix-blend-mode: normal;
+  filter: grayscale(1) contrast(1.02) brightness(.9);
+}
+
+.jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.jump {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s ease, color .15s ease;
+}
+.jump:hover { border-bottom-color: currentColor; color: var(--disp); }
+
+/* ─────────────────────────────────────────────
+   WHO I AM
+   ───────────────────────────────────────────── */
+.who__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(1.75rem, 4vw, 4rem);
+  margin-top: clamp(1.75rem, 4vw, 3rem);
+  align-items: start;
+}
+.who__panel {
+  background: var(--b-panel);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+.creed { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
+.creed li { display: grid; grid-template-columns: 1.6rem 1fr; gap: 0.65rem; align-items: baseline; }
+.creed b {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--disp);
+}
+
+/* ─────────────────────────────────────────────
+   CHAPTERS
+   ───────────────────────────────────────────── */
+.chapters__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: end;
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.chapter {
+  border-top: 1px solid var(--rule);
+  padding-top: clamp(2rem, 4vw, 3.25rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 3rem);
+}
+.chapter:last-of-type { padding-bottom: 0; }
+
+.chapter__rail { display: flex; flex-direction: column; gap: 0.55rem; }
+.chapter__num {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 118, "wght" 900;
+  font-size: 2.6rem;
+  line-height: 0.8;
+  color: var(--c-accent);
+}
+.chapter__body { display: flex; flex-direction: column; gap: clamp(1.1rem, 2.2vw, 1.6rem); }
+
+.chapter__q {
+  font-size: clamp(1.15rem, 1rem + 0.75vw, 1.6rem);
+  line-height: 1.3;
+  font-weight: 600;
+  max-width: 26ch;
+  margin: 0;
+  color: var(--c-accent);
+}
+
+.chapter__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3.5vw, 3.5rem);
+  align-items: start;
+}
+
+/* evidence spec sheet */
+.spec { margin: 0; border-top: 1px solid var(--rule); }
+.spec__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.spec__k {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.spec__v {
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.spec__v em { font-style: normal; color: var(--c-accent); }
+
+.stack { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0; padding: 0; }
+.stack li {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 0.28rem 0.5rem;
+  border: 1px solid var(--rule);
+  color: var(--mute);
+}
+
+.note {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--c-accent);
+  color: var(--mute);
+  max-width: 58ch;
+}
+.note b { color: var(--ink); font-weight: 600; }
+
+/* actions */
+.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.btn {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color .15s ease, color .15s ease, transform .15s ease;
+}
+.btn--solid { background: var(--c-display); color: var(--c-bg); border-color: var(--c-display); }
+.btn--solid:hover { background: var(--c-accent); border-color: var(--c-accent); transform: translateY(-2px); }
+.btn--ghost { color: var(--ink); }
+.btn--ghost:hover { background: var(--c-display); color: var(--c-bg); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; } }
+
+/* ─────────────────────────────────────────────
+   SKILLS
+   ───────────────────────────────────────────── */
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--rule);
+}
+.skills__col h3 {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--disp);
+  margin: 0 0 0.75rem;
+}
+.skills__col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.skills__col li { font-size: 0.9rem; line-height: 1.4; }
+
+.method {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 3rem);
+}
+
+/* ─────────────────────────────────────────────
+   FOOTER
+   ───────────────────────────────────────────── */
+.contact { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.5rem; margin-top: clamp(1.75rem, 4vw, 2.5rem); padding-top: 1.75rem; border-top: 1px solid var(--rule); }
+.contact a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; transition: border-color .15s ease; }
+.contact a:hover { border-bottom-color: currentColor; }
+.colophon { margin-top: clamp(2.5rem, 5vw, 3.5rem); font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .hero__type { padding-bottom: clamp(2rem, 5vw, 3rem); }
+  .hero__portrait { max-width: 320px; }
+  .who__grid,
+  .chapters__head,
+  .chapter__cols { grid-template-columns: minmax(0, 1fr); }
+  .chapter { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .chapter__rail { flex-direction: row; align-items: baseline; gap: 1rem; }
+  .chapter__num { font-size: 2rem; }
+  .method { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .lede { max-width: none; }
+  .spec__row { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+  .spec__v { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<header class="band band--a hero">
+  <div class="inner hero__inner">
+    <div class="hero__type">
+      <div class="hero__meta">
+        <p class="eyebrow">Sarvesh Kumar</p>
+        <p class="eyebrow">MS Computer Science · USC</p>
+        <p class="eyebrow">Los Angeles</p>
+      </div>
+
+      <h1 class="display display--xl">AI that<br>fails<br>well</h1>
+
+      <div class="hero__lede-row">
+        <p class="lede">Three shipped systems built on one rule: the model is an optimization, never a dependency.</p>
+        <div class="prose">
+          <p>A retrieval system that refuses to answer rather than guess. A support desk that keeps triaging when Gemini times out. A 134,000-row pipeline whose reference run was measured with the LLM switched <em>off</em>.</p>
+          <p>Every one has a live demo, public source, and numbers you can reproduce from the repo.</p>
+        </div>
+      </div>
+
+      <nav class="jumps" aria-label="Sections">
+        <a class="jump" href="#who">Who I am</a>
+        <a class="jump" href="#grounded">01 — Grounded</a>
+        <a class="jump" href="#triage">02 — Triage Desk</a>
+        <a class="jump" href="#nyc311">03 — NYC 311</a>
+        <a class="jump" href="#skills">Skills</a>
+        <a class="jump" href="#contact">Contact</a>
+      </nav>
+    </div>
+
+    <figure class="hero__portrait">
+      <img src="assets/sarvesh.jpg" alt="Portrait of Sarvesh Kumar" width="600" height="900">
+    </figure>
+  </div>
+</header>
+
+<!-- ══════════════ WHO I AM ══════════════ -->
+<section class="band band--b" id="who">
+  <div class="inner">
+    <h2 class="display display--lg">Who I am</h2>
+
+    <div class="who__grid">
+      <div class="prose">
+        <p>I'm a master's student in Computer Science at USC. Before that I replaced a pile of brittle regex with a Llama-based extractor that turned WhatsApp conversations into structured JSON at a Mumbai startup, built demand-forecasting models for a steel manufacturer, and trained a pose-estimation model at NUS that reached 87% accuracy.</p>
+        <p>What I kept running into was the same failure: a demo that works beautifully until the model is slow, rate-limited, or confidently wrong — and then takes the whole product down with it. The three projects here are my answer to that. Each one still does its job when the LLM is unavailable, and each one measures exactly what is lost when it is.</p>
+        <p>That's the thing I'd actually want to be asked about in an interview.</p>
+      </div>
+
+      <div class="who__panel">
+        <p class="eyebrow" style="margin-bottom:1.1rem;">How I build</p>
+        <ul class="creed">
+          <li><b>01</b><span>Measured, not asserted. Every number on this page comes from a run you can reproduce.</span></li>
+          <li><b>02</b><span>Fallbacks are tested code paths, not comments promising a future one.</span></li>
+          <li><b>03</b><span>When the AI degrades, the interface says so. A silent fallback is a bug that looks like a feature.</span></li>
+          <li><b>04</b><span>Declining to answer is a correct answer, and worth engineering for.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CHAPTERS ══════════════ -->
+<main class="band band--c" id="work">
+  <div class="inner">
+
+    <div class="chapters__head">
+      <h2 class="display display--lg">Three<br>problems</h2>
+      <div class="prose">
+        <p>In order: making a model trustworthy, putting it inside a product people use, and running it on a schedule over real data. Each project takes the rule one step further out.</p>
+      </div>
+    </div>
+
+    <!-- ─── 01 ─── -->
+    <article class="chapter" id="grounded">
+      <div class="chapter__rail">
+        <span class="chapter__num">01</span>
+        <p class="eyebrow">The trust problem</p>
+      </div>
+
+      <div class="chapter__body">
+        <h3 class="display display--md">Grounded</h3>
+        <p class="chapter__q">Can a RAG system admit that it doesn't know?</p>
+
+        <div class="chapter__cols">
+          <div class="prose">
+            <p><b>Why I built it.</b> Every retrieval demo I tried answered confidently even when the answer wasn't in the documents. I wanted the opposite failure mode — refuse, and show the passages behind every answer it does give.</p>
+            <p><b>What it is.</b> Question answering over your own PDFs, Markdown and text. Chunking, embeddings, BM25, rank fusion and cross-encoder reranking all run locally; generation resolves to whichever backend has credentials — Gemini, Groq, Anthropic, or a fully offline extractive fallback. Every answer carries inline citations down to the document and page, and the interface marks which retrieved passages the answer actually used versus which it merely had available.</p>
+            <p><b>Try this in the demo.</b> Ask who first walked on the Moon. Then deselect the <code>Apollo Missions</code> document in step 1 and ask again — the same question now returns <em>"I don't know based on the provided documents"</em> instead of assembling something plausible from the other six.</p>
+          </div>
+
+          <div class="chapter__body">
+            <dl class="spec">
+              <div class="spec__row"><dt class="spec__k">Retrieval modes</dt><dd class="spec__v">dense · hybrid · <em>+rerank</em></dd></div>
+              <div class="spec__row"><dt class="spec__k">Generation backends</dt><dd class="spec__v"><em>4</em> — one offline</dd></div>
+              <div class="spec__row"><dt class="spec__k">Citation granularity</dt><dd class="spec__v">document + page</dd></div>
+              <div class="spec__row"><dt class="spec__k">Eval harness</dt><dd class="spec__v">precision@k · MRR<br>abstention accuracy</dd></div>
+              <div class="spec__row"><dt class="spec__k">Mode comparison</dt><dd class="spec__v">paired bootstrap <em>p</em></dd></div>
+              <div class="spec__row"><dt class="spec__k">Re-indexing on filter</dt><dd class="spec__v"><em>none</em> — query-time</dd></div>
+            </dl>
+
+            <ul class="stack">
+              <li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li>
+            </ul>
+
+            <div class="actions">
+              <a class="btn btn--solid" href="https://grounded-rag-nr9dmpzrh79njaamznujzv.streamlit.app/" target="_blank" rel="noopener">Live demo ↗</a>
+              <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── 02 ─── -->
+    <article class="chapter" id="triage">
+      <div class="chapter__rail">
+        <span class="chapter__num">02</span>
+        <p class="eyebrow">The product problem</p>
+      </div>
+
+      <div class="chapter__body">
+        <h3 class="display display--md">Triage Desk</h3>
+        <p class="chapter__q">What happens to the app when the model times out?</p>
+
+        <div class="chapter__cols">
+          <div class="prose">
+            <p><b>Why I built it.</b> A support queue is a bad place for an AI feature to be load-bearing. So the ticket workflow is complete on its own — create, filter, update, resolve — and Gemini only improves it: category, priority, and a one-line summary for the agent.</p>
+            <p><b>What it is.</b> A full-stack support desk. React and Express in TypeScript over Postgres, deployed as a single service so there is one origin and no CORS negotiation between halves. The model call is isolated behind one module, its output validated with Zod, cached by content, rate-limited and deadlined.</p>
+            <p><b>The part I care about.</b> When Gemini is missing, slow, blocked, or returns a payload that fails validation, a deterministic local classifier answers instead and the ticket records which one did it. The UI colours a fallback differently — amber instead of blue — so a broken model configuration can't hide behind a page that loads fine.</p>
+          </div>
+
+          <div class="chapter__body">
+            <dl class="spec">
+              <div class="spec__row"><dt class="spec__k">Tests</dt><dd class="spec__v"><em>200</em></dd></div>
+              <div class="spec__row"><dt class="spec__k">Statement coverage</dt><dd class="spec__v">98.1%</dd></div>
+              <div class="spec__row"><dt class="spec__k">Branch coverage</dt><dd class="spec__v">95.3%</dd></div>
+              <div class="spec__row"><dt class="spec__k">AI failure paths tested</dt><dd class="spec__v"><em>6</em></dd></div>
+              <div class="spec__row"><dt class="spec__k">Test database</dt><dd class="spec__v">pg-mem — real SQL</dd></div>
+              <div class="spec__row"><dt class="spec__k">Deploy</dt><dd class="spec__v">1 service · render.yaml</dd></div>
+            </dl>
+
+            <ul class="stack">
+              <li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li>
+            </ul>
+
+            <p class="note"><b>Before you click:</b> the demo runs on Render's free tier, which sleeps after 15 minutes idle. The first request can take 30–60 seconds to wake it. Once it's up, <code>/api/health</code> reports whether AI triage is actually enabled.</p>
+
+            <div class="actions">
+              <a class="btn btn--solid" href="https://triage-desk-te0v.onrender.com/" target="_blank" rel="noopener">Live demo ↗</a>
+              <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── 03 ─── -->
+    <article class="chapter" id="nyc311">
+      <div class="chapter__rail">
+        <span class="chapter__num">03</span>
+        <p class="eyebrow">The scale problem</p>
+      </div>
+
+      <div class="chapter__body">
+        <h3 class="display display--md">NYC 311<br>AI ETL</h3>
+        <p class="chapter__q">Can an LLM sit inside a nightly pipeline without becoming a single point of failure?</p>
+
+        <div class="chapter__cols">
+          <div class="prose">
+            <p><b>The problem.</b> The same 311 payload arrives from four upstream systems that each name their columns differently. Fuzzy string matching gets the easy ones and quietly gets meaning wrong on the rest: <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, and that is the wrong field. No threshold separates those cases, because the difference is meaning, not spelling.</p>
+            <p><b>What it does.</b> Each column is resolved by the cheapest tier willing to commit to it — human override, exact match, one Claude call for everything left, fuzzy fallback — and every decision is logged with the tier that made it. Two guardrails earn their place: only one column may claim a canonical field, and if a required key doesn't resolve, the task fails loudly rather than loading a table with a hole in it. Airflow runs it daily, dbt builds the marts, and a quality report fails the run on any failed test.</p>
+            <p><b>The measurement.</b> The reference run below was produced with <em>no API key configured</em>. Every LLM call failed to authenticate and fell through to the fallback — the auth failure recorded in the run's quality report — and the pipeline completed normally.</p>
+          </div>
+
+          <div class="chapter__body">
+            <dl class="spec">
+              <div class="spec__row"><dt class="spec__k">Rows loaded</dt><dd class="spec__v"><em>133,993</em></dd></div>
+              <div class="spec__row"><dt class="spec__k">Daily batches</dt><dd class="spec__v">14 · real 311 data</dd></div>
+              <div class="spec__row"><dt class="spec__k">dbt tests</dt><dd class="spec__v">44 · 43 pass · <em>0 fail</em></dd></div>
+              <div class="spec__row"><dt class="spec__k">Mapping precision</dt><dd class="spec__v"><em>100%</em> (63/63)</dd></div>
+              <div class="spec__row"><dt class="spec__k">Columns mis-mapped</dt><dd class="spec__v"><em>0</em></dd></div>
+              <div class="spec__row"><dt class="spec__k">Header decisions / run</dt><dd class="spec__v">83</dd></div>
+              <div class="spec__row"><dt class="spec__k">Full backfill</dt><dd class="spec__v">127 s (9.1 s / batch)</dd></div>
+            </dl>
+
+            <ul class="stack">
+              <li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li>
+            </ul>
+
+            <p class="note"><b>One real finding:</b> a test failed on the first full run — 17 requests were stamped closed exactly 72 hours <em>before</em> they were created. Upstream backdating in the live feed. They aren't dropped (they're real requests and still count as volume) and they aren't let through (six negative durations would drag down every SLA average). They're flagged and their resolution time nulled, with a warning test keeping the rate visible on every run.</p>
+
+            <div class="actions">
+              <a class="btn btn--solid" href="https://nyc311-ai-etl.streamlit.app/" target="_blank" rel="noopener">Live demo ↗</a>
+              <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<!-- ══════════════ SKILLS ══════════════ -->
+<section class="band band--a" id="skills">
+  <div class="inner">
+    <h2 class="display display--lg">What I<br>bring</h2>
+
+    <div class="skills__grid">
+      <div class="skills__col">
+        <h3>AI systems</h3>
+        <ul>
+          <li>Retrieval and RAG evaluation</li>
+          <li>Structured LLM output, schema-validated</li>
+          <li>Grounding, citation, abstention</li>
+          <li>Tiered fallback design</li>
+          <li>Hallucination and refusal measurement</li>
+        </ul>
+      </div>
+      <div class="skills__col">
+        <h3>Data engineering</h3>
+        <ul>
+          <li>Airflow orchestration and backfills</li>
+          <li>dbt models, incremental marts</li>
+          <li>Idempotent loads, data contracts</li>
+          <li>DuckDB · BigQuery · PostgreSQL</li>
+          <li>Data-quality testing and alerting</li>
+        </ul>
+      </div>
+      <div class="skills__col">
+        <h3>Full-stack</h3>
+        <ul>
+          <li>TypeScript · React · Express</li>
+          <li>REST design, validation middleware</li>
+          <li>Single-service deploys</li>
+          <li>Render · Neon · Streamlit</li>
+        </ul>
+      </div>
+      <div class="skills__col">
+        <h3>Testing &amp; evaluation</h3>
+        <ul>
+          <li>Jest · pytest · pg-mem</li>
+          <li>Retrieval metrics, bootstrap significance</li>
+          <li>Coverage aimed at failure paths</li>
+          <li>Reproducible reference runs</li>
+        </ul>
+      </div>
+      <div class="skills__col">
+        <h3>Languages &amp; tools</h3>
+        <ul>
+          <li>Python · TypeScript · SQL · C++</li>
+          <li>AWS · Google Cloud</li>
+          <li>Git · GitHub Actions CI</li>
+          <li>Tableau · Power BI</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="method">
+      <p class="eyebrow">On the AI in this portfolio</p>
+      <div class="prose">
+        <p>I used LLMs here the same way the projects use them: as an accelerant with a check on it. I wrote the architecture decisions, ran the pipelines, and produced the numbers; AI was pointed at the drafts to argue with them — what's weak, what a hiring manager would skip, which claim isn't backed by anything. Nothing on this page is a number I can't reproduce from a repo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="band band--f" id="contact">
+  <div class="inner">
+    <h2 class="display display--md">Let's talk</h2>
+
+    <div class="contact">
+      <div>
+        <p class="eyebrow">Email</p>
+        <p><a href="mailto:sarvesh2k03@gmail.com">sarvesh2k03@gmail.com</a></p>
+      </div>
+      <div>
+        <p class="eyebrow">GitHub</p>
+        <p><a href="https://github.com/Sarvesh2k03" target="_blank" rel="noopener">Sarvesh2k03</a></p>
+      </div>
+      <div>
+        <p class="eyebrow">LinkedIn</p>
+        <p><a href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">in/skumarag</a></p>
+      </div>
+      <div>
+        <p class="eyebrow">Based in</p>
+        <p>Los Angeles, California</p>
+      </div>
+    </div>
+
+    <p class="colophon">Sarvesh Kumar · Archivo &amp; Instrument Sans · Built and hosted on GitHub Pages</p>
+  </div>
+</footer>
+
+</body>
+</html>
