@@ -124,6 +124,12 @@ a { color: inherit; }
   align-items: center;
   gap: 0.7rem;
 }
+.slug__name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--paper);
+}
 .slug::before {
   content: "";
   flex: none;
@@ -464,6 +470,17 @@ a { color: inherit; }
 .more summary:hover { color: var(--fg); }
 .more__body { display: grid; gap: 1.25rem; padding-bottom: 0.5rem; }
 
+.points { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.points li {
+  display: grid;
+  grid-template-columns: 0.7rem minmax(0, 1fr);
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.points li::before { content: "\00B7"; color: var(--mute); font-weight: 700; }
+.points b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
 .stack-label {
   font-family: var(--mono);
   font-size: 0.63rem;
@@ -521,7 +538,7 @@ a { color: inherit; }
   <div class="inner">
     <div class="hero__inner">
       <div class="hero__type">
-        <p class="slug">Sarvesh Kumar · AI/ML Engineer</p>
+        <p class="slug"><span class="slug__name">Sarvesh Kumar</span> · AI/ML Engineer</p>
 
         <h1 class="display display--xl hero__title">AI that<br>holds up</h1>
 
@@ -594,22 +611,15 @@ a { color: inherit; }
           <div class="tile__lead">
             <h3 class="display display--sm tile__title">Grounded</h3>
             <p class="tile__thesis">Retrieval-augmented QA over your own documents, with a citation on every answer and an explicit refusal when the documents don't cover the question.</p>
-            <div class="prose">
-              <p>Ask a question across a set of PDFs or notes and the system retrieves the passages most likely to hold the answer, then generates a response grounded in those passages with inline citations down to the document and page. The part most RAG demos skip is abstention: when retrieval doesn't surface enough evidence, it returns <em>"I don't know based on the provided documents"</em> rather than producing a fluent answer out of whatever happened to be nearby. Embeddings, keyword search and reranking run locally, and generation falls back through several providers to a fully offline backend. Worth trying: ask who first walked on the Moon, deselect the Apollo document, and ask again.</p>
-            </div>
+            <ul class="points">
+              <li><span>Cut hallucination rate to <b>0.0%</b> against a <b>75%</b> extractive baseline, measured on <b>78</b> labelled questions</span></li>
+              <li><span>Reached <b>100% hit@4</b> and <b>0.882 MRR</b> with hybrid retrieval plus cross-encoder reranking</span></li>
+              <li><span>Abstained correctly on all <b>8/8</b> unanswerable questions, where the baseline refused on only <b>25%</b></span></li>
+              <li><span>Ran embeddings, BM25 and reranking locally across <b>4</b> generation backends, one fully offline</span></li>
+            </ul>
           </div>
 
           <div class="tile__side">
-            <div>
-              <p class="stack-label">Results</p>
-              <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Hallucination rate</span><span class="ledger__lead"></span><span class="ledger__v">0.0% · baseline 75%</span></div>
-                <div class="ledger__row"><span class="ledger__k">Abstention accuracy</span><span class="ledger__lead"></span><span class="ledger__v">100% · 8/8</span></div>
-                <div class="ledger__row"><span class="ledger__k">hit@4 with reranking</span><span class="ledger__lead"></span><span class="ledger__v">100%</span></div>
-                <div class="ledger__row"><span class="ledger__k">Evaluated on</span><span class="ledger__lead"></span><span class="ledger__v">78 labelled questions</span></div>
-              </div>
-            </div>
-
             <div>
               <p class="stack-label">Built with</p>
               <ul class="chips"><li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li></ul>
@@ -620,20 +630,25 @@ a { color: inherit; }
               <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">Source code</a>
             </div>
 
+
             <details class="more">
               <summary>Technical detail</summary>
               <div class="more__body">
-                <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Retrieval strategies</span><span class="ledger__lead"></span><span class="ledger__v">3</span></div>
-                <div class="ledger__row"><span class="ledger__k">Generation backends</span><span class="ledger__lead"></span><span class="ledger__v">4 · one offline</span></div>
-                <div class="ledger__row"><span class="ledger__k">Citation depth</span><span class="ledger__lead"></span><span class="ledger__v">doc + page</span></div>
-                <div class="ledger__row"><span class="ledger__k">precision@4</span><span class="ledger__lead"></span><span class="ledger__v">28.2%</span></div>
-                <div class="ledger__row"><span class="ledger__k">MRR</span><span class="ledger__lead"></span><span class="ledger__v">0.882</span></div>
-                <div class="ledger__row"><span class="ledger__k">Retrieval latency p50</span><span class="ledger__lead"></span><span class="ledger__v">5 ms · 47 ms reranked</span></div>
-                <div class="ledger__row"><span class="ledger__k">Answer latency p50</span><span class="ledger__lead"></span><span class="ledger__v">1.31 s</span></div>
+                <div>
+                  <p class="stack-label">How it works</p>
+                  <div class="prose"><p>Ask a question across a set of PDFs or notes and the system retrieves the passages most likely to hold the answer, then generates a response grounded in those passages with inline citations to document and page. Dense vector search, hybrid BM25 fusion and cross-encoder reranking are runtime toggles; generation resolves to Gemini, Groq, Anthropic or an offline extractive backend depending on available credentials.</p></div>
                 </div>
 
-                <p class="aside">Benchmarked against a deliberately hard corpus: 8 cross-referencing documents, 49 chunks, 78 labelled questions of which 8 are unanswerable. Dense, hybrid BM25 fusion and cross-encoder reranking are runtime toggles; chunk size turned out to be the dominant parameter, moving hit@4 from 72.9% to 95.7% (paired bootstrap p = 0.0002). Abstention is measured over 8 unanswerable questions, so it reads as no observed failures rather than a precise rate.</p>
+                <div class="ledger">
+                  <div class="ledger__row"><span class="ledger__k">precision@4</span><span class="ledger__lead"></span><span class="ledger__v">28.2%</span></div>
+                  <div class="ledger__row"><span class="ledger__k">MRR</span><span class="ledger__lead"></span><span class="ledger__v">0.882</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Retrieval latency p50</span><span class="ledger__lead"></span><span class="ledger__v">5 ms · 47 ms reranked</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Answer latency p50</span><span class="ledger__lead"></span><span class="ledger__v">1.31 s</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Citation depth</span><span class="ledger__lead"></span><span class="ledger__v">doc + page</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Re-index on filter</span><span class="ledger__lead"></span><span class="ledger__v">none · query-time</span></div>
+                </div>
+
+                <p class="aside">Benchmarked against a deliberately hard corpus: 8 cross-referencing documents, 49 chunks, 78 labelled questions of which 8 are unanswerable. Chunk size proved the dominant parameter, moving hit@4 from 72.9% to 95.7% (paired bootstrap p = 0.0002). Abstention is measured over 8 unanswerable questions, so it reads as no observed failures rather than a precise rate.</p>
               </div>
             </details>
           </div>
@@ -648,22 +663,15 @@ a { color: inherit; }
           <div class="tile__lead">
             <h3 class="display display--sm tile__title">Triage Desk</h3>
             <p class="tile__thesis">A full-stack support queue where Gemini classifies and summarises tickets, and a deterministic fallback keeps it working when the model can't.</p>
-            <div class="prose">
-              <p>Tickets are classified by category and priority and carry a one line summary, so an agent works the queue by urgency rather than arrival order. The model sits behind one module with a declared schema, a cache and a hard deadline. If it fails, a deterministic classifier answers instead and the ticket records which engine ran.</p>
-            </div>
+            <ul class="points">
+              <li><span>Shipped a React and Express app over PostgreSQL as a <b>single service</b>, one origin and no CORS</span></li>
+              <li><span>Covered <b>6</b> distinct AI failure paths with tests, each returning a usable classification</span></li>
+              <li><span>Reached <b>200 tests</b> at <b>98.1%</b> statement and <b>95.3%</b> branch coverage on a real in-memory Postgres</span></li>
+              <li><span>Recorded the triage source per ticket so a fallback is visible in the interface rather than silent</span></li>
+            </ul>
           </div>
 
           <div class="tile__side">
-            <div>
-              <p class="stack-label">Results</p>
-              <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Tests</span><span class="ledger__lead"></span><span class="ledger__v">200</span></div>
-                <div class="ledger__row"><span class="ledger__k">Statement coverage</span><span class="ledger__lead"></span><span class="ledger__v">98.1%</span></div>
-                <div class="ledger__row"><span class="ledger__k">AI failure paths</span><span class="ledger__lead"></span><span class="ledger__v">6 · all tested</span></div>
-                <div class="ledger__row"><span class="ledger__k">Services deployed</span><span class="ledger__lead"></span><span class="ledger__v">1 · no CORS</span></div>
-              </div>
-            </div>
-
             <div>
               <p class="stack-label">Built with</p>
               <ul class="chips"><li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li></ul>
@@ -674,18 +682,25 @@ a { color: inherit; }
               <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Source code</a>
             </div>
 
-          <p class="aside"><b>Note:</b> the demo sleeps when idle, so the first request can take 30 to 60 seconds to wake.</p>
+            <p class="aside"><b>Note:</b> the demo sleeps when idle, so the first request can take 30 to 60 seconds to wake.</p>
+
             <details class="more">
               <summary>Technical detail</summary>
               <div class="more__body">
-                <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Branch coverage</span><span class="ledger__lead"></span><span class="ledger__v">95.3%</span></div>
-                <div class="ledger__row"><span class="ledger__k">Test database</span><span class="ledger__lead"></span><span class="ledger__v">pg-mem · real SQL</span></div>
-                <div class="ledger__row"><span class="ledger__k">Cache</span><span class="ledger__lead"></span><span class="ledger__v">content-keyed</span></div>
-                <div class="ledger__row"><span class="ledger__k">Model deadline</span><span class="ledger__lead"></span><span class="ledger__v">hard timeout</span></div>
+                <div>
+                  <p class="stack-label">How it works</p>
+                  <div class="prose"><p>Tickets are classified by category and priority and carry a one line summary, so an agent works the queue by urgency rather than arrival order. The model sits behind a single module with a declared schema, a content keyed cache, a rate limit and a hard deadline. If it errors, stalls or returns something that fails validation, a deterministic local classifier answers instead.</p></div>
                 </div>
 
-                <p class="aside">Six failure paths are asserted in the suite: API error, rejected key, schema validation failure, empty response, exceeded deadline and no key configured. All six return a usable classification, and the interface colours a fallback differently so a broken configuration cannot hide behind a page that loads fine.</p>
+                <div class="ledger">
+                  <div class="ledger__row"><span class="ledger__k">Branch coverage</span><span class="ledger__lead"></span><span class="ledger__v">95.3%</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Test database</span><span class="ledger__lead"></span><span class="ledger__v">pg-mem · real SQL</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Cache</span><span class="ledger__lead"></span><span class="ledger__v">content-keyed</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Model deadline</span><span class="ledger__lead"></span><span class="ledger__v">hard timeout</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Services deployed</span><span class="ledger__lead"></span><span class="ledger__v">1 · no CORS</span></div>
+                </div>
+
+                <p class="aside">The six asserted failure paths are API error, rejected key, schema validation failure, empty response, exceeded deadline and no key configured. The interface colours a fallback differently, so a broken model configuration cannot hide behind a page that loads fine.</p>
               </div>
             </details>
           </div>
@@ -700,22 +715,15 @@ a { color: inherit; }
           <div class="tile__lead">
             <h3 class="display display--sm tile__title">NYC 311 <span class="nowrap">AI ETL</span></h3>
             <p class="tile__thesis">An Airflow and dbt pipeline over live NYC 311 data, with an LLM scoped to the column mappings nothing cheaper can resolve.</p>
-            <div class="prose">
-              <p>Four upstream systems publish the same 311 requests under four different column naming conventions. Each column is mapped onto a canonical schema by the cheapest tier that will commit to it: a human override, an exact match, one Claude call, then fuzzy. dbt builds the marts on top, and a quality report fails the run rather than publishing numbers nobody checked.</p>
-            </div>
+            <ul class="points">
+              <li><span>Loaded <b>133,993</b> rows across <b>14</b> daily Airflow batches in <b>127 seconds</b></span></li>
+              <li><span>Resolved <b>83</b> column headers per run at <b>100% precision</b> (63/63) with <b>0</b> columns mis-mapped</span></li>
+              <li><span>Ran <b>44 dbt tests</b> on every batch, with a quality report that fails the run on any failure</span></li>
+              <li><span>Completed the reference backfill with <b>no API key</b>, every model call falling through to the fuzzy tier</span></li>
+            </ul>
           </div>
 
           <div class="tile__side">
-            <div>
-              <p class="stack-label">Results</p>
-              <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Rows loaded</span><span class="ledger__lead"></span><span class="ledger__v">133,993</span></div>
-                <div class="ledger__row"><span class="ledger__k">Mapping precision</span><span class="ledger__lead"></span><span class="ledger__v">100% · 63/63</span></div>
-                <div class="ledger__row"><span class="ledger__k">Columns mis-mapped</span><span class="ledger__lead"></span><span class="ledger__v">0</span></div>
-                <div class="ledger__row"><span class="ledger__k">dbt tests</span><span class="ledger__lead"></span><span class="ledger__v">44 · 43 pass · 0 fail</span></div>
-              </div>
-            </div>
-
             <div>
               <p class="stack-label">Built with</p>
               <ul class="chips"><li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li></ul>
@@ -726,17 +734,24 @@ a { color: inherit; }
               <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">Source code</a>
             </div>
 
+
             <details class="more">
               <summary>Technical detail</summary>
               <div class="more__body">
-                <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Daily batches</span><span class="ledger__lead"></span><span class="ledger__v">14</span></div>
-                <div class="ledger__row"><span class="ledger__k">Backfill wall time</span><span class="ledger__lead"></span><span class="ledger__v">127 s</span></div>
-                <div class="ledger__row"><span class="ledger__k">Header decisions / run</span><span class="ledger__lead"></span><span class="ledger__v">83</span></div>
-                <div class="ledger__row"><span class="ledger__k">Operational columns declined</span><span class="ledger__lead"></span><span class="ledger__v">7 / 7</span></div>
+                <div>
+                  <p class="stack-label">How it works</p>
+                  <div class="prose"><p>Four upstream systems publish the same 311 service requests under four different column naming conventions, so every batch is mapped onto one canonical schema before anything downstream can touch it. Each column goes to the cheapest tier willing to commit to it: a recorded human override, an exact match, one Claude call for the remainder, then fuzzy matching. Every decision is logged with the tier that made it.</p></div>
                 </div>
 
-                <p class="aside">The reference run above was produced with no API key configured, so every model call failed to authenticate and fell through to the fuzzy tier while the pipeline completed normally. One finding from the live feed: 17 requests stamped closed 72 hours before they were created, now flagged and quarantined rather than dropped.</p>
+                <div class="ledger">
+                  <div class="ledger__row"><span class="ledger__k">Daily batches</span><span class="ledger__lead"></span><span class="ledger__v">14</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Backfill wall time</span><span class="ledger__lead"></span><span class="ledger__v">127 s</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Header decisions / run</span><span class="ledger__lead"></span><span class="ledger__v">83</span></div>
+                  <div class="ledger__row"><span class="ledger__k">Operational columns declined</span><span class="ledger__lead"></span><span class="ledger__v">7 / 7</span></div>
+                  <div class="ledger__row"><span class="ledger__k">dbt tests</span><span class="ledger__lead"></span><span class="ledger__v">44 · 43 pass · 0 fail</span></div>
+                </div>
+
+                <p class="aside">One finding from the live feed: 17 requests stamped closed 72 hours before they were created, upstream backdating now flagged and quarantined rather than dropped, with a warning test keeping the rate visible on every run.</p>
               </div>
             </details>
           </div>
