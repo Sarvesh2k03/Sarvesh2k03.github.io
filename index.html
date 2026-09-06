@@ -121,16 +121,24 @@ a { color: inherit; }
 /* section slug, a rule, then the label */
 .slug {
   font-family: var(--mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--mute);
-  margin: 0 0 1.15rem;
+  color: var(--fg);
+  margin: 0 0 1rem;
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.65rem;
 }
+.slug::before {
+  content: "";
+  flex: none;
+  width: 1.5rem;
+  height: 3px;
+  background: currentColor;
+}
+.slug__role { color: var(--mute); font-weight: 500; letter-spacing: 0.16em; font-size: 0.7rem; }
 .slug__name {
   font-size: 0.88rem;
   font-weight: 700;
@@ -239,15 +247,16 @@ a { color: inherit; }
 .subhead {
   margin: clamp(2rem, 4vw, 2.75rem) 0 0.9rem;
   font-family: var(--mono);
-  font-size: 0.67rem;
-  letter-spacing: 0.22em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--mute);
+  color: var(--fg);
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.65rem;
 }
-.subhead::before { content: ""; flex: none; width: 2rem; height: 1px; background: currentColor; opacity: 0.55; }
+.subhead::before { content: ""; flex: none; width: 1.5rem; height: 3px; background: currentColor; }
 
 /* ─── toolkit ─── */
 .kit {
@@ -549,7 +558,7 @@ a { color: inherit; }
   <div class="inner">
     <div class="hero__inner">
       <div class="hero__type">
-        <p class="slug"><span class="slug__name">Sarvesh Kumar</span> · AI/ML Engineer</p>
+        <p class="slug"><span class="slug__name">Sarvesh Kumar</span> <span class="slug__role">· AI/ML Engineer</span></p>
 
         <h1 class="display display--xl hero__title">AI that<br>holds up</h1>
 
