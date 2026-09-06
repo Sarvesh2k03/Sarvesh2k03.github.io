@@ -50,6 +50,8 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
+  hyphens: none;
+  -webkit-hyphens: none;
   background: var(--ground);
   color: var(--paper);
   font-family: var(--body);
@@ -98,7 +100,7 @@ a { color: inherit; }
   margin: 0;
 }
 .prose { max-width: 64ch; }
-.prose p { margin: 0 0 0.8em; text-align: justify; hyphens: auto; }
+.prose p { margin: 0 0 0.8em; text-align: justify; hyphens: none; -webkit-hyphens: none; }
 .prose p:last-child { margin-bottom: 0; }
 .prose code, .chip-inline {
   font-family: var(--mono);
@@ -620,7 +622,7 @@ a { color: inherit; }
               <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Source code</a>
             </div>
 
-          <p class="aside"><b>Heads up:</b> the demo is on Render's free tier, which sleeps after fifteen minutes. The first request can take 30 to 60 seconds to wake it.</p>
+          <p class="aside"><b>Note:</b> the demo sleeps when idle, so the first request can take 30 to 60 seconds to wake.</p>
             <details class="more">
               <summary>Technical detail</summary>
               <div class="more__body">
