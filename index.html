@@ -141,6 +141,16 @@ a { color: inherit; }
   align-items: center;
 }
 .hero__type { display: flex; flex-direction: column; gap: clamp(1.25rem, 2.6vw, 2rem); }
+.tagline {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 116, "wght" 900;
+  font-size: clamp(1.25rem, 2.5vw, 1.85rem);
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  color: var(--mute);
+  margin: -0.4rem 0 0;
+}
 .hero__title { color: var(--fg); }
 .hero__title em { font-style: normal; color: var(--mute); }
 
@@ -497,7 +507,7 @@ a { color: inherit; }
 /* ─── responsive ─── */
 @media (max-width: 900px) {
   .hero__inner { grid-template-columns: minmax(0, 1fr); }
-  .hero__portrait { max-width: 300px; order: -1; }
+  .hero__portrait { max-width: 280px; }
   .head--split { grid-template-columns: minmax(0, 1fr); }
   .tile { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
   .tile__spine {
@@ -521,9 +531,11 @@ a { color: inherit; }
   <div class="inner">
     <div class="hero__inner">
       <div class="hero__type">
-        <p class="slug">Sarvesh Kumar · AI/ML Engineer</p>
+        <p class="slug">AI/ML Engineer · Los Angeles</p>
 
-        <h1 class="display display--xl hero__title">AI that<br>holds up</h1>
+        <h1 class="display display--xl hero__title">Sarvesh<br>Kumar</h1>
+
+        <p class="tagline">AI that holds up</p>
 
         <p class="lede">I build AI systems that turn messy real world data into decisions people can rely on, then prove they still work when the model doesn't.</p>
 
