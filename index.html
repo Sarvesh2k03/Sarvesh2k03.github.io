@@ -322,8 +322,28 @@ a { color: inherit; }
   gap: clamp(0.85rem, 1.7vw, 1.15rem);
   position: relative;
 }
-.toggles { display: flex; flex-direction: column; margin-top: 0.35rem; }
-.tile__foot { margin-top: 0.6rem; }
+.toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 clamp(1.5rem, 3vw, 3rem);
+  margin-top: 0.35rem;
+}
+.tile__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem 1.5rem;
+  margin-top: 0.7rem;
+}
+.tile__foot .chips { flex: 1 1 16rem; }
+.tile__sub {
+  font-family: var(--body);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--mute);
+  margin: -0.35rem 0 0;
+}
 /* Each project owns a colour. The ground never changes; these do. */
 .tile--trust {
   --bg: #EFE9D0; --fg: #2A3420; --mute: #606C4C;
@@ -368,7 +388,6 @@ a { color: inherit; }
   border-right: 1px solid var(--rule);
   padding-right: 0.7rem;
 }
-
 
 .tile__title { color: var(--fg); }
 .tile__thesis {
@@ -593,19 +612,15 @@ a { color: inherit; }
 
         <div class="tile__body">
           <h3 class="display display--sm tile__title">Grounded</h3>
-          <p class="tile__thesis">Retrieval-augmented QA over your own documents. Cites every answer, and refuses when the documents don't cover the question.</p>
+          <p class="tile__sub">Ask questions about your own documents and check every answer</p>
+          <p class="tile__thesis">Retrieval-augmented QA with inline citations to document and page, and an explicit refusal when the retrieved passages don't support an answer.</p>
 
           <ul class="points">
             <li><b>100% hit@4</b> across <b>78</b> labelled questions with cross-encoder reranking</li>
             <li>Refused all <b>8</b> unanswerable questions; the offline baseline answered <b>6</b></li>
             <li>Local embeddings, BM25 and reranking across <b>4</b> generation backends</li>
+            <li><b>0.882 MRR</b> and <b>28.2% precision@4</b> on a deliberately hard corpus</li>
           </ul>
-
-          <div>
-            <p class="stack-label">Built with</p>
-            <ul class="chips"><li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li></ul>
-          </div>
-
 
           <div class="toggles">
             <details class="more">
@@ -632,6 +647,7 @@ a { color: inherit; }
           </div>
 
           <div class="tile__foot">
+            <ul class="chips"><li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li></ul>
             <div class="actions">
               <a class="btn btn--solid" href="https://grounded-rag-nr9dmpzrh79njaamznujzv.streamlit.app/" target="_blank" rel="noopener">Try the live demo</a>
               <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">Source code</a>
@@ -646,18 +662,15 @@ a { color: inherit; }
 
         <div class="tile__body">
           <h3 class="display display--sm tile__title">Triage Desk</h3>
-          <p class="tile__thesis">A support queue where Gemini classifies and summarises tickets, and a deterministic fallback keeps it working when the model can't.</p>
+          <p class="tile__sub">Sort and summarise a customer support queue</p>
+          <p class="tile__thesis">Gemini classifies and summarises tickets behind a schema-validated module, with a deterministic classifier taking over whenever the model can't answer.</p>
 
           <ul class="points">
             <li><b>200 tests</b> at <b>98.1%</b> statement and <b>95.3%</b> branch coverage</li>
             <li><b>6</b> AI failure paths tested, each returning a usable classification</li>
             <li>React, Express and Postgres shipped as a <b>single service</b>, one origin</li>
+            <li>Ticket workflow stays complete when the AI is switched off entirely</li>
           </ul>
-
-          <div>
-            <p class="stack-label">Built with</p>
-            <ul class="chips"><li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li></ul>
-          </div>
 
           <p class="aside"><b>Note:</b> the demo sleeps when idle, so the first request can take 30 to 60 seconds to wake.</p>
 
@@ -685,6 +698,7 @@ a { color: inherit; }
           </div>
 
           <div class="tile__foot">
+            <ul class="chips"><li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li></ul>
             <div class="actions">
               <a class="btn btn--solid" href="https://triage-desk-te0v.onrender.com/" target="_blank" rel="noopener">Try the live demo</a>
               <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Source code</a>
@@ -699,19 +713,15 @@ a { color: inherit; }
 
         <div class="tile__body">
           <h3 class="display display--sm tile__title">NYC 311 <span class="nowrap">AI ETL</span></h3>
+          <p class="tile__sub">Clean, map and test public data on a nightly schedule</p>
           <p class="tile__thesis">An Airflow and dbt pipeline over live NYC 311 data, with an LLM scoped to the column mappings nothing cheaper can resolve.</p>
 
           <ul class="points">
             <li><b>133,993</b> rows across <b>14</b> daily Airflow batches in <b>127 seconds</b></li>
             <li><b>83</b> headers mapped per run, <b>63 of 63</b> correct, <b>0</b> mis-mapped</li>
             <li><b>44 dbt tests</b> per batch; the reference run completed with <b>no API key</b></li>
+            <li>Caught <b>17</b> records closed before they were created, flagged not dropped</li>
           </ul>
-
-          <div>
-            <p class="stack-label">Built with</p>
-            <ul class="chips"><li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li></ul>
-          </div>
-
 
           <div class="toggles">
             <details class="more">
@@ -737,6 +747,7 @@ a { color: inherit; }
           </div>
 
           <div class="tile__foot">
+            <ul class="chips"><li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li></ul>
             <div class="actions">
               <a class="btn btn--solid" href="https://nyc311-ai-etl.streamlit.app/" target="_blank" rel="noopener">Try the live demo</a>
               <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">Source code</a>
