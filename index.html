@@ -175,6 +175,29 @@ a { color: inherit; }
 .fact dt { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); }
 .fact dd { margin: 0.3rem 0 0; font-size: 0.92rem; font-weight: 500; line-height: 1.35; }
 
+/* ─── experience / education ─── */
+.cv { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); }
+.cv__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--rule);
+}
+.cv__row:last-child { border-bottom: 1px solid var(--rule); }
+.cv__what { display: grid; gap: 0.15rem; }
+.cv__role { font-size: 1rem; font-weight: 600; line-height: 1.3; }
+.cv__note { font-size: 0.88rem; line-height: 1.4; color: var(--mute); }
+.cv__when {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--mute);
+  white-space: nowrap;
+}
+
 /* ─── section heads ─── */
 .head {
   display: grid;
@@ -206,7 +229,6 @@ a { color: inherit; }
   gap: clamp(1.25rem, 2.8vw, 2.75rem) clamp(1.5rem, 3.2vw, 3.25rem);
   align-items: start;
 }
-.tile__body > .drop { grid-column: 1 / -1; }
 /* Each project owns a colour. The ground never changes; these do. */
 .tile--trust {
   --bg: #EFE9D0; --fg: #2A3420; --mute: #626E4E;
@@ -262,35 +284,6 @@ a { color: inherit; }
   margin: 0;
   max-width: 34ch;
 }
-
-/* the drop test — the signature block */
-.drop {
-  border-top: 1px solid var(--rule);
-  padding-top: clamp(1rem, 2.2vw, 1.4rem);
-  display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr);
-  gap: 0.75rem clamp(1.5rem, 3.2vw, 3.25rem);
-  align-items: start;
-}
-.drop > .drop__label { grid-row: span 2; }
-.drop__label {
-  font-family: var(--display);
-  font-variation-settings: "wdth" 116, "wght" 900;
-  font-size: clamp(1.05rem, 2vw, 1.5rem);
-  line-height: 0.9;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  margin: 0;
-}
-.drop__row { display: grid; grid-template-columns: 4.25rem minmax(0, 1fr); gap: 0.9rem; align-items: baseline; margin: 0; }
-.drop__row dt {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--mute);
-}
-.drop__row dd { margin: 0; font-size: 0.9rem; line-height: 1.45; }
 
 /* ledger with leader dots */
 .ledger { margin: 0; display: grid; gap: 0.1rem; }
@@ -478,7 +471,7 @@ a { color: inherit; }
           <a class="btn btn--solid" href="#work">View projects ↓</a>
           <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03" target="_blank" rel="noopener">GitHub ↗</a>
           <a class="btn btn--ghost" href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">LinkedIn ↗</a>
-          <a class="btn btn--ghost" href="mailto:sarvesh2k03@gmail.com">Email</a>
+          <a class="btn btn--ghost" href="mailto:sarvesh2k03@gmail.com">Email me</a>
         </div>
       </div>
 
@@ -498,6 +491,10 @@ a { color: inherit; }
         <dd>GenAI at Mayaa · ML at TAIIN Steel · Deep learning research at NUS</dd>
       </div>
       <div class="fact">
+        <dt>Looking for</dt>
+        <dd>Internship and new-grad roles in AI/ML engineering and data platforms</dd>
+      </div>
+      <div class="fact">
         <dt>Working on</dt>
         <dd>Retrieval systems, LLM evaluation, and data pipelines that don't lie to you</dd>
       </div>
@@ -515,11 +512,10 @@ a { color: inherit; }
     <div class="head">
       <div>
         <p class="slug">The work</p>
-        <h2 class="display display--lg">Built,<br>then broken</h2>
+        <h2 class="display display--lg">Selected<br>work</h2>
       </div>
       <div class="prose">
-        <p>Anyone can show you a demo on a good day. So each of these three carries a <b>drop test</b>: the failure I induced on purpose, and what the system did about it. Removing the source document. Pulling the API key mid-session. Running a fourteen-day backfill with no credentials at all.</p>
-        <p>The demo is the easy half. What follows is the half I'd want to be asked about.</p>
+        <p>Three systems, each one built so the model is an upgrade rather than a dependency — and each one measured to prove it. Every demo below is live, every repo is public, and every number comes from a command in the README.</p>
       </div>
     </div>
 
@@ -535,7 +531,7 @@ a { color: inherit; }
           <h3 class="display display--sm tile__title">Grounded</h3>
           <p class="tile__thesis">Answers that cite their sources — and an "I don't know" when the sources don't cover the question.</p>
           <div class="prose">
-            <p>Every retrieval demo I tried answered confidently even when the answer wasn't in the documents. This one is built for the opposite failure. Chunking, embeddings, BM25 and reranking run locally; generation resolves to whichever backend has credentials, down to a fully offline extractive fallback. Each answer carries citations to document and page, and the interface separates the passages it actually used from the ones it merely retrieved.</p>
+            <p>Chunking, embeddings, BM25 and reranking run locally; generation resolves to whichever backend has credentials, down to a fully offline fallback. Answers cite document and page, and when the retrieved passages don't cover the question it says so instead of improvising — measured as abstention accuracy, not assumed.</p>
           </div>
         </div>
 
@@ -559,18 +555,6 @@ a { color: inherit; }
             <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
-
-          <div class="drop">
-            <p class="drop__label">↓ Drop test</p>
-            <dl class="drop__row">
-              <dt>Broke</dt>
-              <dd>Deselected the one document that contained the answer, then asked the same question again.</dd>
-            </dl>
-            <dl class="drop__row">
-              <dt>Held</dt>
-              <dd>Returned <em>"I don't know based on the provided documents"</em> rather than assembling something plausible from the other six. You can run this yourself in the demo, in about fifteen seconds.</dd>
-            </dl>
-          </div>
         </div>
       </article>
 
@@ -584,7 +568,7 @@ a { color: inherit; }
           <h3 class="display display--sm tile__title">Triage Desk</h3>
           <p class="tile__thesis">A support queue where the AI is an upgrade, never a dependency.</p>
           <div class="prose">
-            <p>A support queue is a bad place for a model to be load-bearing. So the ticket workflow is complete on its own — create, filter, update, resolve — and Gemini only adds a category, a priority and a one-line summary for the agent. The model call lives behind a single module with a schema, a cache, a rate limit and a hard deadline. React and Express in TypeScript over Postgres, shipped as one service so there's one origin and nothing to negotiate.</p>
+            <p>The ticket workflow is complete without AI — create, filter, update, resolve — and Gemini adds a category, priority and summary on top. When the model errors, stalls or returns something invalid, a deterministic classifier answers instead, the ticket records which engine ran, and the panel changes colour so a broken config can't hide.</p>
           </div>
         </div>
 
@@ -609,18 +593,6 @@ a { color: inherit; }
             <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
-
-          <div class="drop">
-            <p class="drop__label">↓ Drop test</p>
-            <dl class="drop__row">
-              <dt>Broke</dt>
-              <dd>Pulled the API key, rejected it, emptied the response, malformed the JSON, and let the model blow past its deadline.</dd>
-            </dl>
-            <dl class="drop__row">
-              <dt>Held</dt>
-              <dd>All six paths return a usable classification from a deterministic local classifier. The ticket records which engine answered and the panel turns amber, so a broken model config can't hide behind a page that loads fine.</dd>
-            </dl>
-          </div>
         </div>
       </article>
 
@@ -634,7 +606,7 @@ a { color: inherit; }
           <h3 class="display display--sm tile__title">NYC 311 <span class="nowrap">AI ETL</span></h3>
           <p class="tile__thesis">An LLM inside a nightly pipeline, scoped to the thirteen columns nothing cheaper can resolve.</p>
           <div class="prose">
-            <p>The same 311 payload arrives from four systems that each name their columns differently. Fuzzy matching handles the easy ones and quietly gets meaning wrong on the rest — <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, which is the wrong field, and no threshold separates them because the difference is meaning, not spelling. So each column goes to the cheapest tier that will commit to it: a human override, an exact match, one Claude call for the remainder, then fuzzy. Every decision is logged with the tier that made it.</p>
+            <p>The same 311 payload arrives from four systems that each name their columns differently, and fuzzy matching quietly gets meaning wrong — <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, the wrong field. Each column goes to the cheapest tier that will commit to it: override, exact match, one Claude call, then fuzzy. The reference run completed with no API key at all.</p>
           </div>
         </div>
 
@@ -660,18 +632,6 @@ a { color: inherit; }
             <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">Read the source</a>
           </div>
         </div>
-
-          <div class="drop">
-            <p class="drop__label">↓ Drop test</p>
-            <dl class="drop__row">
-              <dt>Broke</dt>
-              <dd>Ran the entire fourteen-day backfill with no API key configured at all.</dd>
-            </dl>
-            <dl class="drop__row">
-              <dt>Held</dt>
-              <dd>Every LLM call failed to authenticate and fell through to the fuzzy tier. 133,993 rows landed, 43 of 44 dbt tests passed, zero columns were mis-mapped — and the auth failure is recorded in the run's own quality report rather than swallowed.</dd>
-            </dl>
-          </div>
         </div>
       </article>
 
@@ -679,16 +639,69 @@ a { color: inherit; }
   </div>
 </main>
 
+<!-- ════════ BACKGROUND ════════ -->
+<section class="band" id="background">
+  <div class="inner">
+    <div class="head">
+      <div>
+        <p class="slug">Background</p>
+        <h2 class="display display--lg">Where<br>I've been</h2>
+      </div>
+      <div class="prose">
+        <p>Three internships across generative AI, applied machine learning and deep-learning research — in Mumbai, remote, and Singapore — before starting the master's at USC.</p>
+      </div>
+    </div>
+
+    <div class="cv">
+      <div class="cv__row">
+        <div class="cv__what">
+          <span class="cv__role">GenAI Intern · Mayaa</span>
+          <span class="cv__note">Built a Llama 4 Scout pipeline turning unstructured WhatsApp customer data into JSON, replacing legacy regex; deployed on AWS with cost optimisation. Mumbai, India.</span>
+        </div>
+        <span class="cv__when">Apr – Aug 2025</span>
+      </div>
+      <div class="cv__row">
+        <div class="cv__what">
+          <span class="cv__role">Machine Learning Intern · TAIIN Steel Fab &amp; Infra</span>
+          <span class="cv__note">Neural-network demand forecasting and a custom optimisation algorithm for transport logistics, with scalability recommendations to the operations team. Remote, India.</span>
+        </div>
+        <span class="cv__when">Sep 2024 – Mar 2025</span>
+      </div>
+      <div class="cv__row">
+        <div class="cv__what">
+          <span class="cv__role">Deep Learning Research Intern · National University of Singapore</span>
+          <span class="cv__note">Custom YOLO model for human pose recognition at 87% accuracy — the highest recorded for that architecture on the task — deployed on AWS for production use.</span>
+        </div>
+        <span class="cv__when">Jun – Jul 2024</span>
+      </div>
+      <div class="cv__row">
+        <div class="cv__what">
+          <span class="cv__role">MS Computer Science · University of Southern California</span>
+          <span class="cv__note">Los Angeles, California.</span>
+        </div>
+        <span class="cv__when">2025 – present</span>
+      </div>
+      <div class="cv__row">
+        <div class="cv__what">
+          <span class="cv__role">BTech Computer Science · SRM Institute of Science and Technology</span>
+          <span class="cv__note">Chennai, India.</span>
+        </div>
+        <span class="cv__when">2021 – 2025</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ════════ HOW I BUILD ════════ -->
 <section class="band" id="how">
   <div class="inner">
     <div class="head">
       <div>
         <p class="slug">Method</p>
-        <h2 class="display display--lg">House<br>rules</h2>
+        <h2 class="display display--lg">How I<br>build</h2>
       </div>
       <div class="prose">
-        <p>The same five decisions turn up in all three projects, in the same order. This is the part I'd defend in a design review — and the reason the numbers above exist at all.</p>
+        <p>Four decisions that turn up in all three projects, in the same order. They are the reason the numbers above exist.</p>
       </div>
     </div>
 
@@ -697,8 +710,7 @@ a { color: inherit; }
         <span class="rule-item__n">01</span>
         <div>
           <h3>Decide what happens without the model, first.</h3>
-          <div class="prose"><p>Before I write a prompt I write the version that has no model in it. That's what makes the AI safe to add — and it means I can tell you what the model is actually worth, because I've run the system both ways.</p></div>
-          <p class="rule-item__proof"><b>Proof:</b> the 311 reference run — 133,993 rows, 44 tests — completed with no API key configured at all.</p>
+          <div class="prose"><p>I write the version with no model in it before I write a prompt. That's what makes the AI safe to add, and it's why I can say what the model is actually worth — I've run the system both ways.</p></div>
         </div>
       </article>
 
@@ -706,35 +718,23 @@ a { color: inherit; }
         <span class="rule-item__n">02</span>
         <div>
           <h3>Make the model commit to a shape, then check the meaning.</h3>
-          <div class="prose"><p>Free text is not an interface. Every call returns structured JSON against a declared schema, validated before anything touches a database — and validated for sense, not just syntax. A proposal naming a field that doesn't exist becomes a caught error instead of a corrupted column.</p></div>
-          <p class="rule-item__proof"><b>Proof:</b> six distinct AI-failure paths under test in Triage Desk, all six returning a usable classification.</p>
+          <div class="prose"><p>Every call returns structured JSON against a declared schema, validated before it touches a database — and validated for sense, not just syntax. A proposal naming a field that doesn't exist becomes a caught error, not a corrupted column.</p></div>
         </div>
       </article>
 
       <article class="rule-item">
         <span class="rule-item__n">03</span>
         <div>
-          <h3>Measure against ground truth, not vibes.</h3>
-          <div class="prose"><p>"Seems accurate" is not a result. Writing down the true column mapping turned accuracy into arithmetic — which is how I know the cheap tier is 100% precise on what it commits to, and exactly which 13 columns need an LLM. That number is the argument for the LLM tier, and the reason it's scoped to those 13.</p></div>
-          <p class="rule-item__proof"><b>Proof:</b> Grounded's harness reports precision@k, evidence recall@k, MRR, abstention accuracy and hallucination rate.</p>
+          <h3>Measure against ground truth.</h3>
+          <div class="prose"><p>"Seems accurate" isn't a result. Writing down the correct answer turns accuracy into arithmetic — which is how I know the cheap tier is 100% precise on what it commits to, and exactly which columns need a model at all.</p></div>
         </div>
       </article>
 
       <article class="rule-item">
         <span class="rule-item__n">04</span>
         <div>
-          <h3>Put the degradation where someone can see it.</h3>
-          <div class="prose"><p>A silent fallback is a bug wearing a feature's clothes — the page loads, the answer looks fine, and a broken model configuration survives to production. So the interface says which engine answered, and an answer that isn't in the documents comes back as a refusal rather than a paraphrase.</p></div>
-          <p class="rule-item__proof"><b>Proof:</b> ticket records its triage source and the panel changes colour; Grounded marks cited passages separately from merely retrieved ones.</p>
-        </div>
-      </article>
-
-      <article class="rule-item">
-        <span class="rule-item__n">05</span>
-        <div>
-          <h3>Leave it reproducible, including the bad news.</h3>
-          <div class="prose"><p>Every figure here comes from a command in a README. That includes the findings I'd rather not advertise — the 17 backdated requests are documented next to the test that caught them. Work that can't be re-run is a claim, not a result.</p></div>
-          <p class="rule-item__proof"><b>Proof:</b> <code>make backfill</code> · <code>npm run test:coverage</code> · <code>python -m grounded.evaluate</code> — and two of the three repos run with no API key.</p>
+          <h3>Make the degradation visible, and the run reproducible.</h3>
+          <div class="prose"><p>A silent fallback is a bug wearing a feature's clothes, so the interface always says which engine answered. And every figure on this page comes from a command in a README — <code>make backfill</code>, <code>npm run test:coverage</code>, <code>python -m grounded.evaluate</code>.</p></div>
         </div>
       </article>
     </div>
@@ -804,8 +804,7 @@ a { color: inherit; }
     <div class="closing">
       <p class="slug">Working with AI</p>
       <div class="prose">
-        <p>Building <em>with</em> LLMs is part of the skill set, and I treat it with the same discipline as building <em>on</em> them. I use models to move fast — scaffolding, refactors, a second opinion on a schema at midnight — and then make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> That loop is genuinely fast, and it is not a substitute for knowing why the architecture is shaped the way it is.</p>
-        <p>I made the design calls, ran the pipelines, and produced every number here. Where AI helped, it helped the way it does in these projects — with a check on the output and a human accountable for what ships.</p>
+        <p>Building <em>with</em> LLMs is part of the skill set, and I treat it the same way I treat building <em>on</em> them. I use models to move fast — scaffolding, refactors, a second opinion on a schema — then make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> I made the design calls, ran the pipelines and produced every number here; AI helped the way it does in these projects, with a check on the output and a person accountable for what ships.</p>
       </div>
     </div>
 
