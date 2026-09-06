@@ -120,18 +120,30 @@ a { color: inherit; }
 
 /* section slug, a rule, then the label */
 .slug {
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--fg);
-  margin: 0 0 1rem;
-  display: flex;
+  width: fit-content;
+  display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  background: var(--paper);
+  color: var(--ground);
+  padding: 0.42rem 0.72rem 0.38rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 1.1rem;
 }
-.slug::before {
+.slug::before { content: none; }
+
+/* the hero label stays plain text, not a tag */
+.slug--plain {
+  background: none;
+  color: var(--fg);
+  padding: 0;
+  gap: 0.65rem;
+  font-size: 0.78rem;
+}
+.slug--plain::before {
   content: "";
   flex: none;
   width: 1.5rem;
@@ -245,18 +257,20 @@ a { color: inherit; }
   text-align: right;
 }
 .subhead {
-  margin: clamp(2rem, 4vw, 2.75rem) 0 0.9rem;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  margin: clamp(2rem, 4vw, 2.75rem) 0 1rem;
+  padding: 0.36rem 0.65rem 0.32rem;
+  border: 1px solid var(--rule);
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg);
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
 }
-.subhead::before { content: ""; flex: none; width: 1.5rem; height: 3px; background: currentColor; }
+.subhead::before { content: none; }
 
 /* ─── toolkit ─── */
 .kit {
@@ -558,7 +572,7 @@ a { color: inherit; }
   <div class="inner">
     <div class="hero__inner">
       <div class="hero__type">
-        <p class="slug"><span class="slug__name">Sarvesh Kumar</span> <span class="slug__role">· AI/ML Engineer</span></p>
+        <p class="slug slug--plain"><span class="slug__name">Sarvesh Kumar</span> <span class="slug__role">· AI/ML Engineer</span></p>
 
         <h1 class="display display--xl hero__title">AI that<br>holds up</h1>
 
