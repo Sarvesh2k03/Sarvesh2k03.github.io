@@ -340,15 +340,15 @@ a { color: inherit; }
 }
 /* Each project owns a colour. The ground never changes; these do. */
 .tile--trust {
-  --bg: #EFE9D0; --fg: #2A3420; --mute: #626E4E;
+  --bg: #EFE9D0; --fg: #2A3420; --mute: #606C4C;
   --rule: rgba(42, 52, 32, .26); --solid-bg: #2A3420; --solid-fg: #EFE9D0;
 }
 .tile--product {
-  --bg: #B2C091; --fg: #232D18; --mute: #4B5737;
+  --bg: #B2C091; --fg: #232D18; --mute: #414D2D;
   --rule: rgba(35, 45, 24, .32); --solid-bg: #232D18; --solid-fg: #B2C091;
 }
 .tile--pipeline {
-  --bg: #DFBE87; --fg: #33290F; --mute: #6E5A2F;
+  --bg: #DFBE87; --fg: #33290F; --mute: #604C21;
   --rule: rgba(51, 41, 15, .32); --solid-bg: #33290F; --solid-fg: #DFBE87;
 }
 
@@ -601,6 +601,16 @@ a { color: inherit; }
 
           <div class="tile__side">
             <div>
+              <p class="stack-label">Results</p>
+              <div class="ledger">
+                <div class="ledger__row"><span class="ledger__k">Hallucination rate</span><span class="ledger__lead"></span><span class="ledger__v">0.0% · baseline 75%</span></div>
+                <div class="ledger__row"><span class="ledger__k">Abstention accuracy</span><span class="ledger__lead"></span><span class="ledger__v">100% · 8/8</span></div>
+                <div class="ledger__row"><span class="ledger__k">hit@4 with reranking</span><span class="ledger__lead"></span><span class="ledger__v">100%</span></div>
+                <div class="ledger__row"><span class="ledger__k">Evaluated on</span><span class="ledger__lead"></span><span class="ledger__v">78 labelled questions</span></div>
+              </div>
+            </div>
+
+            <div>
               <p class="stack-label">Built with</p>
               <ul class="chips"><li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li></ul>
             </div>
@@ -617,12 +627,13 @@ a { color: inherit; }
                 <div class="ledger__row"><span class="ledger__k">Retrieval strategies</span><span class="ledger__lead"></span><span class="ledger__v">3</span></div>
                 <div class="ledger__row"><span class="ledger__k">Generation backends</span><span class="ledger__lead"></span><span class="ledger__v">4 · one offline</span></div>
                 <div class="ledger__row"><span class="ledger__k">Citation depth</span><span class="ledger__lead"></span><span class="ledger__v">doc + page</span></div>
-                <div class="ledger__row"><span class="ledger__k">Scored on</span><span class="ledger__lead"></span><span class="ledger__v">precision@k · MRR</span></div>
-                <div class="ledger__row"><span class="ledger__k">Abstention</span><span class="ledger__lead"></span><span class="ledger__v">measured, not assumed</span></div>
-                <div class="ledger__row"><span class="ledger__k">Significance</span><span class="ledger__lead"></span><span class="ledger__v">paired bootstrap</span></div>
-                <div class="ledger__row"><span class="ledger__k">Re-index on filter</span><span class="ledger__lead"></span><span class="ledger__v">none · query-time</span></div>
+                <div class="ledger__row"><span class="ledger__k">precision@4</span><span class="ledger__lead"></span><span class="ledger__v">28.2%</span></div>
+                <div class="ledger__row"><span class="ledger__k">MRR</span><span class="ledger__lead"></span><span class="ledger__v">0.882</span></div>
+                <div class="ledger__row"><span class="ledger__k">Retrieval latency p50</span><span class="ledger__lead"></span><span class="ledger__v">5 ms · 47 ms reranked</span></div>
+                <div class="ledger__row"><span class="ledger__k">Answer latency p50</span><span class="ledger__lead"></span><span class="ledger__v">1.31 s</span></div>
                 </div>
-              <p class="aside">Dense vector search, hybrid BM25 fusion and cross-encoder reranking all run locally; generation resolves to Gemini, Groq, Anthropic or an offline extractive backend depending on available credentials. Evaluated with an offline harness reporting precision@k, evidence recall@k, MRR, abstention accuracy and hallucination rate, with paired bootstrap p-values on every mode comparison.</p>
+
+                <p class="aside">Benchmarked against a deliberately hard corpus: 8 cross-referencing documents, 49 chunks, 78 labelled questions of which 8 are unanswerable. Dense, hybrid BM25 fusion and cross-encoder reranking are runtime toggles; chunk size turned out to be the dominant parameter, moving hit@4 from 72.9% to 95.7% (paired bootstrap p = 0.0002). Abstention is measured over 8 unanswerable questions, so it reads as no observed failures rather than a precise rate.</p>
               </div>
             </details>
           </div>
@@ -638,11 +649,21 @@ a { color: inherit; }
             <h3 class="display display--sm tile__title">Triage Desk</h3>
             <p class="tile__thesis">A full-stack support queue where Gemini classifies and summarises tickets, and a deterministic fallback keeps it working when the model can't.</p>
             <div class="prose">
-              <p>Tickets arrive, get classified by category and priority, and carry a one line summary, so an agent works the queue by urgency rather than by arrival order. The model sits behind a single module with a declared schema, a content keyed cache, a rate limit and a hard deadline. If it errors, stalls, or returns something that fails validation, a deterministic local classifier answers instead. Each ticket records which engine produced its result and the interface colours a fallback differently, so a broken model configuration cannot hide behind a page that loads fine.</p>
+              <p>Tickets are classified by category and priority and carry a one line summary, so an agent works the queue by urgency rather than arrival order. The model sits behind one module with a declared schema, a cache and a hard deadline. If it fails, a deterministic classifier answers instead and the ticket records which engine ran.</p>
             </div>
           </div>
 
           <div class="tile__side">
+            <div>
+              <p class="stack-label">Results</p>
+              <div class="ledger">
+                <div class="ledger__row"><span class="ledger__k">Tests</span><span class="ledger__lead"></span><span class="ledger__v">200</span></div>
+                <div class="ledger__row"><span class="ledger__k">Statement coverage</span><span class="ledger__lead"></span><span class="ledger__v">98.1%</span></div>
+                <div class="ledger__row"><span class="ledger__k">AI failure paths</span><span class="ledger__lead"></span><span class="ledger__v">6 · all tested</span></div>
+                <div class="ledger__row"><span class="ledger__k">Services deployed</span><span class="ledger__lead"></span><span class="ledger__v">1 · no CORS</span></div>
+              </div>
+            </div>
+
             <div>
               <p class="stack-label">Built with</p>
               <ul class="chips"><li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li></ul>
@@ -658,14 +679,13 @@ a { color: inherit; }
               <summary>Technical detail</summary>
               <div class="more__body">
                 <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Tests</span><span class="ledger__lead"></span><span class="ledger__v">200</span></div>
-                <div class="ledger__row"><span class="ledger__k">Statement coverage</span><span class="ledger__lead"></span><span class="ledger__v">98.1%</span></div>
                 <div class="ledger__row"><span class="ledger__k">Branch coverage</span><span class="ledger__lead"></span><span class="ledger__v">95.3%</span></div>
-                <div class="ledger__row"><span class="ledger__k">AI failure paths</span><span class="ledger__lead"></span><span class="ledger__v">6 · all tested</span></div>
                 <div class="ledger__row"><span class="ledger__k">Test database</span><span class="ledger__lead"></span><span class="ledger__v">pg-mem · real SQL</span></div>
-                <div class="ledger__row"><span class="ledger__k">Services deployed</span><span class="ledger__lead"></span><span class="ledger__v">1 · no CORS</span></div>
+                <div class="ledger__row"><span class="ledger__k">Cache</span><span class="ledger__lead"></span><span class="ledger__v">content-keyed</span></div>
+                <div class="ledger__row"><span class="ledger__k">Model deadline</span><span class="ledger__lead"></span><span class="ledger__v">hard timeout</span></div>
                 </div>
-              <p class="aside">The model call is isolated behind one module with a declared schema, server side validation, a content keyed cache, a rate limit and a hard deadline. Six failure paths are asserted in the suite: API error, rejected key, schema validation failure, empty response, exceeded deadline and no key configured. All six return a usable classification.</p>
+
+                <p class="aside">Six failure paths are asserted in the suite: API error, rejected key, schema validation failure, empty response, exceeded deadline and no key configured. All six return a usable classification, and the interface colours a fallback differently so a broken configuration cannot hide behind a page that loads fine.</p>
               </div>
             </details>
           </div>
@@ -681,11 +701,21 @@ a { color: inherit; }
             <h3 class="display display--sm tile__title">NYC 311 <span class="nowrap">AI ETL</span></h3>
             <p class="tile__thesis">An Airflow and dbt pipeline over live NYC 311 data, with an LLM scoped to the column mappings nothing cheaper can resolve.</p>
             <div class="prose">
-              <p>Four upstream systems publish the same 311 service requests under four different column naming conventions, so every batch has to be mapped onto one canonical schema before anything downstream can touch it. Fuzzy string matching handles the obvious cases and quietly gets meaning wrong on the rest, so each column goes to the cheapest tier willing to commit to it: a recorded human override, an exact match, one Claude call for the remainder, then fuzzy. dbt builds the staging and mart layers on top, 44 tests run on every batch, and a quality report fails the run rather than publishing numbers nobody checked.</p>
+              <p>Four upstream systems publish the same 311 requests under four different column naming conventions. Each column is mapped onto a canonical schema by the cheapest tier that will commit to it: a human override, an exact match, one Claude call, then fuzzy. dbt builds the marts on top, and a quality report fails the run rather than publishing numbers nobody checked.</p>
             </div>
           </div>
 
           <div class="tile__side">
+            <div>
+              <p class="stack-label">Results</p>
+              <div class="ledger">
+                <div class="ledger__row"><span class="ledger__k">Rows loaded</span><span class="ledger__lead"></span><span class="ledger__v">133,993</span></div>
+                <div class="ledger__row"><span class="ledger__k">Mapping precision</span><span class="ledger__lead"></span><span class="ledger__v">100% · 63/63</span></div>
+                <div class="ledger__row"><span class="ledger__k">Columns mis-mapped</span><span class="ledger__lead"></span><span class="ledger__v">0</span></div>
+                <div class="ledger__row"><span class="ledger__k">dbt tests</span><span class="ledger__lead"></span><span class="ledger__v">44 · 43 pass · 0 fail</span></div>
+              </div>
+            </div>
+
             <div>
               <p class="stack-label">Built with</p>
               <ul class="chips"><li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li></ul>
@@ -700,15 +730,13 @@ a { color: inherit; }
               <summary>Technical detail</summary>
               <div class="more__body">
                 <div class="ledger">
-                <div class="ledger__row"><span class="ledger__k">Rows loaded</span><span class="ledger__lead"></span><span class="ledger__v">133,993</span></div>
                 <div class="ledger__row"><span class="ledger__k">Daily batches</span><span class="ledger__lead"></span><span class="ledger__v">14</span></div>
                 <div class="ledger__row"><span class="ledger__k">Backfill wall time</span><span class="ledger__lead"></span><span class="ledger__v">127 s</span></div>
                 <div class="ledger__row"><span class="ledger__k">Header decisions / run</span><span class="ledger__lead"></span><span class="ledger__v">83</span></div>
-                <div class="ledger__row"><span class="ledger__k">dbt tests</span><span class="ledger__lead"></span><span class="ledger__v">44 · 43 pass · 0 fail</span></div>
-                <div class="ledger__row"><span class="ledger__k">Mapping precision</span><span class="ledger__lead"></span><span class="ledger__v">100% · 63/63</span></div>
-                <div class="ledger__row"><span class="ledger__k">Columns mis-mapped</span><span class="ledger__lead"></span><span class="ledger__v">0</span></div>
+                <div class="ledger__row"><span class="ledger__k">Operational columns declined</span><span class="ledger__lead"></span><span class="ledger__v">7 / 7</span></div>
                 </div>
-              <p class="aside">Each column is resolved by the cheapest tier that will commit to it: a human override, an exact match, one Claude call for the remainder, then a fuzzy fallback. Every decision is logged with the tier that made it. The reference run above was produced with no API key configured, so every model call failed to authenticate and fell through to the fallback while the pipeline completed normally. One finding from the live feed: 17 requests stamped closed 72 hours before they were created, now flagged and quarantined rather than dropped.</p>
+
+                <p class="aside">The reference run above was produced with no API key configured, so every model call failed to authenticate and fell through to the fuzzy tier while the pipeline completed normally. One finding from the live feed: 17 requests stamped closed 72 hours before they were created, now flagged and quarantined rather than dropped.</p>
               </div>
             </details>
           </div>
@@ -802,39 +830,35 @@ a { color: inherit; }
     <div class="list">
       <div class="kit">
         <h3>Languages</h3>
-        <ul class="chips"><li>Python</li><li>TypeScript</li><li>SQL</li><li>C++</li><li>HTML/CSS</li></ul>
+        <ul class="chips"><li>Python</li><li>TypeScript</li><li>SQL</li><li>C++</li></ul>
       </div>
       <div class="kit">
         <h3>Machine learning</h3>
-        <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>TensorFlow</li><li>YOLOv8</li><li>Demand forecasting</li><li>Clustering and optimisation</li><li>Feature engineering</li><li>Data augmentation</li><li>Model evaluation</li><li>Real-time inference</li></ul>
+        <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>YOLOv8</li><li>Forecasting</li><li>Feature engineering</li><li>Model evaluation</li></ul>
       </div>
       <div class="kit">
         <h3>LLMs and generative AI</h3>
-        <ul class="chips"><li>Llama 4 Scout</li><li>Claude API</li><li>Gemini</li><li>Vertex AI</li><li>Prompt engineering</li><li>Structured output and schema enforcement</li><li>RAG and retrieval</li><li>Embeddings</li><li>BM25</li><li>Cross-encoder reranking</li><li>Grounding and abstention</li><li>Evaluation harnesses</li></ul>
+        <ul class="chips"><li>Llama 4 Scout</li><li>Claude API</li><li>Gemini</li><li>Vertex AI</li><li>Prompt engineering</li><li>Structured output and schema enforcement</li><li>RAG and retrieval</li><li>Embeddings</li><li>Reranking</li><li>Grounding and abstention</li><li>Evaluation harnesses</li></ul>
       </div>
       <div class="kit">
         <h3>Data engineering</h3>
-        <ul class="chips"><li>Airflow</li><li>dbt</li><li>PostgreSQL</li><li>DuckDB</li><li>BigQuery</li><li>ELT and ETL design</li><li>Incremental models</li><li>Data contracts</li><li>Data quality testing</li></ul>
+        <ul class="chips"><li>Airflow</li><li>dbt</li><li>PostgreSQL</li><li>DuckDB</li><li>BigQuery</li><li>ELT design</li><li>Data quality testing</li></ul>
       </div>
       <div class="kit">
         <h3>Cloud and deployment</h3>
-        <ul class="chips"><li>AWS Lambda</li><li>API Gateway</li><li>SageMaker</li><li>Step Functions</li><li>Google Cloud</li><li>Vertex AI</li><li>Docker</li><li>Render</li><li>Neon</li><li>Streamlit Cloud</li></ul>
+        <ul class="chips"><li>AWS Lambda</li><li>API Gateway</li><li>SageMaker</li><li>Step Functions</li><li>Google Cloud</li><li>Docker</li></ul>
       </div>
       <div class="kit">
         <h3>Web and product</h3>
-        <ul class="chips"><li>React</li><li>Express</li><li>Node.js</li><li>REST API design</li><li>Zod</li><li>Streamlit</li><li>Bootstrap</li></ul>
+        <ul class="chips"><li>React</li><li>Express</li><li>REST API design</li><li>Streamlit</li></ul>
       </div>
       <div class="kit">
         <h3>Analytics and BI</h3>
-        <ul class="chips"><li>Power BI</li><li>Tableau</li><li>pandas</li><li>NumPy</li><li>Multivariate data analysis</li><li>Statistical data science</li><li>KPI dashboards</li></ul>
+        <ul class="chips"><li>pandas</li><li>NumPy</li><li>Power BI</li><li>Tableau</li></ul>
       </div>
       <div class="kit">
-        <h3>Testing and tooling</h3>
-        <ul class="chips"><li>Jest</li><li>pytest</li><li>pg-mem</li><li>Git</li><li>GitHub Actions</li><li>CI pipelines</li></ul>
-      </div>
-      <div class="kit">
-        <h3>Design</h3>
-        <ul class="chips"><li>Figma</li><li>Whimsical</li><li>Wireframing and prototyping</li></ul>
+        <h3>Testing</h3>
+        <ul class="chips"><li>pytest</li><li>Jest</li><li>GitHub Actions</li></ul>
       </div>
     </div>
 
