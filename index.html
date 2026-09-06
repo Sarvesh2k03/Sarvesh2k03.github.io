@@ -547,7 +547,7 @@ a { color: inherit; }
         <h2 class="display display--lg">Project<br>highlights</h2>
       </div>
       <div class="prose">
-        <p>Three systems, each built so the model is an upgrade rather than a dependency, and each measured to prove it. Every demo is live, every repository is public, and the technical detail sits under a toggle so you can take it or leave it.</p>
+        <p>Three systems, each built so the model is an upgrade rather than a dependency, and each measured to prove it. Every demo is live and every repository is public. Metrics and implementation notes sit under a toggle on each project, for anyone who wants them.</p>
       </div>
     </div>
 
@@ -560,9 +560,9 @@ a { color: inherit; }
         <div class="tile__body">
           <div class="tile__lead">
             <h3 class="display display--sm tile__title">Grounded</h3>
-            <p class="tile__thesis">Ask questions about your own documents, and get answers that show their sources or admit they don't know.</p>
+            <p class="tile__thesis">Retrieval-augmented QA over your own documents, with a citation on every answer and an explicit refusal when the documents don't cover the question.</p>
             <div class="prose">
-              <p>Upload PDFs or notes and ask a question in plain English. Every answer links back to the exact document and page it came from, so you can check it yourself. When the documents genuinely don't contain the answer, it says so instead of inventing something that sounds right, which is the failure that makes most AI search tools risky to trust. Try it in the demo: ask who first walked on the Moon, then switch off the Apollo document and ask again.</p>
+              <p>Ask a question across a set of PDFs or notes and the system retrieves the passages most likely to hold the answer, then generates a response grounded in those passages with inline citations down to the document and page. The part most RAG demos skip is abstention: when retrieval doesn't surface enough evidence, it returns <em>"I don't know based on the provided documents"</em> rather than producing a fluent answer out of whatever happened to be nearby. Embeddings, keyword search and reranking run locally, and generation falls back through several providers to a fully offline backend. Worth trying: ask who first walked on the Moon, deselect the Apollo document, and ask again.</p>
             </div>
           </div>
 
@@ -603,9 +603,9 @@ a { color: inherit; }
         <div class="tile__body">
           <div class="tile__lead">
             <h3 class="display display--sm tile__title">Triage Desk</h3>
-            <p class="tile__thesis">A customer support queue where AI sorts the tickets, and the queue keeps working when the AI doesn't.</p>
+            <p class="tile__thesis">A full-stack support queue where Gemini classifies and summarises tickets, and a deterministic fallback keeps it working when the model can't.</p>
             <div class="prose">
-              <p>Agents see each ticket tagged with a category, a priority and a one line summary, so the urgent ones surface first instead of being read in the order they arrived. The AI is an addition, not the foundation. If the model is slow, unavailable or returns something invalid, a built in backup classifier takes over, the ticket records which one handled it, and the panel changes colour so nobody mistakes a fallback for the real thing.</p>
+              <p>Tickets arrive, get classified by category and priority, and carry a one line summary, so an agent works the queue by urgency rather than by arrival order. The model sits behind a single module with a declared schema, a content keyed cache, a rate limit and a hard deadline. If it errors, stalls, or returns something that fails validation, a deterministic local classifier answers instead. Each ticket records which engine produced its result and the interface colours a fallback differently, so a broken model configuration cannot hide behind a page that loads fine.</p>
             </div>
           </div>
 
@@ -646,9 +646,9 @@ a { color: inherit; }
         <div class="tile__body">
           <div class="tile__lead">
             <h3 class="display display--sm tile__title">NYC 311 <span class="nowrap">AI ETL</span></h3>
-            <p class="tile__thesis">A pipeline that cleans up New York City service request data every night, using AI only where it earns its place.</p>
+            <p class="tile__thesis">An Airflow and dbt pipeline over live NYC 311 data, with an LLM scoped to the column mappings nothing cheaper can resolve.</p>
             <div class="prose">
-              <p>Four different systems report the same 311 complaints using different column names, so the data has to be reconciled before anyone can analyse it. This pipeline does that automatically on a schedule, checks its own work with 44 quality tests, and flags suspect records rather than quietly averaging them into the results. AI resolves only the column names that cheaper methods get wrong, and the whole thing keeps running when the model is unavailable.</p>
+              <p>Four upstream systems publish the same 311 service requests under four different column naming conventions, so every batch has to be mapped onto one canonical schema before anything downstream can touch it. Fuzzy string matching handles the obvious cases and quietly gets meaning wrong on the rest, so each column goes to the cheapest tier willing to commit to it: a recorded human override, an exact match, one Claude call for the remainder, then fuzzy. dbt builds the staging and mart layers on top, 44 tests run on every batch, and a quality report fails the run rather than publishing numbers nobody checked.</p>
             </div>
           </div>
 
