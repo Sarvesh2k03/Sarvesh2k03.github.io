@@ -11,33 +11,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%233F5130'/><text y='.88em' x='50%25' text-anchor='middle' font-size='80' font-family='Archivo,sans-serif' font-weight='900' fill='%23F1ECD6'>S</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23222B18'/><text y='.88em' x='50%25' text-anchor='middle' font-size='80' font-family='Archivo,sans-serif' font-weight='900' fill='%23EDE9D3'>S</text></svg>">
 <style>
 /* ═══════════════════════════════════════════════
-   TWO COLOURS. Cream and deep olive, inverted
-   band to band. Everything else is a shade or an
-   alpha of one of them.
+   ONE ground for the whole page — deep olive.
+   The three project tiles are the only place
+   colour changes, and each one owns its own.
    ═══════════════════════════════════════════════ */
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
 
-  /* PAPER band — cream ground, olive ink */
-  --p-bg:    #F1ECD6;
-  --p-fg:    #384728;
-  --p-mute:  #6B7659;
-  --p-rule:  rgba(56, 71, 40, .20);
-  --p-fill:  rgba(56, 71, 40, .05);
-  --p-solid-bg: #3F5130;
-  --p-solid-fg: #F1ECD6;
+  /* ONE ground for the whole page */
+  --ground:  #222B18;
+  --paper:   #EDE9D3;
 
-  /* FOREST band — olive ground, cream ink */
-  --f-bg:    #3F5130;
-  --f-fg:    #F1ECD6;
-  --f-mute:  #BBC2A5;
-  --f-rule:  rgba(241, 236, 214, .24);
-  --f-fill:  rgba(241, 236, 214, .06);
-  --f-solid-bg: #F1ECD6;
-  --f-solid-fg: #3F5130;
+  /* component tokens — the page default, overridden inside tiles */
+  --bg:        var(--ground);
+  --fg:        var(--paper);
+  --mute:      #A3AC88;
+  --rule:      rgba(237, 233, 211, .18);
+  --fill:      rgba(237, 233, 211, .05);
+  --solid-bg:  var(--paper);
+  --solid-fg:  var(--ground);
 
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
@@ -48,27 +43,6 @@
   --maxw: 1280px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --p-bg: #12170D;  --p-fg: #E2DEC5;  --p-mute: #909A79;
-    --p-rule: rgba(226, 222, 197, .16);  --p-fill: rgba(226, 222, 197, .04);
-    --p-solid-bg: #E2DEC5;  --p-solid-fg: #12170D;
-
-    --f-bg: #212B18;  --f-fg: #EDE9D3;  --f-mute: #A5AE8A;
-    --f-rule: rgba(237, 233, 211, .20);  --f-fill: rgba(237, 233, 211, .05);
-    --f-solid-bg: #EDE9D3;  --f-solid-fg: #212B18;
-  }
-}
-:root[data-theme="dark"] {
-  --p-bg: #12170D;  --p-fg: #E2DEC5;  --p-mute: #909A79;
-  --p-rule: rgba(226, 222, 197, .16);  --p-fill: rgba(226, 222, 197, .04);
-  --p-solid-bg: #E2DEC5;  --p-solid-fg: #12170D;
-
-  --f-bg: #212B18;  --f-fg: #EDE9D3;  --f-mute: #A5AE8A;
-  --f-rule: rgba(237, 233, 211, .20);  --f-fill: rgba(237, 233, 211, .05);
-  --f-solid-bg: #EDE9D3;  --f-solid-fg: #212B18;
-}
-
 /* ─── base ─── */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
@@ -76,8 +50,8 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--p-bg);
-  color: var(--p-fg);
+  background: var(--ground);
+  color: var(--paper);
   font-family: var(--body);
   font-size: clamp(0.95rem, 0.91rem + 0.18vw, 1.0625rem);
   line-height: 1.6;
@@ -85,20 +59,13 @@ body {
 }
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
-::selection { background: var(--f-bg); color: var(--f-fg); }
+::selection { background: var(--paper); color: var(--ground); }
 :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
 
-/* ─── bands ─── */
-.band { padding: var(--pad-y) var(--pad-x); background: var(--bg); color: var(--fg); }
+/* ─── bands: one ground, separated by a hairline ─── */
+.band { padding: var(--pad-y) var(--pad-x); }
 .band > .inner { max-width: var(--maxw); margin-inline: auto; }
-.band--paper {
-  --bg: var(--p-bg); --fg: var(--p-fg); --mute: var(--p-mute); --rule: var(--p-rule);
-  --fill: var(--p-fill); --solid-bg: var(--p-solid-bg); --solid-fg: var(--p-solid-fg);
-}
-.band--forest {
-  --bg: var(--f-bg); --fg: var(--f-fg); --mute: var(--f-mute); --rule: var(--f-rule);
-  --fill: var(--f-fill); --solid-bg: var(--f-solid-bg); --solid-fg: var(--f-solid-fg);
-}
+.band + .band { border-top: 1px solid var(--rule); }
 
 /* ─── type ─── */
 .display {
@@ -193,11 +160,25 @@ a { color: inherit; }
 .projects { display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); margin-top: clamp(2.25rem, 5vw, 3.5rem); }
 
 .card {
-  border: 1px solid var(--rule);
-  padding: clamp(1.35rem, 3.2vw, 2.75rem);
+  background: var(--bg);
+  color: var(--fg);
+  padding: clamp(1.5rem, 3.4vw, 3rem);
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: clamp(1.25rem, 3vw, 3rem);
+}
+/* Each project owns a colour. The ground never changes; these do. */
+.card--trust {
+  --bg: #EFE9D0; --fg: #2A3420; --mute: #626E4E;
+  --rule: rgba(42, 52, 32, .24); --solid-bg: #2A3420; --solid-fg: #EFE9D0;
+}
+.card--resilience {
+  --bg: #B2C091; --fg: #232D18; --mute: #4B5737;
+  --rule: rgba(35, 45, 24, .30); --solid-bg: #232D18; --solid-fg: #B2C091;
+}
+.card--scale {
+  --bg: #DFBE87; --fg: #33290F; --mute: #6E5A2F;
+  --rule: rgba(51, 41, 15, .30); --solid-bg: #33290F; --solid-fg: #DFBE87;
 }
 .card__lead { display: flex; flex-direction: column; gap: 0.9rem; }
 .card__side { display: flex; flex-direction: column; gap: 1.35rem; }
@@ -364,7 +345,7 @@ a { color: inherit; }
 <body>
 
 <!-- ════════ HERO ════════ -->
-<header class="band band--paper">
+<header class="band">
   <div class="inner">
     <div class="hero__inner">
       <div class="hero__type">
@@ -414,7 +395,7 @@ a { color: inherit; }
 </header>
 
 <!-- ════════ PROJECTS ════════ -->
-<main class="band band--forest" id="work">
+<main class="band" id="work">
   <div class="inner">
     <div class="head">
       <div>
@@ -430,7 +411,7 @@ a { color: inherit; }
     <div class="projects">
 
       <!-- 01 -->
-      <article class="card" id="grounded">
+      <article class="card card--trust" id="grounded">
         <div class="card__lead">
           <div class="card__kicker">
             <span class="card__num">01</span>
@@ -462,7 +443,7 @@ a { color: inherit; }
       </article>
 
       <!-- 02 -->
-      <article class="card" id="triage">
+      <article class="card card--resilience" id="triage">
         <div class="card__lead">
           <div class="card__kicker">
             <span class="card__num">02</span>
@@ -495,7 +476,7 @@ a { color: inherit; }
       </article>
 
       <!-- 03 -->
-      <article class="card" id="nyc311">
+      <article class="card card--scale" id="nyc311">
         <div class="card__lead">
           <div class="card__kicker">
             <span class="card__num">03</span>
@@ -532,7 +513,7 @@ a { color: inherit; }
 </main>
 
 <!-- ════════ HOW I BUILD ════════ -->
-<section class="band band--paper" id="how">
+<section class="band" id="how">
   <div class="inner">
     <div class="head">
       <div>
@@ -594,7 +575,7 @@ a { color: inherit; }
 </section>
 
 <!-- ════════ SKILLS + CONTACT ════════ -->
-<footer class="band band--forest" id="contact">
+<footer class="band" id="contact">
   <div class="inner">
     <div class="head">
       <div>
@@ -680,7 +661,7 @@ a { color: inherit; }
       </div>
     </div>
 
-    <p class="colophon">Sarvesh Kumar · Two colours, Archivo &amp; Instrument Sans · Hand-built, hosted on GitHub Pages</p>
+    <p class="colophon">Sarvesh Kumar · Archivo &amp; Instrument Sans · Hand-built, hosted on GitHub Pages</p>
   </div>
 </footer>
 
