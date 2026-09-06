@@ -339,11 +339,14 @@ a { color: inherit; }
   gap: clamp(1.1rem, 2.2vw, 1.9rem);
 }
 .tile__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
-  gap: clamp(1.25rem, 2.8vw, 2.75rem) clamp(1.5rem, 3.2vw, 3.25rem);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(0.85rem, 1.7vw, 1.15rem);
+  position: relative;
 }
+.toggles { display: flex; flex-direction: column; margin-top: 0.35rem; }
+.tile__foot { margin-top: 0.6rem; }
 /* Each project owns a colour. The ground never changes; these do. */
 .tile--trust {
   --bg: #EFE9D0; --fg: #2A3420; --mute: #606C4C;
@@ -389,8 +392,7 @@ a { color: inherit; }
   padding-right: 0.7rem;
 }
 
-.tile__lead { display: flex; flex-direction: column; gap: 1rem; position: relative; }
-.tile__side { display: flex; flex-direction: column; gap: 1.5rem; position: relative; }
+
 .tile__title { color: var(--fg); }
 .tile__thesis {
   font-size: clamp(1.05rem, 0.98rem + 0.45vw, 1.28rem);
