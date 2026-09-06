@@ -4,802 +4,627 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sarvesh Kumar</title>
-<meta name="description" content="Sarvesh Kumar — MS Computer Science at USC. Three shipped AI systems with live demos, public source, and measured results: retrieval that cites and refuses, a support desk with a tested fallback, and a 134,000-row Airflow + dbt pipeline.">
+<meta name="description" content="Sarvesh Kumar — MS Computer Science at USC. I build AI systems that turn messy real-world data into decisions people can rely on. Three projects with live demos, public source, and measured results.">
 <meta property="og:title" content="Sarvesh Kumar">
-<meta property="og:description" content="Three shipped AI systems, with live demos, source, and the numbers behind each.">
+<meta property="og:description" content="AI systems with live demos, public source, and numbers you can reproduce.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23F5F1D8'/><text y='.9em' x='50%25' text-anchor='middle' font-size='78' font-family='Archivo,sans-serif' font-weight='900' fill='%2354683E'>S</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%233F5130'/><text y='.88em' x='50%25' text-anchor='middle' font-size='80' font-family='Archivo,sans-serif' font-weight='900' fill='%23F1ECD6'>S</text></svg>">
 <style>
-/* ─────────────────────────────────────────────
-   TOKENS — light is the base, both themes defined
-   ───────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   TWO COLOURS. Cream and deep olive, inverted
+   band to band. Everything else is a shade or an
+   alpha of one of them.
+   ═══════════════════════════════════════════════ */
 :root {
   color-scheme: light dark;
 
-  /* band A — paper */
-  --a-bg:      #F5F1D8;
-  --a-ink:     #2A3320;
-  --a-mute:    #6E7659;
-  --a-display: #55693F;
-  --a-rule:    rgba(42, 51, 32, .20);
+  /* PAPER band — cream ground, olive ink */
+  --p-bg:    #F1ECD6;
+  --p-fg:    #384728;
+  --p-mute:  #6B7659;
+  --p-rule:  rgba(56, 71, 40, .20);
+  --p-fill:  rgba(56, 71, 40, .05);
+  --p-solid-bg: #3F5130;
+  --p-solid-fg: #F1ECD6;
 
-  /* band B — sage */
-  --b-bg:      #AFBF8F;
-  --b-ink:     #262F1C;
-  --b-mute:    #4C5739;
-  --b-display: #48592F;
-  --b-rule:    rgba(38, 47, 28, .30);
-  --b-panel:   rgba(72, 89, 47, .16);
-
-  /* band C — olive, the chapters */
-  --c-bg:      #4E6139;
-  --c-ink:     #E9E6CB;
-  --c-mute:    #B5C098;
-  --c-display: #F5F1D8;
-  --c-accent:  #CBDCA4;
-  --c-rule:    rgba(245, 241, 216, .22);
-
-  /* footer */
-  --f-bg:      #1E2416;
-  --f-ink:     #E7E4C8;
-  --f-mute:    #96A07E;
-  --f-rule:    rgba(231, 228, 200, .18);
+  /* FOREST band — olive ground, cream ink */
+  --f-bg:    #3F5130;
+  --f-fg:    #F1ECD6;
+  --f-mute:  #BBC2A5;
+  --f-rule:  rgba(241, 236, 214, .24);
+  --f-fill:  rgba(241, 236, 214, .06);
+  --f-solid-bg: #F1ECD6;
+  --f-solid-fg: #3F5130;
 
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  --pad-x: clamp(1.25rem, 5vw, 6rem);
-  --pad-y: clamp(3.5rem, 9vw, 8rem);
-  --maxw: 1320px;
+  --pad-x: clamp(1.25rem, 5vw, 5.5rem);
+  --pad-y: clamp(3.25rem, 8vw, 7rem);
+  --maxw: 1280px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --a-bg: #12160D;  --a-ink: #E0DDC3;  --a-mute: #8E9578;  --a-display: #A9BC85;  --a-rule: rgba(224, 221, 195, .18);
-    --b-bg: #1B2313;  --b-ink: #E3E0C6;  --b-mute: #98A17F;  --b-display: #B6C892;  --b-rule: rgba(227, 224, 198, .20); --b-panel: rgba(182, 200, 146, .10);
-    --c-bg: #26301B;  --c-ink: #E8E5CC;  --c-mute: #A3AF86;  --c-display: #C6D8A2;  --c-accent: #C6D8A2; --c-rule: rgba(232, 229, 204, .20);
-    --f-bg: #0B0E06;  --f-ink: #DCD9BF;  --f-mute: #7F8768;  --f-rule: rgba(220, 217, 191, .16);
+    --p-bg: #12170D;  --p-fg: #E2DEC5;  --p-mute: #909A79;
+    --p-rule: rgba(226, 222, 197, .16);  --p-fill: rgba(226, 222, 197, .04);
+    --p-solid-bg: #E2DEC5;  --p-solid-fg: #12170D;
+
+    --f-bg: #212B18;  --f-fg: #EDE9D3;  --f-mute: #A5AE8A;
+    --f-rule: rgba(237, 233, 211, .20);  --f-fill: rgba(237, 233, 211, .05);
+    --f-solid-bg: #EDE9D3;  --f-solid-fg: #212B18;
   }
 }
 :root[data-theme="dark"] {
-  --a-bg: #12160D;  --a-ink: #E0DDC3;  --a-mute: #8E9578;  --a-display: #A9BC85;  --a-rule: rgba(224, 221, 195, .18);
-  --b-bg: #1B2313;  --b-ink: #E3E0C6;  --b-mute: #98A17F;  --b-display: #B6C892;  --b-rule: rgba(227, 224, 198, .20); --b-panel: rgba(182, 200, 146, .10);
-  --c-bg: #26301B;  --c-ink: #E8E5CC;  --c-mute: #A3AF86;  --c-display: #C6D8A2;  --c-accent: #C6D8A2; --c-rule: rgba(232, 229, 204, .20);
-  --f-bg: #0B0E06;  --f-ink: #DCD9BF;  --f-mute: #7F8768;  --f-rule: rgba(220, 217, 191, .16);
+  --p-bg: #12170D;  --p-fg: #E2DEC5;  --p-mute: #909A79;
+  --p-rule: rgba(226, 222, 197, .16);  --p-fill: rgba(226, 222, 197, .04);
+  --p-solid-bg: #E2DEC5;  --p-solid-fg: #12170D;
+
+  --f-bg: #212B18;  --f-fg: #EDE9D3;  --f-mute: #A5AE8A;
+  --f-rule: rgba(237, 233, 211, .20);  --f-fill: rgba(237, 233, 211, .05);
+  --f-solid-bg: #EDE9D3;  --f-solid-fg: #212B18;
 }
 
-/* ─────────────────────────────────────────────
-   BASE
-   ───────────────────────────────────────────── */
+/* ─── base ─── */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
   margin: 0;
-  background: var(--a-bg);
-  color: var(--a-ink);
+  background: var(--p-bg);
+  color: var(--p-fg);
   font-family: var(--body);
-  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.0625rem);
+  font-size: clamp(0.95rem, 0.91rem + 0.18vw, 1.0625rem);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
-
-img { max-width: 100%; display: block; }
-
-::selection { background: var(--c-bg); color: var(--c-display); }
-
+img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
+::selection { background: var(--f-bg); color: var(--f-fg); }
+:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
 
-:focus-visible {
-  outline: 3px solid currentColor;
-  outline-offset: 3px;
-}
-
-/* ─────────────────────────────────────────────
-   BANDS
-   ───────────────────────────────────────────── */
-.band {
-  padding: var(--pad-y) var(--pad-x);
-  background: var(--bg);
-  color: var(--ink);
-}
+/* ─── bands ─── */
+.band { padding: var(--pad-y) var(--pad-x); background: var(--bg); color: var(--fg); }
 .band > .inner { max-width: var(--maxw); margin-inline: auto; }
+.band--paper {
+  --bg: var(--p-bg); --fg: var(--p-fg); --mute: var(--p-mute); --rule: var(--p-rule);
+  --fill: var(--p-fill); --solid-bg: var(--p-solid-bg); --solid-fg: var(--p-solid-fg);
+}
+.band--forest {
+  --bg: var(--f-bg); --fg: var(--f-fg); --mute: var(--f-mute); --rule: var(--f-rule);
+  --fill: var(--f-fill); --solid-bg: var(--f-solid-bg); --solid-fg: var(--f-solid-fg);
+}
 
-.band--a { --bg: var(--a-bg); --ink: var(--a-ink); --mute: var(--a-mute); --disp: var(--a-display); --rule: var(--a-rule); }
-.band--b { --bg: var(--b-bg); --ink: var(--b-ink); --mute: var(--b-mute); --disp: var(--b-display); --rule: var(--b-rule); }
-.band--c { --bg: var(--c-bg); --ink: var(--c-ink); --mute: var(--c-mute); --disp: var(--c-display); --rule: var(--c-rule); }
-.band--f { --bg: var(--f-bg); --ink: var(--f-ink); --mute: var(--f-mute); --disp: var(--f-ink);    --rule: var(--f-rule); }
-
-/* ─────────────────────────────────────────────
-   TYPE
-   ───────────────────────────────────────────── */
+/* ─── type ─── */
 .display {
   font-family: var(--display);
-  font-variation-settings: "wdth" 118, "wght" 900;
+  font-variation-settings: "wdth" 116, "wght" 900;
   font-weight: 900;
   text-transform: uppercase;
-  line-height: 0.83;
+  line-height: 0.84;
   letter-spacing: -0.028em;
-  color: var(--disp);
   margin: 0;
   text-wrap: balance;
 }
-.display--xl { font-size: clamp(3rem, 9.6vw, 8.5rem); }
-.display--lg { font-size: clamp(2.6rem, 9vw, 7rem); }
-.display--md { font-size: clamp(2.1rem, 6.6vw, 4.6rem); letter-spacing: -0.022em; }
+.display--xl { font-size: clamp(2.9rem, 8.4vw, 7.2rem); }
+.display--lg { font-size: clamp(2.4rem, 7vw, 5.4rem); }
+.display--sm { font-size: clamp(1.7rem, 4vw, 2.9rem); letter-spacing: -0.02em; }
 
 .eyebrow {
   font-family: var(--mono);
   font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--mute);
   margin: 0;
 }
-
 .lede {
-  font-size: clamp(1.05rem, 0.95rem + 0.55vw, 1.375rem);
+  font-size: clamp(1.05rem, 0.97rem + 0.5vw, 1.3rem);
   line-height: 1.45;
-  max-width: 30ch;
-  margin: 0;
   font-weight: 500;
+  margin: 0;
 }
-
-.prose { max-width: 62ch; }
-.prose p { margin: 0 0 0.85em; }
+.prose { max-width: 64ch; }
+.prose p { margin: 0 0 0.8em; }
 .prose p:last-child { margin-bottom: 0; }
-.prose code {
+.prose code, .chip-inline {
   font-family: var(--mono);
-  font-size: 0.86em;
-  padding: 0.1em 0.35em;
+  font-size: 0.85em;
+  padding: 0.08em 0.34em;
   border: 1px solid var(--rule);
-  border-radius: 2px;
 }
-
 .muted { color: var(--mute); }
 
-/* ─────────────────────────────────────────────
-   HERO
-   ───────────────────────────────────────────── */
-.hero { padding-bottom: 0; }
+/* ─── hero ─── */
 .hero__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.85fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
-  align-items: end;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.82fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
 }
-.hero__type { display: flex; flex-direction: column; gap: clamp(1.4rem, 3vw, 2.5rem); padding-bottom: var(--pad-y); }
-.hero__meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
-.hero__lede-row { display: grid; gap: clamp(1rem, 2.5vw, 2rem); grid-template-columns: minmax(0, 1fr); }
-.hero__portrait { align-self: end; }
+.hero__type { display: flex; flex-direction: column; gap: clamp(1.25rem, 2.6vw, 2rem); }
+.hero__title { color: var(--fg); }
+.hero__title em { font-style: normal; color: var(--mute); }
+
+.hero__portrait {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--rule);
+  padding: 0.55rem;
+  background: var(--fill);
+}
 .hero__portrait img {
   width: 100%;
-  filter: grayscale(1) contrast(1.06);
-  mix-blend-mode: multiply;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .hero__portrait img {
-    mix-blend-mode: normal;
-    filter: grayscale(1) contrast(1.02) brightness(.9);
-  }
-}
-:root[data-theme="dark"] .hero__portrait img {
-  mix-blend-mode: normal;
-  filter: grayscale(1) contrast(1.02) brightness(.9);
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  filter: grayscale(1) contrast(1.05);
 }
 
-.jumps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.75rem;
+.hero__actions { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.25rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
   padding-top: 1.5rem;
   border-top: 1px solid var(--rule);
 }
-.jump {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding-bottom: 2px;
-  border-bottom: 1px solid transparent;
-  transition: border-color .15s ease, color .15s ease;
-}
-.jump:hover { border-bottom-color: currentColor; color: var(--disp); }
+.fact dt { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); }
+.fact dd { margin: 0.3rem 0 0; font-size: 0.92rem; font-weight: 500; line-height: 1.35; }
 
-/* ─────────────────────────────────────────────
-   WHO I AM
-   ───────────────────────────────────────────── */
-.who__grid {
+/* ─── section heads ─── */
+.head {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(1.75rem, 4vw, 4rem);
-  margin-top: clamp(1.75rem, 4vw, 3rem);
-  align-items: start;
-}
-.who__panel {
-  background: var(--b-panel);
-  padding: clamp(1.25rem, 2.5vw, 2rem);
-}
-.record { margin: 0; }
-.record__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.75rem;
-  align-items: baseline;
-  padding: 0.8rem 0;
-  border-top: 1px solid var(--rule);
-}
-.record__row:first-child { border-top: 0; padding-top: 0; }
-.record dt { display: grid; gap: 0.15rem; }
-.record dt b { font-size: 0.95rem; font-weight: 600; line-height: 1.3; }
-.record dt span { font-size: 0.82rem; line-height: 1.35; }
-.record dd {
-  margin: 0;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--mute);
-  white-space: nowrap;
-}
-
-/* ─────────────────────────────────────────────
-   HOW I BUILD
-   ───────────────────────────────────────────── */
-.principles { margin-top: clamp(2rem, 4vw, 3rem); }
-.principle {
-  display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
-  gap: clamp(1.25rem, 3vw, 3rem);
-  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
-  border-top: 1px solid var(--rule);
-}
-.principle:last-child { border-bottom: 1px solid var(--rule); }
-.principle__n {
-  font-family: var(--display);
-  font-variation-settings: "wdth" 118, "wght" 900;
-  font-size: 2.2rem;
-  line-height: 0.8;
-  color: var(--disp);
-}
-.principle h3 {
-  font-family: var(--body);
-  font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem);
-  font-weight: 600;
-  line-height: 1.3;
-  margin: 0 0 0.5rem;
-}
-.principle__proof {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  line-height: 1.5;
-  letter-spacing: 0.03em;
-  color: var(--mute);
-  margin: 0.85rem 0 0;
-  padding-left: 0.85rem;
-  border-left: 2px solid var(--disp);
-}
-.principle__proof b { color: var(--ink); font-weight: 500; }
-
-/* ─────────────────────────────────────────────
-   CHAPTERS
-   ───────────────────────────────────────────── */
-.chapters__head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: end;
-  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
+.head > .prose { padding-bottom: 0.4rem; }
 
-.chapter {
-  border-top: 1px solid var(--rule);
-  padding-top: clamp(2rem, 4vw, 3.25rem);
-  padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+/* ─── project cards ─── */
+.projects { display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); margin-top: clamp(2.25rem, 5vw, 3.5rem); }
+
+.card {
+  border: 1px solid var(--rule);
+  padding: clamp(1.35rem, 3.2vw, 2.75rem);
   display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: clamp(1.25rem, 3vw, 3rem);
 }
-.chapter:last-of-type { padding-bottom: 0; }
+.card__lead { display: flex; flex-direction: column; gap: 0.9rem; }
+.card__side { display: flex; flex-direction: column; gap: 1.35rem; }
 
-.chapter__rail { display: flex; flex-direction: column; gap: 0.55rem; }
-.chapter__num {
+.card__kicker { display: flex; align-items: baseline; gap: 0.7rem; }
+.card__num {
   font-family: var(--display);
-  font-variation-settings: "wdth" 118, "wght" 900;
-  font-size: 2.6rem;
-  line-height: 0.8;
-  color: var(--c-accent);
+  font-variation-settings: "wdth" 116, "wght" 900;
+  font-size: 1.6rem;
+  line-height: 1;
 }
-.chapter__body { display: flex; flex-direction: column; gap: clamp(1.1rem, 2.2vw, 1.6rem); }
-
-.chapter__q {
-  font-size: clamp(1.15rem, 1rem + 0.75vw, 1.6rem);
-  line-height: 1.3;
-  font-weight: 600;
-  max-width: 26ch;
-  margin: 0;
-  color: var(--c-accent);
-}
-
-.chapter__cols {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: clamp(1.5rem, 3.5vw, 3.5rem);
-  align-items: start;
-}
-
-/* evidence spec sheet */
-.spec { margin: 0; border-top: 1px solid var(--rule); }
-.spec__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
-  align-items: baseline;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--rule);
-}
-.spec__k {
+.card__title { color: var(--fg); }
+.card__sub {
   font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.11em;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--mute);
+  margin: -0.25rem 0 0;
 }
-.spec__v {
-  font-family: var(--mono);
-  font-size: 0.86rem;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-.spec__v em { font-style: normal; color: var(--c-accent); }
 
-.stack { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0; padding: 0; }
-.stack li {
+.points { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
+.points li {
+  display: grid;
+  grid-template-columns: 0.85rem minmax(0, 1fr);
+  gap: 0.6rem;
+  font-size: 0.93rem;
+  line-height: 1.45;
+}
+.points li::before { content: "—"; color: var(--mute); font-family: var(--mono); font-size: 0.8rem; line-height: 1.6; }
+.points b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.35rem; list-style: none; margin: 0; padding: 0; }
+.chips li {
   font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
-  padding: 0.28rem 0.5rem;
+  font-size: 0.67rem;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.55rem;
   border: 1px solid var(--rule);
   color: var(--mute);
 }
 
-.note {
-  font-size: 0.9rem;
+.aside {
+  font-size: 0.87rem;
   line-height: 1.5;
-  padding-left: 0.9rem;
-  border-left: 2px solid var(--c-accent);
   color: var(--mute);
-  max-width: 58ch;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--rule);
+  margin: 0;
 }
-.note b { color: var(--ink); font-weight: 600; }
+.aside b { color: var(--fg); font-weight: 600; }
 
-/* actions */
-.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+/* ─── buttons ─── */
+.actions { display: flex; flex-wrap: wrap; gap: 0.55rem; }
 .btn {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.71rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 0.7rem 1.1rem;
+  padding: 0.72rem 1.15rem;
   border: 1px solid currentColor;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: background-color .15s ease, color .15s ease, transform .15s ease;
+  gap: 0.45rem;
+  transition: background-color .16s ease, color .16s ease, transform .16s ease;
 }
-.btn--solid { background: var(--c-display); color: var(--c-bg); border-color: var(--c-display); }
-.btn--solid:hover { background: var(--c-accent); border-color: var(--c-accent); transform: translateY(-2px); }
-.btn--ghost { color: var(--ink); }
-.btn--ghost:hover { background: var(--c-display); color: var(--c-bg); transform: translateY(-2px); }
+.btn--solid { background: var(--solid-bg); color: var(--solid-fg); border-color: var(--solid-bg); }
+.btn--solid:hover { transform: translateY(-2px); }
+.btn--ghost { color: var(--fg); }
+.btn--ghost:hover { background: var(--solid-bg); color: var(--solid-fg); border-color: var(--solid-bg); transform: translateY(-2px); }
 @media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; } }
 
-/* ─────────────────────────────────────────────
-   SKILLS
-   ───────────────────────────────────────────── */
-.skills__grid {
+/* ─── method ─── */
+.method { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
+.rule-item {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: clamp(1.5rem, 3vw, 2.75rem);
-  margin-top: clamp(2rem, 4vw, 3rem);
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  padding: clamp(1.25rem, 2.6vw, 1.85rem) 0;
   border-top: 1px solid var(--rule);
 }
-.skills__col h3 {
+.rule-item:last-child { border-bottom: 1px solid var(--rule); }
+.rule-item__n {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 116, "wght" 900;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--mute);
+}
+.rule-item h3 {
+  font-family: var(--body);
+  font-size: clamp(1.02rem, 0.98rem + 0.35vw, 1.22rem);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0 0 0.45rem;
+}
+.rule-item__proof {
   font-family: var(--mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--disp);
-  margin: 0 0 0.75rem;
+  font-size: 0.71rem;
+  line-height: 1.55;
+  color: var(--mute);
+  margin: 0.7rem 0 0;
 }
-.skills__col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
-.skills__col li { font-size: 0.9rem; line-height: 1.4; }
+.rule-item__proof b { color: var(--fg); font-weight: 500; }
 
-.method {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+/* ─── skills / contact ─── */
+.cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: clamp(1.4rem, 3vw, 2.5rem);
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  padding-top: clamp(1.4rem, 3vw, 2rem);
+  border-top: 1px solid var(--rule);
+}
+.cols h3 {
+  font-family: var(--mono);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 0 0.7rem;
+}
+.cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.cols li { font-size: 0.89rem; line-height: 1.4; color: var(--mute); }
+
+.closing {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
   border-top: 1px solid var(--rule);
   display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
-  gap: clamp(1.25rem, 3vw, 3rem);
+  grid-template-columns: 12rem minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 3rem);
+}
+.contact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  gap: 1.4rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--rule);
+}
+.contact a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+.contact a:hover { border-bottom-color: currentColor; }
+.contact p { margin: 0.3rem 0 0; }
+.colophon {
+  margin: clamp(2.25rem, 4vw, 3rem) 0 0;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
 }
 
-/* ─────────────────────────────────────────────
-   FOOTER
-   ───────────────────────────────────────────── */
-.contact { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.5rem; margin-top: clamp(1.75rem, 4vw, 2.5rem); padding-top: 1.75rem; border-top: 1px solid var(--rule); }
-.contact a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; transition: border-color .15s ease; }
-.contact a:hover { border-bottom-color: currentColor; }
-.colophon { margin-top: clamp(2.5rem, 5vw, 3.5rem); font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
-
-/* ─────────────────────────────────────────────
-   RESPONSIVE
-   ───────────────────────────────────────────── */
+/* ─── responsive ─── */
 @media (max-width: 900px) {
   .hero__inner { grid-template-columns: minmax(0, 1fr); }
-  .hero__type { padding-bottom: clamp(2rem, 5vw, 3rem); }
-  .hero__portrait { max-width: 320px; }
-  .who__grid,
-  .chapters__head,
-  .chapter__cols { grid-template-columns: minmax(0, 1fr); }
-  .chapter { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
-  .chapter__rail { flex-direction: row; align-items: baseline; gap: 1rem; }
-  .chapter__num { font-size: 2rem; }
-  .method { grid-template-columns: minmax(0, 1fr); }
-  .principle { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
-  .principle__n { font-size: 1.9rem; }
-}
-@media (max-width: 560px) {
-  .lede { max-width: none; }
-  .spec__row { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
-  .spec__v { text-align: left; }
+  .hero__portrait { max-width: 300px; order: -1; }
+  .head, .card, .closing { grid-template-columns: minmax(0, 1fr); }
+  .rule-item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- ══════════════ HERO ══════════════ -->
-<header class="band band--a hero">
-  <div class="inner hero__inner">
-    <div class="hero__type">
-      <div class="hero__meta">
-        <p class="eyebrow">Sarvesh Kumar</p>
-        <p class="eyebrow">MS Computer Science · USC</p>
-        <p class="eyebrow">Los Angeles</p>
-      </div>
+<!-- ════════ HERO ════════ -->
+<header class="band band--paper">
+  <div class="inner">
+    <div class="hero__inner">
+      <div class="hero__type">
+        <p class="eyebrow">| Sarvesh Kumar · MS Computer Science, USC |</p>
 
-      <h1 class="display display--xl">AI that<br>holds<br>up</h1>
+        <h1 class="display display--xl hero__title">AI that<br>holds&nbsp;<em>up</em></h1>
 
-      <div class="hero__lede-row">
-        <p class="lede">I build AI systems that survive contact with real data, real users, and a bad day on someone else's API.</p>
+        <p class="lede">I build AI systems that turn messy real-world data into decisions people can rely on — then prove they still work when the model doesn't.</p>
+
         <div class="prose">
-          <p>Retrieval that cites its sources and refuses when it can't. A support desk that keeps triaging through a model timeout. A pipeline that mapped 133,993 rows of live NYC data with zero columns mis-mapped.</p>
-          <p>Three of them are below, each with a live demo, public source, and numbers you can reproduce from the repo in one command.</p>
+          <p>Most of what I've learned came from watching models fail in public. At a Mumbai startup I replaced a wall of brittle regex with a Llama 4 Scout extractor that turned messy WhatsApp threads into structured JSON. At NUS I trained a custom YOLO pose model to 87% accuracy — the highest recorded for that architecture on the task — and deployed it. For a steel manufacturer I built demand forecasting and a custom logistics optimiser.</p>
+          <p>Every one hit the same wall: getting good output from a model is the easy half. The engineering is everything around it — what the system does when the model is slow, rate-limited or confidently wrong, and how anyone would know. That's what the three projects below are about.</p>
+        </div>
+
+        <div class="hero__actions">
+          <a class="btn btn--solid" href="#work">View projects ↓</a>
+          <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn btn--ghost" href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn btn--ghost" href="mailto:sarvesh2k03@gmail.com">Email</a>
         </div>
       </div>
 
-      <nav class="jumps" aria-label="Sections">
-        <a class="jump" href="#who">Who I am</a>
-        <a class="jump" href="#grounded">01 — Grounded</a>
-        <a class="jump" href="#triage">02 — Triage Desk</a>
-        <a class="jump" href="#nyc311">03 — NYC 311</a>
-        <a class="jump" href="#how">How I build</a>
-        <a class="jump" href="#skills">Skills</a>
-        <a class="jump" href="#contact">Contact</a>
-      </nav>
+      <figure class="hero__portrait">
+        <img src="assets/sarvesh.jpg" alt="Portrait of Sarvesh Kumar" width="720" height="900">
+      </figure>
     </div>
 
-    <figure class="hero__portrait">
-      <img src="assets/sarvesh.jpg" alt="Portrait of Sarvesh Kumar" width="600" height="900">
-    </figure>
+    <dl class="facts">
+      <div class="fact">
+        <dt>Studying</dt>
+        <dd>MS Computer Science, University of Southern California</dd>
+      </div>
+      <div class="fact">
+        <dt>Previously</dt>
+        <dd>GenAI at Mayaa · ML at TAIIN Steel · Deep learning research at NUS</dd>
+      </div>
+      <div class="fact">
+        <dt>Working on</dt>
+        <dd>Retrieval systems, LLM evaluation, and data pipelines that don't lie to you</dd>
+      </div>
+      <div class="fact">
+        <dt>Based in</dt>
+        <dd>Los Angeles, California</dd>
+      </div>
+    </dl>
   </div>
 </header>
 
-<!-- ══════════════ WHO I AM ══════════════ -->
-<section class="band band--b" id="who">
+<!-- ════════ PROJECTS ════════ -->
+<main class="band band--forest" id="work">
   <div class="inner">
-    <h2 class="display display--lg">Who I am</h2>
-
-    <div class="who__grid">
-      <div class="prose">
-        <p>I'm Sarvesh Kumar — a Computer Science master's student at USC, and before that a B.Tech at SRM in Chennai. I've spent the last two years building models that had to leave the notebook and work in front of someone.</p>
-        <p>At a Mumbai startup I replaced a wall of brittle regex with a Llama 4 Scout extractor that turned messy WhatsApp threads into structured JSON, and shipped it on AWS with the per-call cost accounted for. At NUS I trained a custom YOLO pose model to 87% accuracy — the highest recorded for that architecture on the task — and deployed it for production use. For a steel manufacturer I built demand forecasting and a custom optimiser for transport logistics.</p>
-        <p>Across all of it I kept hitting the same wall. A model demos beautifully, then takes the product down with it the first time it's slow, rate-limited, or confidently wrong. Getting good output from an LLM turned out to be the easy half; the engineering is everything around it — what the system does when the model is wrong, and how you'd know.</p>
-        <p>The three projects below are what I do about that, and the method is written out after them.</p>
+    <div class="head">
+      <div>
+        <p class="eyebrow" style="margin-bottom:1rem;">| Selected projects |</p>
+        <h2 class="display display--lg">From trust<br>to scale</h2>
       </div>
-
-      <div class="who__panel">
-        <p class="eyebrow" style="margin-bottom:1.1rem;">Track record</p>
-        <dl class="record">
-          <div class="record__row">
-            <dt>
-              <b>MS Computer Science</b>
-              <span class="muted">University of Southern California · Los Angeles</span>
-            </dt>
-            <dd>2025 —</dd>
-          </div>
-          <div class="record__row">
-            <dt>
-              <b>GenAI Intern · Mayaa</b>
-              <span class="muted">Llama 4 Scout extraction pipeline on AWS, replacing legacy regex</span>
-            </dt>
-            <dd>2025</dd>
-          </div>
-          <div class="record__row">
-            <dt>
-              <b>ML Intern · TAIIN Steel</b>
-              <span class="muted">Demand forecasting and custom logistics optimisation</span>
-            </dt>
-            <dd>2024–25</dd>
-          </div>
-          <div class="record__row">
-            <dt>
-              <b>Deep Learning Research Intern · NUS</b>
-              <span class="muted">Custom YOLO pose recognition at 87% accuracy, deployed on AWS</span>
-            </dt>
-            <dd>2024</dd>
-          </div>
-          <div class="record__row">
-            <dt>
-              <b>B.Tech Computer Science</b>
-              <span class="muted">SRM Institute of Science and Technology · Chennai</span>
-            </dt>
-            <dd>2021–25</dd>
-          </div>
-        </dl>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ CHAPTERS ══════════════ -->
-<main class="band band--c" id="work">
-  <div class="inner">
-
-    <div class="chapters__head">
-      <h2 class="display display--lg">Three<br>problems</h2>
       <div class="prose">
-        <p>In order: making a model trustworthy, putting it inside a product people use, and running it on a schedule over real data. Each project takes the rule one step further out.</p>
+        <p>Three projects, and each one starts where the last one stopped. First: can I trust what an AI tells me? Then: what happens to the product when it stops answering? Finally: can it run on a schedule, over real data, without becoming the thing that breaks?</p>
+        <p>All three are live. All three are open source. Every number below comes from a command in the repo.</p>
       </div>
     </div>
 
-    <!-- ─── 01 ─── -->
-    <article class="chapter" id="grounded">
-      <div class="chapter__rail">
-        <span class="chapter__num">01</span>
-        <p class="eyebrow">The trust problem</p>
-      </div>
+    <div class="projects">
 
-      <div class="chapter__body">
-        <h3 class="display display--md">Grounded</h3>
-        <p class="chapter__q">Can a RAG system admit that it doesn't know?</p>
-
-        <div class="chapter__cols">
-          <div class="prose">
-            <p><b>Why I built it.</b> Every retrieval demo I tried answered confidently even when the answer wasn't in the documents. I wanted the opposite failure mode — refuse, and show the passages behind every answer it does give.</p>
-            <p><b>What it is.</b> Question answering over your own PDFs, Markdown and text. Chunking, embeddings, BM25, rank fusion and cross-encoder reranking all run locally; generation resolves to whichever backend has credentials — Gemini, Groq, Anthropic, or a fully offline extractive fallback. Every answer carries inline citations down to the document and page, and the interface marks which retrieved passages the answer actually used versus which it merely had available.</p>
-            <p><b>Try this in the demo.</b> Ask who first walked on the Moon. Then deselect the <code>Apollo Missions</code> document in step 1 and ask again — the same question now returns <em>"I don't know based on the provided documents"</em> instead of assembling something plausible from the other six.</p>
+      <!-- 01 -->
+      <article class="card" id="grounded">
+        <div class="card__lead">
+          <div class="card__kicker">
+            <span class="card__num">01</span>
+            <p class="eyebrow">Trust</p>
           </div>
+          <h3 class="display display--sm card__title">Grounded</h3>
+          <p class="card__sub">Retrieval-augmented QA with citations</p>
+          <div class="prose">
+            <p>It started with a question I couldn't get a straight answer to: how do you know a RAG system isn't making it up? Every demo I tried answered confidently even when the answer wasn't in the documents. So I built one designed for the opposite failure — refuse, and show the passages behind every answer it does give.</p>
+          </div>
+          <p class="aside"><b>Try this:</b> ask who first walked on the Moon, then deselect the <code>Apollo Missions</code> document and ask again. The same question comes back <em>"I don't know based on the provided documents"</em> instead of a plausible answer assembled from the other six.</p>
+        </div>
 
-          <div class="chapter__body">
-            <dl class="spec">
-              <div class="spec__row"><dt class="spec__k">Retrieval modes</dt><dd class="spec__v">dense · hybrid · <em>+rerank</em></dd></div>
-              <div class="spec__row"><dt class="spec__k">Generation backends</dt><dd class="spec__v"><em>4</em> — one offline</dd></div>
-              <div class="spec__row"><dt class="spec__k">Citation granularity</dt><dd class="spec__v">document + page</dd></div>
-              <div class="spec__row"><dt class="spec__k">Eval harness</dt><dd class="spec__v">precision@k · MRR<br>abstention accuracy</dd></div>
-              <div class="spec__row"><dt class="spec__k">Mode comparison</dt><dd class="spec__v">paired bootstrap <em>p</em></dd></div>
-              <div class="spec__row"><dt class="spec__k">Re-indexing on filter</dt><dd class="spec__v"><em>none</em> — query-time</dd></div>
-            </dl>
-
-            <ul class="stack">
-              <li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li>
-            </ul>
-
-            <div class="actions">
-              <a class="btn btn--solid" href="https://grounded-rag-nr9dmpzrh79njaamznujzv.streamlit.app/" target="_blank" rel="noopener">Live demo ↗</a>
-              <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">Source ↗</a>
-            </div>
+        <div class="card__side">
+          <ul class="points">
+            <li><span>Ingests PDF, Markdown and text with <b>page numbers preserved</b>, so every citation points somewhere real</span></li>
+            <li><span><b>Three retrieval strategies</b> — dense vector search, hybrid BM25 fusion, and cross-encoder reranking — switchable at runtime</span></li>
+            <li><span><b>Four generation backends</b> resolved from whatever credentials exist, including one that runs fully offline</span></li>
+            <li><span>Evaluated on <b>precision@k, MRR, abstention accuracy and hallucination rate</b>, with paired bootstrap p-values on every comparison</span></li>
+          </ul>
+          <ul class="chips">
+            <li>Python</li><li>ChromaDB</li><li>MiniLM-L6-v2</li><li>BM25</li><li>Cross-encoder</li><li>Streamlit</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn--solid" href="https://grounded-rag-nr9dmpzrh79njaamznujzv.streamlit.app/" target="_blank" rel="noopener">▶ Live demo</a>
+            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/grounded-rag" target="_blank" rel="noopener">GitHub repo ↗</a>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- ─── 02 ─── -->
-    <article class="chapter" id="triage">
-      <div class="chapter__rail">
-        <span class="chapter__num">02</span>
-        <p class="eyebrow">The product problem</p>
-      </div>
-
-      <div class="chapter__body">
-        <h3 class="display display--md">Triage Desk</h3>
-        <p class="chapter__q">What happens to the app when the model times out?</p>
-
-        <div class="chapter__cols">
-          <div class="prose">
-            <p><b>Why I built it.</b> A support queue is a bad place for an AI feature to be load-bearing. So the ticket workflow is complete on its own — create, filter, update, resolve — and Gemini only improves it: category, priority, and a one-line summary for the agent.</p>
-            <p><b>What it is.</b> A full-stack support desk. React and Express in TypeScript over Postgres, deployed as a single service so there is one origin and no CORS negotiation between halves. The model call is isolated behind one module, its output validated with Zod, cached by content, rate-limited and deadlined.</p>
-            <p><b>The part I care about.</b> When Gemini is missing, slow, blocked, or returns a payload that fails validation, a deterministic local classifier answers instead and the ticket records which one did it. The UI colours a fallback differently — amber instead of blue — so a broken model configuration can't hide behind a page that loads fine.</p>
+      <!-- 02 -->
+      <article class="card" id="triage">
+        <div class="card__lead">
+          <div class="card__kicker">
+            <span class="card__num">02</span>
+            <p class="eyebrow">Resilience</p>
           </div>
+          <h3 class="display display--sm card__title">Triage Desk</h3>
+          <p class="card__sub">Support queue with a tested fallback</p>
+          <div class="prose">
+            <p>Once I could trust the output, the next question was what happens when there isn't any. A support queue is a bad place for an AI feature to be load-bearing — so the ticket workflow is complete on its own, and Gemini only improves it with a category, a priority and a one-line summary for the agent.</p>
+          </div>
+          <p class="aside"><b>Before you click:</b> the demo runs on Render's free tier, which sleeps after 15 minutes idle — the first request can take 30–60 seconds to wake it. Once it's up, <code>/api/health</code> reports whether AI triage is actually enabled.</p>
+        </div>
 
-          <div class="chapter__body">
-            <dl class="spec">
-              <div class="spec__row"><dt class="spec__k">Tests</dt><dd class="spec__v"><em>200</em></dd></div>
-              <div class="spec__row"><dt class="spec__k">Statement coverage</dt><dd class="spec__v">98.1%</dd></div>
-              <div class="spec__row"><dt class="spec__k">Branch coverage</dt><dd class="spec__v">95.3%</dd></div>
-              <div class="spec__row"><dt class="spec__k">AI failure paths tested</dt><dd class="spec__v"><em>6</em></dd></div>
-              <div class="spec__row"><dt class="spec__k">Test database</dt><dd class="spec__v">pg-mem — real SQL</dd></div>
-              <div class="spec__row"><dt class="spec__k">Deploy</dt><dd class="spec__v">1 service · render.yaml</dd></div>
-            </dl>
-
-            <ul class="stack">
-              <li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li>
-            </ul>
-
-            <p class="note"><b>Before you click:</b> the demo runs on Render's free tier, which sleeps after 15 minutes idle. The first request can take 30–60 seconds to wake it. Once it's up, <code>/api/health</code> reports whether AI triage is actually enabled.</p>
-
-            <div class="actions">
-              <a class="btn btn--solid" href="https://triage-desk-te0v.onrender.com/" target="_blank" rel="noopener">Live demo ↗</a>
-              <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">Source ↗</a>
-            </div>
+        <div class="card__side">
+          <ul class="points">
+            <li><span>Full-stack ticket workflow that works with the AI switched off — <b>React 19, Express 5, PostgreSQL</b>, one service, one origin</span></li>
+            <li><span>The model call is isolated behind a single module: <b>schema-validated JSON</b>, content-keyed cache, rate limit and hard deadline</span></li>
+            <li><span><b>200 tests at 98.1% statement and 95.3% branch coverage</b>, run against a real in-memory Postgres so a bad column name fails the test</span></li>
+            <li><span><b>Six AI-failure paths asserted</b> — timeout, refusal, rejected key, invalid schema, empty response, no key at all — each returning a usable answer</span></li>
+            <li><span>Every ticket records <b>which engine triaged it</b>, and the panel changes colour when it wasn't the model</span></li>
+          </ul>
+          <ul class="chips">
+            <li>TypeScript</li><li>React 19</li><li>Express 5</li><li>PostgreSQL</li><li>Zod</li><li>Jest</li><li>Gemini</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn--solid" href="https://triage-desk-te0v.onrender.com/" target="_blank" rel="noopener">▶ Live demo</a>
+            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/triage-desk" target="_blank" rel="noopener">GitHub repo ↗</a>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- ─── 03 ─── -->
-    <article class="chapter" id="nyc311">
-      <div class="chapter__rail">
-        <span class="chapter__num">03</span>
-        <p class="eyebrow">The scale problem</p>
-      </div>
-
-      <div class="chapter__body">
-        <h3 class="display display--md">NYC 311<br>AI ETL</h3>
-        <p class="chapter__q">Can an LLM sit inside a nightly pipeline without becoming a single point of failure?</p>
-
-        <div class="chapter__cols">
-          <div class="prose">
-            <p><b>The problem.</b> The same 311 payload arrives from four upstream systems that each name their columns differently. Fuzzy string matching gets the easy ones and quietly gets meaning wrong on the rest: <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, and that is the wrong field. No threshold separates those cases, because the difference is meaning, not spelling.</p>
-            <p><b>What it does.</b> Each column is resolved by the cheapest tier willing to commit to it — human override, exact match, one Claude call for everything left, fuzzy fallback — and every decision is logged with the tier that made it. Two guardrails earn their place: only one column may claim a canonical field, and if a required key doesn't resolve, the task fails loudly rather than loading a table with a hole in it. Airflow runs it daily, dbt builds the marts, and a quality report fails the run on any failed test.</p>
-            <p><b>The measurement.</b> The reference run below was produced with <em>no API key configured</em>. Every LLM call failed to authenticate and fell through to the fallback — the auth failure recorded in the run's quality report — and the pipeline completed normally.</p>
+      <!-- 03 -->
+      <article class="card" id="nyc311">
+        <div class="card__lead">
+          <div class="card__kicker">
+            <span class="card__num">03</span>
+            <p class="eyebrow">Scale</p>
           </div>
+          <h3 class="display display--sm card__title">NYC 311<br>AI ETL</h3>
+          <p class="card__sub">AI-assisted schema mapping in production</p>
+          <div class="prose">
+            <p>Then I wanted to know whether an LLM could sit inside something that runs on a schedule without becoming the thing that breaks it. The same 311 payload arrives from four systems that each name their columns differently — and fuzzy matching quietly gets meaning wrong: <code>assignedAgencyLabel</code> scores 0.90 against <code>agency_code</code>, which is the wrong field. No threshold separates those, because the difference is meaning, not spelling.</p>
+          </div>
+          <p class="aside"><b>One real finding:</b> a dbt test failed on the first full run — 17 requests stamped closed exactly 72 hours <em>before</em> they were created, upstream backdating in the live feed. They're flagged and their resolution time nulled rather than dropped, with a warning test keeping the rate visible on every run.</p>
+        </div>
 
-          <div class="chapter__body">
-            <dl class="spec">
-              <div class="spec__row"><dt class="spec__k">Rows loaded</dt><dd class="spec__v"><em>133,993</em></dd></div>
-              <div class="spec__row"><dt class="spec__k">Daily batches</dt><dd class="spec__v">14 · real 311 data</dd></div>
-              <div class="spec__row"><dt class="spec__k">dbt tests</dt><dd class="spec__v">44 · 43 pass · <em>0 fail</em></dd></div>
-              <div class="spec__row"><dt class="spec__k">Mapping precision</dt><dd class="spec__v"><em>100%</em> (63/63)</dd></div>
-              <div class="spec__row"><dt class="spec__k">Columns mis-mapped</dt><dd class="spec__v"><em>0</em></dd></div>
-              <div class="spec__row"><dt class="spec__k">Header decisions / run</dt><dd class="spec__v">83</dd></div>
-              <div class="spec__row"><dt class="spec__k">Full backfill</dt><dd class="spec__v">127 s (9.1 s / batch)</dd></div>
-            </dl>
-
-            <ul class="stack">
-              <li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li>
-            </ul>
-
-            <p class="note"><b>One real finding:</b> a test failed on the first full run — 17 requests were stamped closed exactly 72 hours <em>before</em> they were created. Upstream backdating in the live feed. They aren't dropped (they're real requests and still count as volume) and they aren't let through (six negative durations would drag down every SLA average). They're flagged and their resolution time nulled, with a warning test keeping the rate visible on every run.</p>
-
-            <div class="actions">
-              <a class="btn btn--solid" href="https://nyc311-ai-etl.streamlit.app/" target="_blank" rel="noopener">Live demo ↗</a>
-              <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">Source ↗</a>
-            </div>
+        <div class="card__side">
+          <ul class="points">
+            <li><span><b>133,993 rows</b> of live NYC 311 data loaded across <b>14 daily Airflow batches</b> in 127 seconds</span></li>
+            <li><span><b>83 column headers resolved per run</b> through four tiers — human override, exact match, one Claude call, fuzzy fallback — each decision logged with the tier that made it</span></li>
+            <li><span><b>100% mapping precision (63/63) and 0 columns mis-mapped</b>, measured against a written-down ground truth rather than asserted</span></li>
+            <li><span><b>44 dbt tests</b> across staging, intermediate and mart layers; a quality report fails the run on any failure</span></li>
+            <li><span>The reference run was produced <b>with no API key</b> — every LLM call failed to authenticate, fell through to the fallback, and the pipeline completed normally</span></li>
+          </ul>
+          <ul class="chips">
+            <li>Python</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>BigQuery</li><li>Claude API</li><li>rapidfuzz</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn--solid" href="https://nyc311-ai-etl.streamlit.app/" target="_blank" rel="noopener">▶ Live demo</a>
+            <a class="btn btn--ghost" href="https://github.com/Sarvesh2k03/nyc311-ai-etl" target="_blank" rel="noopener">GitHub repo ↗</a>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
+    </div>
   </div>
 </main>
 
-<!-- ══════════════ HOW I BUILD ══════════════ -->
-<section class="band band--a" id="how">
+<!-- ════════ HOW I BUILD ════════ -->
+<section class="band band--paper" id="how">
   <div class="inner">
-    <div class="chapters__head">
-      <h2 class="display display--lg">How I<br>build</h2>
+    <div class="head">
+      <div>
+        <p class="eyebrow" style="margin-bottom:1rem;">| Method |</p>
+        <h2 class="display display--lg">How I<br>build</h2>
+      </div>
       <div class="prose">
         <p>The same five decisions turn up in all three projects, in the same order. This is the part I'd defend in a design review — and the reason the numbers above exist at all.</p>
       </div>
     </div>
 
-    <div class="principles">
-      <article class="principle">
-        <span class="principle__n">01</span>
+    <div class="method">
+      <article class="rule-item">
+        <span class="rule-item__n">01</span>
         <div>
           <h3>Decide what happens without the model, first.</h3>
-          <div class="prose">
-            <p>Before I write a prompt I write the version that has no model in it. In Triage Desk the ticket workflow is complete on its own and Gemini only improves it. In the 311 pipeline a fuzzy tier will always answer, so an LLM outage is a quality dip, not an outage. Deciding this first is what makes the AI safe to add — and it means I can tell you exactly what the model is worth, because I've run the system both ways.</p>
-          </div>
-          <p class="principle__proof"><b>Proof:</b> the 311 reference run — 133,993 rows, 44 dbt tests — was produced with no API key configured. Every LLM call failed to authenticate, fell through to the fallback, and the pipeline completed.</p>
+          <div class="prose"><p>Before I write a prompt I write the version that has no model in it. That's what makes the AI safe to add — and it means I can tell you what the model is actually worth, because I've run the system both ways.</p></div>
+          <p class="rule-item__proof"><b>Proof:</b> the 311 reference run — 133,993 rows, 44 tests — completed with no API key configured at all.</p>
         </div>
       </article>
 
-      <article class="principle">
-        <span class="principle__n">02</span>
+      <article class="rule-item">
+        <span class="rule-item__n">02</span>
         <div>
-          <h3>Make the model commit to a shape, then check it.</h3>
-          <div class="prose">
-            <p>Free text is not an interface. Every model call returns structured JSON against a declared schema, validated on the server before anything touches a database — and validation means checking the <em>meaning</em>, not just the syntax. The 311 mapper rejects a proposal naming a canonical field that doesn't exist, so a hallucination becomes a caught error instead of a corrupted column. Timeouts, refusals, empty responses and malformed JSON each have their own path, and each path has a test.</p>
-          </div>
-          <p class="principle__proof"><b>Proof:</b> six distinct AI-failure paths asserted in Triage Desk's suite — API error, rejected key, schema failure, empty response, exceeded deadline, no key at all. All six return a usable classification.</p>
+          <h3>Make the model commit to a shape, then check the meaning.</h3>
+          <div class="prose"><p>Free text is not an interface. Every call returns structured JSON against a declared schema, validated before anything touches a database — and validated for sense, not just syntax. A proposal naming a field that doesn't exist becomes a caught error instead of a corrupted column.</p></div>
+          <p class="rule-item__proof"><b>Proof:</b> six distinct AI-failure paths under test in Triage Desk, all six returning a usable classification.</p>
         </div>
       </article>
 
-      <article class="principle">
-        <span class="principle__n">03</span>
+      <article class="rule-item">
+        <span class="rule-item__n">03</span>
         <div>
           <h3>Measure against ground truth, not vibes.</h3>
-          <div class="prose">
-            <p>"Seems accurate" is not a result. For the 311 mapper I wrote down the true column mapping so accuracy became arithmetic — which is how I know the cheap fuzzy tier hits 100% precision on what it commits to, declines all seven operational columns correctly, and leaves exactly 13 semantic near-misses that only the LLM can resolve. That number is the argument for the LLM tier, and it's why the tier is scoped to those 13 columns instead of the whole file.</p>
-          </div>
-          <p class="principle__proof"><b>Proof:</b> Grounded's eval harness reports precision@k, evidence recall@k, MRR, abstention accuracy and hallucination rate — with a paired bootstrap p-value on every retrieval-mode comparison.</p>
+          <div class="prose"><p>"Seems accurate" is not a result. Writing down the true column mapping turned accuracy into arithmetic — which is how I know the cheap tier is 100% precise on what it commits to, and exactly which 13 columns need an LLM. That number is the argument for the LLM tier, and the reason it's scoped to those 13.</p></div>
+          <p class="rule-item__proof"><b>Proof:</b> Grounded's harness reports precision@k, evidence recall@k, MRR, abstention accuracy and hallucination rate.</p>
         </div>
       </article>
 
-      <article class="principle">
-        <span class="principle__n">04</span>
+      <article class="rule-item">
+        <span class="rule-item__n">04</span>
         <div>
           <h3>Put the degradation where someone can see it.</h3>
-          <div class="prose">
-            <p>A silent fallback is a bug wearing a feature's clothes — the page loads, the answer looks fine, and a broken model configuration survives to production. So every ticket records which engine triaged it and the panel changes colour when it wasn't the model. Grounded marks which retrieved passages the answer actually used versus which it merely had available. And when the documents don't contain the answer, it says so instead of paraphrasing something adjacent.</p>
-          </div>
-          <p class="principle__proof"><b>Proof:</b> deselect one document in the Grounded demo and ask the same question again — the answer becomes "I don't know based on the provided documents".</p>
+          <div class="prose"><p>A silent fallback is a bug wearing a feature's clothes — the page loads, the answer looks fine, and a broken model configuration survives to production. So the interface says which engine answered, and an answer that isn't in the documents comes back as a refusal rather than a paraphrase.</p></div>
+          <p class="rule-item__proof"><b>Proof:</b> ticket records its triage source and the panel changes colour; Grounded marks cited passages separately from merely retrieved ones.</p>
         </div>
       </article>
 
-      <article class="principle">
-        <span class="principle__n">05</span>
+      <article class="rule-item">
+        <span class="rule-item__n">05</span>
         <div>
           <h3>Leave it reproducible, including the bad news.</h3>
-          <div class="prose">
-            <p>Every figure on this page comes from a command in a README — <code>make backfill</code>, <code>npm run test:coverage</code>, <code>python -m grounded.evaluate</code>. That includes the findings I'd rather not advertise: a dbt test caught 17 real requests stamped closed 72 hours before they were created, and the fix is documented alongside the failure. Work that can't be re-run is a claim, not a result.</p>
-          </div>
-          <p class="principle__proof"><b>Proof:</b> full 14-batch backfill in 127 s. Each of the three repos runs from a clean clone, and two of the three run with no API key at all.</p>
+          <div class="prose"><p>Every figure here comes from a command in a README. That includes the findings I'd rather not advertise — the 17 backdated requests are documented next to the test that caught them. Work that can't be re-run is a claim, not a result.</p></div>
+          <p class="rule-item__proof"><b>Proof:</b> <code>make backfill</code> · <code>npm run test:coverage</code> · <code>python -m grounded.evaluate</code> — and two of the three repos run with no API key.</p>
         </div>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ SKILLS ══════════════ -->
-<section class="band band--b" id="skills">
+<!-- ════════ SKILLS + CONTACT ════════ -->
+<footer class="band band--forest" id="contact">
   <div class="inner">
-    <h2 class="display display--lg">What I<br>bring</h2>
+    <div class="head">
+      <div>
+        <p class="eyebrow" style="margin-bottom:1rem;">| Toolkit |</p>
+        <h2 class="display display--lg">What I<br>bring</h2>
+      </div>
+    </div>
 
-    <div class="skills__grid">
-      <div class="skills__col">
+    <div class="cols">
+      <div>
         <h3>AI systems</h3>
         <ul>
           <li>Retrieval and RAG evaluation</li>
-          <li>Structured LLM output, schema-validated</li>
+          <li>Structured, schema-validated LLM output</li>
           <li>Grounding, citation, abstention</li>
           <li>Tiered fallback design</li>
-          <li>Hallucination and refusal measurement</li>
           <li>Judging when a model shouldn't be in the loop</li>
         </ul>
       </div>
-      <div class="skills__col">
+      <div>
         <h3>Data engineering</h3>
         <ul>
           <li>Airflow orchestration and backfills</li>
-          <li>dbt models, incremental marts</li>
+          <li>dbt models and incremental marts</li>
           <li>Idempotent loads, data contracts</li>
           <li>DuckDB · BigQuery · PostgreSQL</li>
           <li>Data-quality testing and alerting</li>
         </ul>
       </div>
-      <div class="skills__col">
+      <div>
         <h3>Full-stack</h3>
         <ul>
           <li>TypeScript · React · Express</li>
@@ -808,7 +633,7 @@ a { color: inherit; }
           <li>Render · Neon · Streamlit</li>
         </ul>
       </div>
-      <div class="skills__col">
+      <div>
         <h3>Testing &amp; evaluation</h3>
         <ul>
           <li>Jest · pytest · pg-mem</li>
@@ -817,8 +642,8 @@ a { color: inherit; }
           <li>Reproducible reference runs</li>
         </ul>
       </div>
-      <div class="skills__col">
-        <h3>Languages &amp; tools</h3>
+      <div>
+        <h3>Languages &amp; platforms</h3>
         <ul>
           <li>Python · TypeScript · SQL · C++</li>
           <li>AWS · Google Cloud</li>
@@ -828,20 +653,13 @@ a { color: inherit; }
       </div>
     </div>
 
-    <div class="method">
-      <p class="eyebrow">Working with AI</p>
+    <div class="closing">
+      <p class="eyebrow">| Working with AI |</p>
       <div class="prose">
-        <p>Building <em>with</em> LLMs is part of the skill set, and I treat it with the same discipline as building <em>on</em> them. I use models to move fast — scaffolding, refactors, a second opinion on a schema at midnight — and then I make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> That loop is fast and genuinely useful, and it is not a substitute for knowing why the architecture is shaped the way it is.</p>
-        <p>So: I made the design calls, ran the pipelines, and produced every number here. Where AI helped, it helped the way it does in these projects — with a check on the output and a human accountable for what ships. That's the working relationship I'd bring to a team, and the reason each figure on this page traces back to a command you can run yourself.</p>
+        <p>Building <em>with</em> LLMs is part of the skill set, and I treat it with the same discipline as building <em>on</em> them. I use models to move fast — scaffolding, refactors, a second opinion on a schema at midnight — and then make them argue against the result: <em>read this as a staff engineer and tell me which claim isn't backed by anything.</em> That loop is genuinely fast, and it is not a substitute for knowing why the architecture is shaped the way it is.</p>
+        <p>I made the design calls, ran the pipelines, and produced every number here. Where AI helped, it helped the way it does in these projects — with a check on the output and a human accountable for what ships.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ══════════════ FOOTER ══════════════ -->
-<footer class="band band--f" id="contact">
-  <div class="inner">
-    <h2 class="display display--md">Let's talk</h2>
 
     <div class="contact">
       <div>
@@ -857,12 +675,12 @@ a { color: inherit; }
         <p><a href="https://linkedin.com/in/skumarag" target="_blank" rel="noopener">in/skumarag</a></p>
       </div>
       <div>
-        <p class="eyebrow">Based in</p>
+        <p class="eyebrow">Location</p>
         <p>Los Angeles, California</p>
       </div>
     </div>
 
-    <p class="colophon">Sarvesh Kumar · Archivo &amp; Instrument Sans · Built and hosted on GitHub Pages</p>
+    <p class="colophon">Sarvesh Kumar · Two colours, Archivo &amp; Instrument Sans · Hand-built, hosted on GitHub Pages</p>
   </div>
 </footer>
 
